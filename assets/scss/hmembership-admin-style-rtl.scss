@@ -1,0 +1,13 @@
+@import "hmembership-admin-params";
+
+/**
+ * hmembership-admin-style-rtl.scss
+ */
+.wrap {
+	.submit {
+		.ajax-loading {
+			margin-left: 0;
+			margin-right: 5px;
+		}
+	}
+}

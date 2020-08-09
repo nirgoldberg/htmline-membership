@@ -1,0 +1,146 @@
+@import "hmembership-admin-params";
+
+/**
+ * hmembership-admin-style.scss
+ */
+.wrap {
+	.hmembership-admin-box {
+		position: relative;
+		margin: 20px 0;
+		border: 1px solid $gray-color1;
+		background: $white;
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+
+		.title {
+			margin: 0;
+			padding: 0 15px;
+			border-bottom: 1px solid $gray-color2;
+
+			h3 {
+				margin: 1em 0;
+				padding: 0;
+				line-height: 1em;
+				font-size: 14px;
+			}
+
+			.desc {
+				margin: 1em 0;
+				font-style: italic;
+			}
+		}
+
+		.content {
+			padding: 15px;
+
+			/*****************/
+			/* settings form */
+			/*****************/
+
+			.form-table {
+				input[type="text"],
+				input[type="password"],
+				input[type="number"],
+				textarea,
+				select {
+					width: 100%;
+					max-width: 400px;
+				}
+
+				textarea {
+					resize: none;
+				}
+			}
+		}
+	}
+
+	.submit {
+		.ajax-loading {
+			margin-left: 5px;
+			width: 24px;
+			height: 24px;
+			font-size: 24px;
+			vertical-align: middle;
+			-webkit-animation:	rotating 2s linear infinite;
+			-moz-animation:		rotating 2s linear infinite;
+			-ms-animation:		rotating 2s linear infinite;
+			-o-animation:		rotating 2s linear infinite;
+			animation:			rotating 2s linear infinite;
+		}
+	}
+}
+
+/**********************/
+/* rotating animation */
+/**********************/
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+	from {
+		-webkit-transform:	rotate(0deg);
+		-o-transform:		rotate(0deg);
+		transform:			rotate(0deg);
+	}
+	to {
+		-webkit-transform:	rotate(360deg);
+		-o-transform:		rotate(360deg);
+		transform:			rotate(360deg);
+	}
+}
+
+@keyframes rotating {
+	from {
+		-webkit-transform:	rotate(0deg);
+		-moz-transform:		rotate(0deg);
+		-ms-transform:		rotate(0deg);
+		-o-transform:		rotate(0deg);
+		transform:			rotate(0deg);
+	}
+	to {
+		-webkit-transform:	rotate(360deg);
+		-moz-transform:		rotate(360deg);
+		-ms-transform:		rotate(360deg);
+		-o-transform:		rotate(360deg);
+		transform:			rotate(360deg);
+	}
+}
+
+/************************/
+/* tools - export users */
+/************************/
+
+.hmembership-export-users {
+	&.active {
+		cursor: default;
+
+		& + .ajax-loading {
+			visibility: visible;
+		}
+	}
+}
+
+.export-users-summary {}
+
+.export-users-result {}
+
+/**************/
+/* responsive */
+/**************/
+
+@media (max-width: 782px) {
+
+	.wrap {
+		.hmembership-admin-box {
+			.content {
+
+				/*****************/
+				/* settings form */
+				/*****************/
+
+				.form-table {
+					select {
+						height: auto !important;
+					}
+				}
+			}
+		}
+	}
+}

@@ -75,6 +75,7 @@ if ( 'options-general.php' != $parent_slug ) {
 					hmembership_get_view( 'settings-form', array(
 						'options_group_id'	=> $options_group_id,
 						'section_id'		=> $section_id,
+						'section_slug'		=> $section_slug,
 						'section'			=> $section,
 					) );
 
@@ -94,6 +95,7 @@ if ( 'options-general.php' != $parent_slug ) {
 					hmembership_get_view( 'settings-form', array(
 						'options_group_id'	=> $options_group_id,
 						'section_id'		=> $section_id,
+						'section_slug'		=> $section_slug,
 						'section'			=> $section,
 					) );
 

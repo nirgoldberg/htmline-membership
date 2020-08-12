@@ -37,45 +37,106 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 
 			// tabs
 			'tabs'					=> array(
-				'display'			=> array(
+				'users'					=> array(
+					'title'				=> __( 'Users', 'hmembership' ),
+					'sections'			=> array(
+						'user_custom_fields'	=> array(
+							'type'				=> 'dynamic',
+							'title'				=> __( 'User Custom fields', 'hmembership' ),
+							'description'		=> 'Custom fields for user registration form',
+						),
+					),
+				),
+				'display'				=> array(
 					'title'				=> __( 'Display', 'hmembership' ),
 					'sections'			=> array(
-						'ui'			=> array(
-							'title'			=> __( 'User Interface Settings', 'hmembership' ),
-							'description'	=> '',
+						'ui'					=> array(
+							'type'				=> 'static',
+							'title'				=> __( 'User Interface Settings', 'hmembership' ),
+							'description'		=> '',
 						),
 					),
 				),
-				'permissions'		=> array(
+				'permissions'			=> array(
 					'title'				=> __( 'Permissions', 'hmembership' ),
 					'sections'			=> array(
-						'edit'			=> array(
-							'title'			=> __( 'Edit Settings', 'hmembership' ),
-							'description'	=> '',
+						'edit'					=> array(
+							'type'				=> 'static',
+							'title'				=> __( 'Edit Settings', 'hmembership' ),
+							'description'		=> '',
 						),
-						'export'		=> array(
-							'title'			=> __( 'Export Settings', 'hmembership' ),
-							'description'	=> '',
+						'export'				=> array(
+							'type'				=> 'static',
+							'title'				=> __( 'Export Settings', 'hmembership' ),
+							'description'		=> '',
 						),
 					),
 				),
-				'uninstall'			=> array(
+				'uninstall'				=> array(
 					'title'				=> __( 'Uninstall', 'hmembership' ),
 					'sections'			=> array(
-						'uninstall'		=> array(
-							'title'			=> __( 'Uninstall Settings', 'hmembership' ),
-							'description'	=> '',
+						'uninstall'				=> array(
+							'type'				=> 'static',
+							'title'				=> __( 'Uninstall Settings', 'hmembership' ),
+							'description'		=> '',
 						),
 					),
 				),
 			),
-			'active_tab'			=> 'display',
+			'active_tab'			=> 'users',
 
 			// sections
 			'sections'				=> array(),
 
 			// fields
 			'fields'				=> array(
+				array(
+					'uid'				=> 'hmembership_user_custom_field_label',
+					'label'				=> __( 'Field Label', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_custom_field_label',
+					'tab'				=> 'users',
+					'section'			=> 'user_custom_fields',
+					'type'				=> 'text',
+				),
+				array(
+					'uid'				=> 'hmembership_user_custom_field_type',
+					'label'				=> __( 'Field Type', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_custom_field_type',
+					'tab'				=> 'users',
+					'section'			=> 'user_custom_fields',
+					'type'				=> 'select',
+					'options'			=> array(
+						'text'			=> __( 'Text', 'hmembership' ),
+						'textarea'		=> __( 'Textarea', 'hmembership' ),
+						'select'		=> __( 'Select', 'hmembership' ),
+						'multiselect'	=> __( 'Multiselect', 'hmembership' ),
+						'radio'			=> __( 'Radio Button', 'hmembership' ),
+						'checkbox'		=> __( 'Checkbox', 'hmembership' ),
+					),
+					'default'			=> array( 'checkbox' ),
+				),
+				array(
+					'uid'				=> 'hmembership_user_custom_field_options',
+					'label'				=> __( 'Field Options', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_custom_field_options',
+					'tab'				=> 'users',
+					'section'			=> 'user_custom_fields',
+					'type'				=> 'textarea',
+					'supplimental'		=> __( 'Each option per row', 'hmembership' ),
+				),
+				array(
+					'uid'				=> 'hmembership_user_custom_field_default',
+					'label'				=> __( 'Field Default', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_custom_field_default',
+					'tab'				=> 'users',
+					'section'			=> 'user_custom_fields',
+					'type'				=> 'radio',
+					'options'			=> array(
+						'black'			=> 'Black',
+						'white'			=> 'White',
+					),
+					'helper'			=> __( '(Default: false)', 'hmembership' ),
+				),
 				array(
 					'uid'				=> 'hmembership_export_users',
 					'label'				=> __( 'Export users', 'hmembership' ),
@@ -102,6 +163,23 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					),
 					'supplimental'		=> __( 'Caution: all data will be removed without any option to restore', 'hmembership' ),
 					'helper'			=> __( '(Default: false)', 'hmembership' ),
+				),
+				array(
+					'uid'				=> 'example',
+					'label'				=> __( 'Example', 'hmembership' ),
+					'label_for'			=> 'example',
+					'tab'				=> 'display',
+					'section'			=> 'ui',
+					'type'				=> 'radio',
+					'options'			=> array(
+						'text'			=> __( 'Text', 'hmembership' ),
+						'textarea'		=> __( 'Textarea', 'hmembership' ),
+						'select'		=> __( 'Select', 'hmembership' ),
+						'multiselect'	=> __( 'Multiselect', 'hmembership' ),
+						'radio'			=> __( 'Radio Button', 'hmembership' ),
+						'checkbox'		=> __( 'Checkbox', 'hmembership' ),
+					),
+					'default'			=> array( 'multiselect' ),
 				),
 			),
 

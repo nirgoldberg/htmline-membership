@@ -51,6 +51,25 @@
 				}
 			}
 		}
+
+		/********************/
+		/* dynamic settings */
+		/********************/
+
+		.hmembership-admin-box-content-sortable {
+			.content {
+				margin: 15px;
+				border: 1px solid $gray-color1;
+
+				&.ui-sortable-helper {
+					background-color: $gray-color4;
+				}
+			}
+		}
+
+		a.add-section {
+			margin: 0 15px 15px;
+		}
 	}
 
 	.submit {

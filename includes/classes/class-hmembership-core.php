@@ -18,21 +18,21 @@ class HTMLineMembership_Core {
 	 *
 	 * @var (int)
 	 */
-	private $main_site_id = '';
+	private $main_site_id;
 
 	/**
 	 * Main site wpml active
 	 *
 	 * @var (boolean)
 	 */
-	private $main_site_wpml_active = false;
+	private $main_site_wpml_active;
 
 	/**
 	 * Local site wpml active
 	 *
 	 * @var (boolean)
 	 */
-	private $local_site_wpml_active = false;
+	private $local_site_wpml_active;
 
 	/**
 	 * __construct

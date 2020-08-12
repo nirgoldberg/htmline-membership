@@ -29,12 +29,45 @@ extract( $args );
 
 	<?php endif; ?>
 
-	<div class="content">
-		<table class="form-table">
+	<?php if ( 'dynamic' == $section[ 'type' ] ) {
 
-			<?php do_settings_fields( $options_group_id, $section_id ); ?>
+		// get dynamic section count
+		$count = get_option( 'hmembership_section_' . $section_slug, 1 ); ?>
 
-		</table>
-	</div>
+		<div class="hmembership-admin-box-content-sortable" data-section="<?php echo 'hmembership_section_' . $section_slug; ?>">
+
+		<?php for ( $i=1 ; $i<=$count ; $i++ ) { ?>
+
+			<div class="content <?php echo $section[ 'type' ]; ?>">
+
+				<table class="form-table">
+
+					<?php do_settings_fields( $options_group_id, $section_id . '_' . $i ); ?>
+
+				</table>
+
+			</div>
+
+		<?php }
+
+	} else { ?>
+
+		<div class="content <?php echo $section[ 'type' ]; ?>">
+
+			<table class="form-table">
+
+				<?php do_settings_fields( $options_group_id, $section_id ); ?>
+
+			</table>
+
+		</div>
+
+	<?php }
+
+	if ( 'dynamic' == $section[ 'type' ] ) { ?>
+
+		</div><a class="button button-primary add-section"><?php _e( 'Add Field', 'hmembership' ); ?></a>
+
+	<?php } ?>
 
 </div><!-- .hmembership-admin-box -->

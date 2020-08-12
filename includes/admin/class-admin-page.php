@@ -25,14 +25,14 @@ class HTMLineMembership_Admin_Page {
 	 *
 	 * @var (array)
 	 */
-	protected $settings = array();
+	protected $settings;
 
 	/**
 	 * Page hook
 	 *
 	 * @var (mixed)
 	 */
-	protected $page_hook = '';
+	protected $page_hook;
 
 	/**
 	 * __construct
@@ -254,7 +254,7 @@ class HTMLineMembership_Admin_Page {
 		foreach ( self::$_instances as $instance ) {
 
 			// vars
-			$class = get_class( $this );
+			$class = get_class( $instance );
 
 			if ( $instance instanceof $class ) {
 				if ( $include_subclasses || ( get_class( $instance ) === $class ) ) {

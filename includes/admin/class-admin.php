@@ -18,7 +18,7 @@ class HTMLineMembership_Admin {
 	 *
 	 * @var (array)
 	 */
-	private $settings = array();
+	private $settings;
 
 	/**
 	 * __construct

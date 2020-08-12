@@ -25,14 +25,14 @@ class HTMLineMembership_Admin_Settings_Page {
 	 *
 	 * @var (array)
 	 */
-	protected $settings = array();
+	public $settings;
 
 	/**
 	 * Main site indicator
 	 *
 	 * @var (boolean)
 	 */
-	protected $is_main_site = false;
+	protected $is_main_site;
 
 	/**
 	 * __construct
@@ -110,6 +110,7 @@ class HTMLineMembership_Admin_Settings_Page {
 			 * 		'sections'	=> array(
 			 * 			'[section slug]'	=> array(
 			 *				'target'		=> [main/local],
+			 * 				'type'			=> [static/dynamic],
 			 * 				'title'			=> [section title],
 			 * 				'description'	=> [section description],
 			 * 			),
@@ -127,6 +128,7 @@ class HTMLineMembership_Admin_Settings_Page {
 			 *
 			 * '[section slug]'	=> array(
 			 *		'target'		=> [main/local],
+			 *		'type'			=> [static/dynamic],
 			 * 		'title'			=> [section title],
 			 * 		'description'	=> [section description],
 			 * ),
@@ -194,7 +196,14 @@ class HTMLineMembership_Admin_Settings_Page {
 	public function init() {
 
 		// api
-		hmembership_include( 'includes/api/api-settings.php' );
+		hmembership_include( 'includes/api/api-dynamic-setting-sections.php' );
+
+		// classes
+		hmembership_include( 'includes/admin/fields/class-admin-field.php' );
+		hmembership_include( 'includes/admin/fields/class-admin-text-field.php' );
+		hmembership_include( 'includes/admin/fields/class-admin-textarea-field.php' );
+		hmembership_include( 'includes/admin/fields/class-admin-select-field.php' );
+		hmembership_include( 'includes/admin/fields/class-admin-radio-field.php' );
 
 	}
 
@@ -290,7 +299,7 @@ class HTMLineMembership_Admin_Settings_Page {
 					$section_id			= $tab_slug . '-' . $section_slug;
 
 					// add settings section
-					$this->setup_section( $section_id, $options_group_id );
+					$this->setup_section( $section_id, $options_group_id, $section_slug );
 
 				}
 
@@ -305,7 +314,7 @@ class HTMLineMembership_Admin_Settings_Page {
 				$section_id			= $section_slug;
 
 				// add settings section
-				$this->setup_section( $section_id, $options_group_id );
+				$this->setup_section( $section_id, $options_group_id, $section_slug );
 
 			}
 		}
@@ -320,9 +329,46 @@ class HTMLineMembership_Admin_Settings_Page {
 	 * @since		1.0.0
 	 * @param		$section_id (string)
 	 * @param		$options_group_id (string)
+	 * @param		$section_slug (string)
 	 * @return		N/A
 	 */
-	protected function setup_section( $section_id, $options_group_id ) {
+	protected function setup_section( $section_id, $options_group_id, $section_slug ) {
+
+		// is section dynamic
+		$dynamic = $this->is_dynamic_section( $section_slug );
+
+		if ( $dynamic ) {
+
+			// get section count
+			$count = (int) get_option( 'hmembership_section_' . $section_slug, 1 );
+
+			for ( $i=1 ; $i<=$count ; $i++ ) {
+
+				// setup section
+				$this->add_settings_section( $section_id . '_' . $i, $options_group_id );
+
+			}
+
+		} else {
+
+			// setup section
+			$this->add_settings_section( $section_id, $options_group_id );
+
+		}
+
+	}
+
+	/**
+	 * add_settings_section
+	 *
+	 * This function will setup admin settings page section
+	 *
+	 * @since		1.0.0
+	 * @param		$section_id (string)
+	 * @param		$options_group_id (string)
+	 * @return		N/A
+	 */
+	protected function add_settings_section( $section_id, $options_group_id ) {
 
 		// add settings section
 		add_settings_section(
@@ -374,8 +420,31 @@ class HTMLineMembership_Admin_Settings_Page {
 
 				}
 
-				// add settings field
-				$this->setup_field( $field[ 'uid' ], $field[ 'label' ], $options_group_id, $section_id, $field );
+				// is section dynamic
+				$dynamic = $this->is_dynamic_section( $field[ 'section' ] );
+
+				if ( $dynamic ) {
+
+					// get section count
+					$count = (int) get_option( 'hmembership_section_' . $field[ 'section' ], 1 );
+
+					for ( $i=1 ; $i<=$count ; $i++ ) {
+
+						// field index
+						$field[ 'index' ] = $i;
+						$field[ 'label_for' ] = $field[ 'uid' ] . '_' . $i;
+
+						// add settings field
+						$this->setup_field( $options_group_id, $section_id . '_' . $i, $field );
+
+					}
+
+				} else {
+
+					// add settings field
+					$this->setup_field( $options_group_id, $section_id, $field );
+
+				}
 
 			}
 		}
@@ -388,27 +457,85 @@ class HTMLineMembership_Admin_Settings_Page {
 	 * This function will setup admin settings page field
 	 *
 	 * @since		1.0.0
-	 * @param		$field_id (string)
-	 * @param		$field_label (string)
 	 * @param		$options_group_id (string)
 	 * @param		$section_id (string)
 	 * @param		$field_args (array)
 	 * @return		N/A
 	 */
-	protected function setup_field( $field_id, $field_label, $options_group_id, $section_id, $field_args ) {
+	protected function setup_field( $options_group_id, $section_id, $field_args ) {
+
+		// create field instance
+		switch ( $field_args[ 'type' ] ) {
+
+			case 'text':
+			case 'password':
+			case 'number':
+				$field = new HTMLineMembership_Admin_Text_Field( $field_args );
+				break;
+
+			case 'textarea':
+				$field = new HTMLineMembership_Admin_Textarea_Field( $field_args );
+				break;
+
+			case 'select':
+			case 'multiselect':
+				$field = new HTMLineMembership_Admin_Select_Field( $field_args );
+				break;
+
+			case 'radio':
+			case 'checkbox':
+				$field = new HTMLineMembership_Admin_Radio_Field( $field_args );
+				break;
+
+		}
+
+		$field_args = $field->get_field();
 
 		// add settings field
 		add_settings_field(
-			$field_id,
-			$field_label,
-			'hmembership_admin_display_form_element',
+			$field_args[ 'uid' ],
+			$field_args[ 'label' ],
+			array( $field, 'display_field' ),
 			$options_group_id,
 			$section_id,
 			$field_args
 		);
 
 		// register setting
-		register_setting( $options_group_id, $field_id );
+		register_setting( $options_group_id, $field_args[ 'uid' ] );
+
+	}
+
+	/**
+	 * is_dynamic_section
+	 *
+	 * This function will check whether a section is dynamic
+	 *
+	 * @since		1.0.0
+	 * @param		$section_slug (string)
+	 * @return		(bool)
+	 */
+	protected function is_dynamic_section( $section_slug ) {
+
+		// vars
+		$settings = $this->settings;
+
+		if ( isset( $settings[ 'tabs' ] ) && $settings[ 'tabs' ] ) {
+			foreach ( $settings[ 'tabs' ] as $tab ) {
+				if ( isset( $tab[ 'sections' ] ) && isset( $tab[ 'sections' ][ $section_slug ] ) && 'dynamic' == $tab[ 'sections' ][ $section_slug ][ 'type' ] ) {
+					// return
+					return true;
+				}
+			}
+		}
+
+		if ( isset( $settings[ 'sections' ] ) && isset( $settings[ 'sections' ][ $section_slug ] ) && 'dynamic' == $settings[ 'sections' ][ $section_slug ][ 'type' ] ) {
+			// return
+			return true;
+		}
+
+		// return
+		return false;
 
 	}
 
@@ -421,7 +548,7 @@ class HTMLineMembership_Admin_Settings_Page {
 	 * @param		$include_subclasses (boolean) Optionally include subclasses in returned set
 	 * @return		(array)
 	 */
-	protected static function get_instances( $include_subclasses = false ) {
+	public static function get_instances( $include_subclasses = false ) {
 
 		// vars
 		$instances = array();
@@ -429,7 +556,7 @@ class HTMLineMembership_Admin_Settings_Page {
 		foreach ( self::$_instances as $instance ) {
 
 			// vars
-			$class = get_class( $this );
+			$class = get_class( $instance );
 
 			if ( $instance instanceof $class ) {
 				if ( $include_subclasses || ( get_class( $instance ) === $class ) ) {

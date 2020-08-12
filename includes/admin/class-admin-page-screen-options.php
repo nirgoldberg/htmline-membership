@@ -67,7 +67,7 @@ class HTMLineMembership_Admin_Page_Screen_Options {
 	 * @param		$accepted_args (int)
 	 * @return		N/A
 	 */
-	protected function add_action( $tag = '', $function_to_add = '', $priority = 10, $accepted_args = 1 ) {
+	private function add_action( $tag = '', $function_to_add = '', $priority = 10, $accepted_args = 1 ) {
 
 		if ( empty( $this->option_name ) || empty( $this->default_per_page ) )
 			return;
@@ -89,7 +89,7 @@ class HTMLineMembership_Admin_Page_Screen_Options {
 	 * @param		$accepted_args (int)
 	 * @return		N/A
 	 */
-	protected function add_filter( $tag = '', $function_to_add = '', $priority = 10, $accepted_args = 1 ) {
+	private function add_filter( $tag = '', $function_to_add = '', $priority = 10, $accepted_args = 1 ) {
 
 		if ( empty( $this->option_name ) || empty( $this->default_per_page ) )
 			return;

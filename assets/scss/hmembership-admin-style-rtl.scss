@@ -4,6 +4,22 @@
  * hmembership-admin-style-rtl.scss
  */
 .wrap {
+	.hmembership-admin-box {
+
+		/********************/
+		/* dynamic settings */
+		/********************/
+
+		.hmembership-admin-box-content-sortable {
+			.content {
+				.remove-section {
+					left: 15px;
+					right: auto;
+				}
+			}
+		}
+	}
+
 	.submit {
 		.ajax-loading {
 			margin-left: 0;

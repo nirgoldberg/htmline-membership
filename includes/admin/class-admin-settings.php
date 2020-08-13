@@ -113,7 +113,7 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 						'radio'			=> __( 'Radio Button', 'hmembership' ),
 						'checkbox'		=> __( 'Checkbox', 'hmembership' ),
 					),
-					'default'			=> array( 'checkbox' ),
+					'default'			=> array( 'text' ),
 				),
 				array(
 					'uid'				=> 'hmembership_user_custom_field_options',
@@ -163,23 +163,6 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					),
 					'supplimental'		=> __( 'Caution: all data will be removed without any option to restore', 'hmembership' ),
 					'helper'			=> __( '(Default: false)', 'hmembership' ),
-				),
-				array(
-					'uid'				=> 'example',
-					'label'				=> __( 'Example', 'hmembership' ),
-					'label_for'			=> 'example',
-					'tab'				=> 'display',
-					'section'			=> 'ui',
-					'type'				=> 'radio',
-					'options'			=> array(
-						'text'			=> __( 'Text', 'hmembership' ),
-						'textarea'		=> __( 'Textarea', 'hmembership' ),
-						'select'		=> __( 'Select', 'hmembership' ),
-						'multiselect'	=> __( 'Multiselect', 'hmembership' ),
-						'radio'			=> __( 'Radio Button', 'hmembership' ),
-						'checkbox'		=> __( 'Checkbox', 'hmembership' ),
-					),
-					'default'			=> array( 'multiselect' ),
 				),
 			),
 

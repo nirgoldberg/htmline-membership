@@ -24,11 +24,11 @@ class HTMLineMembership_Admin_Select_Field extends HTMLineMembership_Admin_Field
 
 		// vars
 		$index		= $this->field[ 'index' ];
-		$id			= $this->field[ 'uid' ] . ( $this->dynamic ? '_' . $index : '' );
-		$name		= $this->field[ 'uid' ] . ( $this->dynamic ? '[' . ($index-1) . ']' : '' );
+		$id			= $this->field[ 'uid' ] . ( $index ? '_' . $index : '' );
+		$name		= $this->field[ 'uid' ] . ( $index ? '[' . ($index-1) . ']' : '' );
 		$options	= $this->field[ 'options' ];
 		$values		= get_option( $this->field[ 'uid' ] );
-		$value		= $this->dynamic ? $values[ $index-1 ] : $values;
+		$value		= $index ? $values[ $index-1 ] : $values;
 		$default	= isset( $this->field[ 'default' ] ) ? $this->field[ 'default' ] : false;
 		$value		= $value ? $value : $default;
 

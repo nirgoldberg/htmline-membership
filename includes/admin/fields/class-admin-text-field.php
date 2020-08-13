@@ -24,10 +24,10 @@ class HTMLineMembership_Admin_Text_Field extends HTMLineMembership_Admin_Field {
 
 		// vars
 		$index	= $this->field[ 'index' ];
-		$id		= $this->field[ 'uid' ] . ( $this->dynamic ? '_' . $index : '' );
-		$name	= $this->field[ 'uid' ] . ( $this->dynamic ? '[]' : '' );
+		$id		= $this->field[ 'uid' ] . ( $index ? '_' . $index : '' );
+		$name	= $this->field[ 'uid' ] . ( $index ? '[]' : '' );
 		$values	= get_option( $this->field[ 'uid' ] );
-		$value	= $this->dynamic ? $values[ $index-1 ] : $values;
+		$value	= $index ? $values[ $index-1 ] : $values;
 
 		printf( '<input name="%2$s" id="%1$s" type="%3$s" placeholder="%4$s" value="%5$s" />',
 			$id,

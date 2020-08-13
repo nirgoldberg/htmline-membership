@@ -24,10 +24,10 @@ class HTMLineMembership_Admin_Textarea_Field extends HTMLineMembership_Admin_Fie
 
 		// vars
 		$index	= $this->field[ 'index' ];
-		$id		= $this->field[ 'uid' ] . ( $this->dynamic ? '_' . $index : '' );
-		$name	= $this->field[ 'uid' ] . ( $this->dynamic ? '[]' : '' );
+		$id		= $this->field[ 'uid' ] . ( $index ? '_' . $index : '' );
+		$name	= $this->field[ 'uid' ] . ( $index ? '[]' : '' );
 		$values	= get_option( $this->field[ 'uid' ] );
-		$value	= $this->dynamic ? $values[ $index-1 ] : $values;
+		$value	= $index ? $values[ $index-1 ] : $values;
 
 		printf( '<textarea name="%2$s" id="%1$s" placeholder="%3$s" rows="5" cols="50">%4$s</textarea>',
 			$id,

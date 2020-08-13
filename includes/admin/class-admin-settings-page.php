@@ -25,7 +25,7 @@ class HTMLineMembership_Admin_Settings_Page {
 	 *
 	 * @var (array)
 	 */
-	public $settings;
+	protected $settings;
 
 	/**
 	 * Main site indicator
@@ -334,14 +334,16 @@ class HTMLineMembership_Admin_Settings_Page {
 	 */
 	protected function setup_section( $section_id, $options_group_id, $section_slug ) {
 
-		// is section dynamic
+		// is dynamic section
 		$dynamic = $this->is_dynamic_section( $section_slug );
 
 		if ( $dynamic ) {
 
 			// get section count
 			$count = (int) get_option( 'hmembership_section_' . $section_slug, 1 );
+			$count = $count ? $count : 1;
 
+			// setup dynamic sections
 			for ( $i=1 ; $i<=$count ; $i++ ) {
 
 				// setup section
@@ -420,13 +422,14 @@ class HTMLineMembership_Admin_Settings_Page {
 
 				}
 
-				// is section dynamic
+				// is dynamic section
 				$dynamic = $this->is_dynamic_section( $field[ 'section' ] );
 
 				if ( $dynamic ) {
 
 					// get section count
 					$count = (int) get_option( 'hmembership_section_' . $field[ 'section' ], 1 );
+					$count = $count ? $count : 1;
 
 					for ( $i=1 ; $i<=$count ; $i++ ) {
 
@@ -436,6 +439,10 @@ class HTMLineMembership_Admin_Settings_Page {
 
 						// add settings field
 						$this->setup_field( $options_group_id, $section_id . '_' . $i, $field );
+
+						// add actions to update dynamic section count
+						add_action( 'add_option_' . $field[ 'uid' ], 'hmembership_add_dynamic_section_option', 10, 2 );
+						add_action( 'update_option_' . $field[ 'uid' ], 'hmembership_update_dynamic_section_option', 10, 3 );
 
 					}
 
@@ -488,8 +495,6 @@ class HTMLineMembership_Admin_Settings_Page {
 				break;
 
 		}
-
-		$field_args = $field->get_field();
 
 		// add settings field
 		add_settings_field(
@@ -548,7 +553,7 @@ class HTMLineMembership_Admin_Settings_Page {
 	 * @param		$include_subclasses (boolean) Optionally include subclasses in returned set
 	 * @return		(array)
 	 */
-	public static function get_instances( $include_subclasses = false ) {
+	protected static function get_instances( $include_subclasses = false ) {
 
 		// vars
 		$instances = array();

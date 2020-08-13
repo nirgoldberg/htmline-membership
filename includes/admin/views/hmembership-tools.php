@@ -29,7 +29,7 @@ $tabs_to_display = array();
 		if ( ! empty( $tabs ) ) :
 
 			foreach ( $tabs as $tab_slug => $tab ) :
-				if ( $tab[ 'permission' ] ) {
+				if ( is_array( $tab[ 'permission' ] ) && in_array( 'can', $tab[ 'permission' ] ) ) {
 
 					if ( ! $active_tab ) {
 						$active_tab = $tab_slug;

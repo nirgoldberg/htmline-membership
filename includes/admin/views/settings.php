@@ -107,4 +107,20 @@ if ( 'options-general.php' != $parent_slug ) {
 		?>
 	</form>
 
+	<?php
+		/**
+		 * dynamic section template
+		 */
+	?>
+	<div class="hmembership-dynamic-section-template hidden">
+		<div class="content <?php echo $section[ 'type' ]; ?>">
+			<span class="dashicons dashicons-no-alt remove-section" title="<?php _e( 'Remove Field', 'hmembership' ); ?>"></span>
+			<table class="form-table">
+
+				<?php do_settings_fields( $options_group_id, $section_id . '_1' ); ?>
+
+			</table>
+		</div>
+	</div>
+
 </div><!-- #<?php echo $menu_slug; ?> -->

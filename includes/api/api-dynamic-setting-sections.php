@@ -1,6 +1,6 @@
 <?php
 /**
- * Dynamic settings section functions
+ * Dynamic setting sections functions
  *
  * @author		Nir Goldberg
  * @package		includes/api
@@ -10,31 +10,58 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
+ * hmembership_add_dynamic_section_option
+ *
+ * Hook after dynamic section settings option has been added
+ *
+ * @since		1.0.0
+ * @param		$option (string)
+ * @param		$value (mixed)
+ * @return		N/A
+ */
+function hmembership_add_dynamic_section_option( $option, $value ) {
+
+	hmembership_dynamic_section_count( $option, $value );
+
+}
+
+/**
+ * hmembership_update_dynamic_section_option
+ *
+ * Hook after dynamic section settings option has been updated
+ *
+ * @since		1.0.0
+ * @param		$old_value (mixed)
+ * @param		$value (mixed)
+ * @param		$option (string)
+ * @return		N/A
+ */
+function hmembership_update_dynamic_section_option( $old_value, $value, $option ) {
+
+	hmembership_dynamic_section_count( $option, $value );
+
+}
+
+/**
  * hmembership_dynamic_section_count
  *
  * @since		1.0.0
- * @param		N/A
+ * @param		$option (string)
+ * @param		$value (mixed)
  * @return		N/A
  */
-function hmembership_dynamic_section_count() {
+function hmembership_dynamic_section_count( $option, $value ) {
 
-	/**
-	 * Variables
-	 */
-	$options_group_id	= $_REQUEST[ 'options_group_id' ];
-	$nonce				= $_REQUEST[ 'nonce' ];
-	$option				= $_REQUEST[ 'option' ];
-	$count				= $_REQUEST[ 'count' ];
+	// get field args associated with this option
+	$field = HTMLineMembership_Admin_Field::get_field( $option );
 
-	// verify nonce
-	if ( ! $options_group_id || ! $nonce || ! $option || ! $count || ! wp_verify_nonce( $nonce, $options_group_id . '-options' ) )
-		exit;
+	if ( ! $field || ! isset( $field[ 'section' ] ) )
+		return;
 
-	// update section count
-	update_option( $option, $count );
+	// get the number of dynamic sections were updated with this settings field
+	$count = count( (array) $value );
 
-	// die
-	die();
+	// update dynamic section count
+	update_option( 'hmembership_section_' . $field[ 'section' ], $count );
 
 }
-add_action( 'wp_ajax_dynamic_section_count', 'hmembership_dynamic_section_count' );

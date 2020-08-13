@@ -15,7 +15,7 @@ var $ = jQuery,
 		 */
 		var params = {
 
-			rtl:	$('html').attr('dir') && 'rtl' == $('html').attr('dir'),
+			rtl:		$('html').attr('dir') && 'rtl' == $('html').attr('dir'),
 
 		};
 
@@ -36,7 +36,7 @@ var $ = jQuery,
 		/**
 		 * dynamicSettings
 		 *
-		 * Handles dynamic settings sections
+		 * Handles dynamic setting sections
 		 *
 		 * @since		1.0.0
 		 * @param		N/A
@@ -60,6 +60,11 @@ var $ = jQuery,
 			// add section
 			$('.add-section').click(function() {
 				dsAddSection($(this));
+			});
+
+			// remove section
+			sections_wrap.on('click', '.remove-section', function() {
+				dsRemoveSection($(this));
 			});
 
 		};
@@ -153,20 +158,21 @@ var $ = jQuery,
 			// vars
 			var sections_wrap = el.prev(),
 				sections = sections_wrap.children(),
-				currentSection = sections.last(),
-				newSection = currentSection.clone(true);
+				newSection = $('.hmembership-dynamic-section-template').children().clone(true);
 
 			// reset newSection fields
 			dsResetSection(newSection);
 
-			// sort section fields IDs
-			dsSortSectionFields(newSection, sections.length+1);
+			if (!sections_wrap.parent().hasClass('no-sections')) {
+				// sort section fields IDs
+				dsSortSectionFields(newSection, sections.length+1);
+			} else {
+				// remove no sections indication
+				sections_wrap.parent().removeClass('no-sections');
+			}
 
-			// insert newSection
-			newSection.insertAfter(currentSection);
-
-			// updates dynamic section count
-			dsSectionCount(sections_wrap);
+			// expose section
+			newSection.appendTo(sections_wrap);
 
 		};
 
@@ -238,8 +244,8 @@ var $ = jQuery,
 				$(this).closest('tr').children('th').children('label').attr('for', prefix + '_' + index);
 			});
 
-			// select/multiselect/radio/checkbox
-			el.find('select,input[type="radio"],input[type="checkbox"]').each(function() {
+			// select/multiselect/radio/checkbox/hidden
+			el.find('select,input[type="radio"],input[type="checkbox"],input[type="hidden"]').each(function() {
 				// vars
 				var name = $(this).attr('name');
 
@@ -250,41 +256,40 @@ var $ = jQuery,
 
 				// modify name
 				$(this).attr('name', prefix + '[' + (index-1) + ']' + suffix);
-
-				//$(this).prop('checked', true);
 			});
 
 		}
 
 		/**
-		 * dsSectionCount
+		 * dsRemoveSection
 		 *
-		 * Updates dynamic section count
+		 * Removes section
 		 *
 		 * @since		1.0.0
-		 * @param		el (jQuery)
+		 * @param		el (jQuery) Remove Section button
 		 * @return		N/A
 		 */
-		var dsSectionCount = function(el) {
+		var dsRemoveSection = function(el) {
 
 			// vars
-			var options_group_id = el.closest('form').children('input[name="option_page"]').val(),
-				nonce = el.closest('form').children('input[name="_wpnonce"]').val(),
-				option = el.data('section'),
-				count = el.children().length;
+			var currentSection = el.parent(),
+				sections_wrap = currentSection.parent(),
+				sections = sections_wrap.children();
 
-			$.ajax({
-				type: 'post',
-				dataType: 'json',
-				url: _hmembership.ajaxurl,
-				data: {
-					action: 'dynamic_section_count',
-					options_group_id: options_group_id,
-					nonce: nonce,
-					option: option,
-					count: count,
-				},
+			// remove current section
+			currentSection.remove();
+
+			// sort section fields IDs
+			sections = sections_wrap.children();
+
+			sections.each(function(index, section) {
+				dsSortSectionFields($(section), index+1);
 			});
+
+			// maybe no sections indication
+			if (!sections.length) {
+				sections_wrap.parent().addClass('no-sections');
+			}
 
 		};
 

@@ -28,13 +28,6 @@ class HTMLineMembership_Admin_Field {
 	protected $field;
 
 	/**
-	 * Is dynamic section field
-	 *
-	 * @var (bool)
-	 */
-	protected $dynamic;
-
-	/**
 	 * __construct
 	 *
 	 * This function will initialize the admin settings field
@@ -64,8 +57,6 @@ class HTMLineMembership_Admin_Field {
 		 * )
 		 */
 		$this->field = $field;
-
-		$this->dynamic = $this->is_dynamic();
 
 		// store instance
 		self::$_instances[] = $this;
@@ -123,63 +114,32 @@ class HTMLineMembership_Admin_Field {
 	}
 
 	/**
-	 * is_dynamic
-	 *
-	 * This function will check whether field is part of a dynamic section
-	 *
-	 * @since		1.0.0
-	 * @param		N/A
-	 * @return		(bool)
-	 */
-	protected function is_dynamic() {
-
-		/**
-		 * Variables
-		 */
-		$tab			= $this->field[ 'tab' ];
-		$section		= $this->field[ 'section' ];
-		$section_type	= false;
-
-		if ( ! $section )
-			return $section_type;
-
-		// get settings instance
-		$settings = HTMLineMembership_Admin_Settings::get_instances()[0]->settings;
-
-		if	(	$tab &&
-				array_key_exists( $tab, $settings[ 'tabs' ] ) &&
-				array_key_exists( $section, $settings[ 'tabs' ][ $tab ][ 'sections' ] )
-			) {
-
-			$section_type = $settings[ 'tabs' ][ $tab ][ 'sections' ][ $section ][ 'type' ];
-
-		}
-		elseif	(	$section &&
-					array_key_exists( $section, $settings[ 'sections' ] )
-				) {
-
-			$section_type = $settings[ 'sections' ][ $section ][ 'type' ];
-
-		}
-
-		// return
-		return 'dynamic' == $section_type ? true : false;
-
-	}
-
-	/**
 	 * get_field
 	 *
-	 * This function will return the field args
+	 * This function will return field args
 	 *
 	 * @since		1.0.0
-	 * @param		N/A
-	 * @return		(array)
+	 * @param		$field_uid (string)
+	 * @return		(mixed)
 	 */
-	public function get_field() {
+	public static function get_field( $field_uid ) {
+
+		$fields = self::get_instances();
+
+		if ( ! $fields )
+			return false;
+
+		foreach ( $fields as $field ) {
+			if ( $field_uid == $field->field[ 'uid' ] ) {
+
+				// return
+				return $field->field;
+
+			}
+		}
 
 		// return
-		return $this->field;
+		return false;
 
 	}
 

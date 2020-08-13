@@ -102,7 +102,7 @@ if ( 'options-general.php' != $parent_slug ) {
 				}
 			}
 
-			submit_button( 'Save Settings' );
+			submit_button( __( 'Save Settings', 'hmembership' ) );
 
 		?>
 	</form>

@@ -43,7 +43,7 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 						'user_custom_fields'	=> array(
 							'type'				=> 'dynamic',
 							'title'				=> __( 'User Custom fields', 'hmembership' ),
-							'description'		=> 'Custom fields for user registration form',
+							'description'		=> __( 'Custom fields for user registration form', 'hmembership' ),
 						),
 					),
 				),

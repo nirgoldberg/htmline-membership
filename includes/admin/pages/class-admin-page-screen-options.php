@@ -3,7 +3,7 @@
  * Admin page screen options
  *
  * @author		Nir Goldberg
- * @package		includes/admin
+ * @package		includes/admin/pages
  * @version		1.0.0
  */
 

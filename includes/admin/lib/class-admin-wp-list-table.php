@@ -3,7 +3,7 @@
  * Administration API: WP_List_Table class
  *
  * @author		Nir Goldberg
- * @package		includes/admin
+ * @package		includes/admin/lib
  * @version		1.0.0
  */
 

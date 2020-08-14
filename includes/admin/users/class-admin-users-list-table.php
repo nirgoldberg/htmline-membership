@@ -6,7 +6,7 @@
  * in a WordPress-like Admin Table with row actions to perform user meta operations
  *
  * @author		Nir Goldberg
- * @package		includes/admin
+ * @package		includes/admin/users
  * @version		1.0.0
  */
 
@@ -166,9 +166,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	 */
 	public function fetch_table_data() {
 
-		/**
-		 * Variables
-		 */
+		// vars
 		global $wpdb;
 		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
 		$orderby		= ( isset( $_GET[ 'orderby' ] ) ) ? esc_sql( $_GET[ 'orderby' ] ) : 'user_login';

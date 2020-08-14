@@ -152,12 +152,13 @@ class HTMLineMembership {
 		// admin
 		if ( is_admin() ) {
 
-			hmembership_include( 'includes/admin/class-admin.php' );
-			hmembership_include( 'includes/admin/class-admin-page.php' );
-			hmembership_include( 'includes/admin/class-admin-users.php' );
-			hmembership_include( 'includes/admin/class-admin-settings-page.php' );
-			hmembership_include( 'includes/admin/class-admin-settings.php' );
-			hmembership_include( 'includes/admin/class-admin-tools.php' );
+			// admin pages
+			hmembership_include( 'includes/admin/pages/class-admin.php' );
+			hmembership_include( 'includes/admin/pages/class-admin-page.php' );
+			hmembership_include( 'includes/admin/pages/class-admin-users-page.php' );
+			hmembership_include( 'includes/admin/pages/class-admin-settings-page.php' );
+			hmembership_include( 'includes/admin/pages/class-admin-settings.php' );
+			hmembership_include( 'includes/admin/pages/class-admin-tools-page.php' );
 
 		}
 
@@ -360,7 +361,7 @@ class HTMLineMembership {
 	public function hmembership_activate() {
 
 		// create HTMLine Membership users DB table
-		hmembership_user()->create_users_table();
+		hmembership_users_create_db_table();
 
 	}
 

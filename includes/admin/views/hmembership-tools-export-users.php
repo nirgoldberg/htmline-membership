@@ -9,9 +9,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-/**
- * Variables
- */
+// vars
 $nonce = wp_create_nonce( 'export_users' );
 
 ?>

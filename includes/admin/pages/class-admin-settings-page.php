@@ -3,7 +3,7 @@
  * Admin settings page filters, actions, variables and includes
  *
  * @author		Nir Goldberg
- * @package		includes/admin
+ * @package		includes/admin/pages
  * @version		1.0.0
  */
 
@@ -267,7 +267,7 @@ class HTMLineMembership_Admin_Settings_Page {
 		}
 
 		// load view
-		hmembership_get_view( 'settings', $view );
+		hmembership_get_view( 'hmembership-settings', $view );
 
 	}
 

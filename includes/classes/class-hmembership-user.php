@@ -69,8 +69,8 @@ class HTMLineMembership_User {
 		if ( is_admin() ) {
 
 			// classes
-			hmembership_include( 'includes/admin/class-admin-wp-list-table.php' );
-			hmembership_include( 'includes/admin/class-admin-users-list-table.php' );
+			hmembership_include( 'includes/admin/lib/class-admin-wp-list-table.php' );
+			hmembership_include( 'includes/admin/users/class-admin-users-list-table.php' );
 
 		}
 
@@ -90,9 +90,7 @@ class HTMLineMembership_User {
 	 */
 	public function create_users_table() {
 
-		/**
-		 * Variables
-		 */
+		// vars
 		global $wpdb;
 		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
 		$wpdb_collate	= $wpdb->collate;
@@ -127,9 +125,7 @@ class HTMLineMembership_User {
 	 */
 	public function get_users() {
 
-		/**
-		 * Variables
-		 */
+		// vars
 		global $wpdb;
 		$users_table = $wpdb->prefix . HTMLineMembership_USERS_TABLE;
 

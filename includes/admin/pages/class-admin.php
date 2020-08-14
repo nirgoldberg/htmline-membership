@@ -3,7 +3,7 @@
  * Admin menu page filters, actions, variables and includes
  *
  * @author		Nir Goldberg
- * @package		includes/admin
+ * @package		includes/admin/pages
  * @version		1.0.0
  */
 

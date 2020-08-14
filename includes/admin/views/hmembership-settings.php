@@ -72,7 +72,7 @@ if ( 'options-general.php' != $parent_slug ) {
 					$section_id = $active_tab . '-' . $section_slug;
 
 					// load view
-					hmembership_get_view( 'settings-form', array(
+					hmembership_get_view( 'hmembership-settings-form', array(
 						'options_group_id'	=> $options_group_id,
 						'section_id'		=> $section_id,
 						'section_slug'		=> $section_slug,
@@ -92,7 +92,7 @@ if ( 'options-general.php' != $parent_slug ) {
 					$section_id = $section_slug;
 
 					// load view
-					hmembership_get_view( 'settings-form', array(
+					hmembership_get_view( 'hmembership-settings-form', array(
 						'options_group_id'	=> $options_group_id,
 						'section_id'		=> $section_id,
 						'section_slug'		=> $section_slug,

@@ -3,7 +3,7 @@
  * Admin page filters, actions, variables and includes
  *
  * @author		Nir Goldberg
- * @package		includes/admin
+ * @package		includes/admin/pages
  * @version		1.0.0
  */
 
@@ -146,7 +146,7 @@ class HTMLineMembership_Admin_Page {
 	public function screen_options() {
 
 		// classes
-		hmembership_include( 'includes/admin/class-admin-page-screen-options.php' );
+		hmembership_include( 'includes/admin/pages/class-admin-page-screen-options.php' );
 
 	}
 

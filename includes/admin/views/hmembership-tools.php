@@ -12,9 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // extract args
 extract( $args );
 
-/**
- * Variables
- */
+// vars
 $tabs_to_display = array();
 
 ?>
@@ -54,7 +52,7 @@ $tabs_to_display = array();
 			<?php if ( $active_tab ) :
 
 				// load tools view
-				hmembership_get_view( 'tools', array(
+				hmembership_get_view( 'hmembership-tools-content', array(
 					'tabs'			=> $tabs_to_display,
 					'active_tab'	=> $active_tab,
 				) );

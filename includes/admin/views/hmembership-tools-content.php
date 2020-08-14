@@ -21,7 +21,7 @@ extract( $args );
 		<?php
 
 			// load tool view
-			hmembership_get_view( 'tools-' . $active_tab );
+			hmembership_get_view( 'hmembership-tools-' . $active_tab );
 
 		?>
 

@@ -22,7 +22,7 @@ extract( $args );
 
 		<?php
 
-			$users_list_table = hmembership_get_users_list_table();
+			$users_list_table = hmembership_users_get_list_table();
 
 			if ( $users_list_table ) {
 

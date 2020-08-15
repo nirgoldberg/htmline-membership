@@ -64,4 +64,46 @@ class HTMLineMembership_Admin_Radio_Field extends HTMLineMembership_Admin_Field 
 
 	}
 
+	/**
+	 * sanitize
+	 *
+	 * This function will sanitize the field value before saving to DB
+	 *
+	 * @since		1.0.0
+	 * @param		$value (mixed)
+	 * @return		(array)
+	 */
+	public function sanitize( $value ) {
+
+		// vars
+		$output = false;
+
+		// sanitize radio/checkbox
+		// assume select value as string
+		if ( ! empty( $value ) ) {
+			if ( is_array( $value ) ) {
+				foreach ( $value as $key => $val ) {
+
+					if ( is_array( $val ) ) {
+
+						// dynamic section setting
+						foreach ( $val as $k => $v) {
+							$output[ $key ][ $k ] = filter_var( $v, FILTER_SANITIZE_STRING );
+						}
+
+					} else {
+
+						$output[ $key ] = filter_var( $val, FILTER_SANITIZE_STRING );
+
+					}
+
+				}
+			}
+		}
+
+		// return
+		return apply_filters( $this->field[ 'type' ] . '/sanitize', $output, $value );
+
+	}
+
 }

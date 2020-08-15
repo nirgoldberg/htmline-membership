@@ -47,27 +47,27 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 						),
 					),
 				),
-				'display'				=> array(
-					'title'				=> __( 'Display', 'hmembership' ),
-					'sections'			=> array(
-						'ui'					=> array(
-							'type'				=> 'static',
-							'title'				=> __( 'User Interface Settings', 'hmembership' ),
-							'description'		=> '',
-						),
-					),
-				),
 				'permissions'			=> array(
 					'title'				=> __( 'Permissions', 'hmembership' ),
 					'sections'			=> array(
-						'edit'					=> array(
+						'users_management'		=> array(
 							'type'				=> 'static',
-							'title'				=> __( 'Edit Settings', 'hmembership' ),
+							'title'				=> __( 'Users Management Settings', 'hmembership' ),
 							'description'		=> '',
 						),
 						'export'				=> array(
 							'type'				=> 'static',
 							'title'				=> __( 'Export Settings', 'hmembership' ),
+							'description'		=> '',
+						),
+					),
+				),
+				'general'				=> array(
+					'title'				=> __( 'General', 'hmembership' ),
+					'sections'			=> array(
+						'general'				=> array(
+							'type'				=> 'static',
+							'title'				=> __( 'General Settings', 'hmembership' ),
 							'description'		=> '',
 						),
 					),
@@ -107,13 +107,13 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'type'				=> 'select',
 					'options'			=> array(
 						'text'			=> __( 'Text', 'hmembership' ),
+						'email'			=> __( 'Email', 'hmembership' ),
 						'textarea'		=> __( 'Textarea', 'hmembership' ),
 						'select'		=> __( 'Select', 'hmembership' ),
 						'multiselect'	=> __( 'Multiselect', 'hmembership' ),
 						'radio'			=> __( 'Radio Button', 'hmembership' ),
 						'checkbox'		=> __( 'Checkbox', 'hmembership' ),
 					),
-					'default'			=> array( 'text' ),
 				),
 				array(
 					'uid'				=> 'hmembership_user_custom_field_options',
@@ -126,16 +126,12 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 				),
 				array(
 					'uid'				=> 'hmembership_user_custom_field_default',
-					'label'				=> __( 'Field Default', 'hmembership' ),
+					'label'				=> __( 'Default Option', 'hmembership' ),
 					'label_for'			=> 'hmembership_user_custom_field_default',
 					'tab'				=> 'users',
 					'section'			=> 'user_custom_fields',
-					'type'				=> 'radio',
-					'options'			=> array(
-						'black'			=> 'Black',
-						'white'			=> 'White',
-					),
-					'helper'			=> __( '(Default: false)', 'hmembership' ),
+					'type'				=> 'text',
+					'supplimental'		=> __( 'One option name from above options', 'hmembership' ),
 				),
 				array(
 					'uid'				=> 'hmembership_export_users',
@@ -150,6 +146,15 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'default'			=> array( 'can' ),
 					'supplimental'		=> __( 'Check this option to allow exporting of users', 'hmembership' ),
 					'helper'			=> __( '(Default: true)', 'hmembership' ),
+				),
+				array(
+					'uid'				=> 'hmembership_admin_email',
+					'label'				=> __( 'Admin Email Address', 'hmembership' ),
+					'label_for'			=> 'hmembership_admin_email',
+					'tab'				=> 'general',
+					'section'			=> 'general',
+					'type'				=> 'email',
+					'supplimental'		=> __( 'Default: ' . get_option( 'admin_email' ), 'hmembership' ),
 				),
 				array(
 					'uid'				=> 'hmembership_uninstall_remove_data',

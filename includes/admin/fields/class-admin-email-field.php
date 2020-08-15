@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin settings textarea field
+ * Admin settings email field
  *
  * @author		Nir Goldberg
  * @package		includes/admin/fields
@@ -9,12 +9,12 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class HTMLineMembership_Admin_Textarea_Field extends HTMLineMembership_Admin_Field {
+class HTMLineMembership_Admin_Email_Field extends HTMLineMembership_Admin_Field {
 
 	/**
 	 * display_field
 	 *
-	 * This function will display a textarea field
+	 * This function will display an email field
 	 *
 	 * @since		1.0.0
 	 * @param		N/A
@@ -29,7 +29,7 @@ class HTMLineMembership_Admin_Textarea_Field extends HTMLineMembership_Admin_Fie
 		$values	= get_option( $this->field[ 'uid' ] );
 		$value	= $index ? $values[ $index-1 ] : $values;
 
-		printf( '<textarea name="%2$s" id="%1$s" placeholder="%3$s" rows="5" cols="50">%4$s</textarea>',
+		printf( '<input name="%2$s" id="%1$s" type="text" placeholder="%3$s" value="%4$s" />',
 			$id,
 			$name,
 			$this->field[ 'placeholder' ],
@@ -54,7 +54,7 @@ class HTMLineMembership_Admin_Textarea_Field extends HTMLineMembership_Admin_Fie
 		// vars
 		$output = false;
 
-		// sanitize textarea
+		// sanitize email
 		if ( is_array( $value ) ) {
 
 			// dynamic section setting
@@ -62,12 +62,12 @@ class HTMLineMembership_Admin_Textarea_Field extends HTMLineMembership_Admin_Fie
 			$output = array();
 
 			foreach ( $value as $key => $val ) {
-				$output[ $key ] = sanitize_textarea_field( $val );
+				$output[ $key ] = filter_var( $val, FILTER_SANITIZE_EMAIL );
 			}
 
-		} elseif ( ! ( empty( $value ) && '0' !== $value ) ) {
+		} elseif ( ! empty( $value ) ) {
 
-			$output = sanitize_textarea_field( $value );
+			$output = filter_var( $value, FILTER_SANITIZE_EMAIL );
 
 		}
 

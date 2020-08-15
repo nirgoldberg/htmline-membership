@@ -14,6 +14,20 @@ if ( ! class_exists( 'HTMLineMembership_Form' ) ) :
 class HTMLineMembership_Form {
 
 	/**
+	 * Form shortcode
+	 *
+	 * @var (string)
+	 */
+	private $shortcode;
+
+	/**
+	 * Form fields
+	 *
+	 * @var (array)
+	 */
+	private $fields;
+
+	/**
 	 * __construct
 	 *
 	 * A dummy constructor to ensure is only initialized once

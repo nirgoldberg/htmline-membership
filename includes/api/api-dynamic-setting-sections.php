@@ -59,7 +59,7 @@ function hmembership_dynamic_section_count( $option, $value ) {
 		return;
 
 	// get the number of dynamic sections were updated with this settings field
-	$count = count( (array) $value );
+	$count = is_array( $value ) ? count( $value ) : 0;
 
 	// update dynamic section count
 	update_option( 'hmembership_section_' . $field[ 'section' ], $count );

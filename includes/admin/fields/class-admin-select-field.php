@@ -35,8 +35,9 @@ class HTMLineMembership_Admin_Select_Field extends HTMLineMembership_Admin_Field
 		if ( ! empty ( $options ) && is_array( $options ) ) {
 
 			// vars
-			$attributes		= '';
-			$options_markup	= '';
+			$attributes				= '';
+			$options_markup			= '';
+			$hidden_option_markup	= '';
 
 			foreach ( $options as $key => $label ) {
 				$options_markup .=	sprintf( '<option value="%s" %s>%s</option>',
@@ -48,18 +49,64 @@ class HTMLineMembership_Admin_Select_Field extends HTMLineMembership_Admin_Field
 
 			if ( 'multiselect' === $this->field[ 'type' ] ) {
 				$attributes = ' multiple="multiple" ';
+
+				// use a hidden input in order do get an indication for empty selection
+				$hidden_option_markup .= '<input type="hidden" name="' . $name . '[]" value="" />';
 			}
 
-			printf( '<select name="%2$s[]" id="%1$s" %3$s>%4$s</select>',
+			printf( '%5$s<select name="%2$s[]" id="%1$s" %3$s>%4$s</select>',
 				$id,
 				$name,
 				$attributes,
-				$options_markup
+				$options_markup,
+				$hidden_option_markup
 			);
 
 		}
 
 		$this->display_field_meta();
+
+	}
+
+	/**
+	 * sanitize
+	 *
+	 * This function will sanitize the field value before saving to DB
+	 *
+	 * @since		1.0.0
+	 * @param		$value (mixed)
+	 * @return		(array)
+	 */
+	public function sanitize( $value ) {
+
+		// vars
+		$output = false;
+
+		// sanitize select/multiselect
+		// assume select value as string
+		if ( ! empty( $value ) ) {
+			if ( is_array( $value ) ) {
+				foreach ( $value as $key => $val ) {
+
+					if ( is_array( $val ) ) {
+
+						// dynamic section setting
+						foreach ( $val as $k => $v) {
+							$output[ $key ][ $k ] = filter_var( $v, FILTER_SANITIZE_STRING );
+						}
+
+					} else {
+
+						$output[ $key ] = filter_var( $val, FILTER_SANITIZE_STRING );
+
+					}
+
+				}
+			}
+		}
+
+		// return
+		return apply_filters( $this->field[ 'type' ] . '/sanitize', $output, $value );
 
 	}
 

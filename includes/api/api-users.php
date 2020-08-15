@@ -25,6 +25,22 @@ function hmembership_users_create_db_table() {
 }
 
 /**
+ * hmembership_users_get_users
+ *
+ * Alias of hmembership_user()->get_users()
+ *
+ * @since		1.0.0
+ * @param		N/A
+ * @return		(array)
+ */
+function hmembership_users_get_users() {
+
+	// return
+	return hmembership_user()->get_users();
+
+}
+
+/**
  * hmembership_users_get_list_table
  *
  * This function will return the HTMLineMembership_Users_List_Table object found in the hmembership_admin_users object

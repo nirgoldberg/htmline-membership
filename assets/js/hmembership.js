@@ -191,7 +191,7 @@ var $ = jQuery,
 			el.find('input[type="text"],input[type="password"],input[type="number"],textarea').val('');
 
 			// select/multiselect
-			el.find('select').prop('selectedIndex', 0);
+			el.find('select').children().removeAttr('selected');
 
 			// radio/checkbox
 			el.find('input[type="radio"],input[type="checkbox"]').removeAttr('checked');

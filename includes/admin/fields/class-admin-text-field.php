@@ -55,8 +55,8 @@ class HTMLineMembership_Admin_Text_Field extends HTMLineMembership_Admin_Field {
 		// vars
 		$output = false;
 
-		// sanitize text
-		if ( 'text' == $this->field[ 'type' ] ) {
+		// sanitize text/number
+		if ( 'password' != $this->field[ 'type' ] ) {
 
 			if ( is_array( $value ) ) {
 
@@ -65,14 +65,27 @@ class HTMLineMembership_Admin_Text_Field extends HTMLineMembership_Admin_Field {
 				$output = array();
 
 				foreach ( $value as $key => $val ) {
-					$output[ $key ] = sanitize_text_field( $val );
+					if ( 'text' == $this->field[ 'type' ] ) {
+						$output[ $key ] = sanitize_text_field( $val );
+					} else {
+						$output[ $key ] = is_numeric( $val ) ? $val : '';
+					}
 				}
 
 			} elseif ( ! ( empty( $value ) && '0' !== $value ) ) {
 
-				$output = sanitize_text_field( $value );
+				if ( 'text' == $this->field[ 'type' ] ) {
+					$output = sanitize_text_field( $value );
+				} else {
+					$output = is_numeric( $value ) ? $value : '';
+				}
 
 			}
+
+		} elseif ( ! empty( $value ) ) {
+
+			// password
+			$output = $value;
 
 		}
 

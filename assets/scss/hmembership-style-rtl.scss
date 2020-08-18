@@ -5,14 +5,16 @@
  */
 .wrap {
 	.wp-list-table.hmembership-users {
-		.column-user_info {
-			.expand {
-				float: right;
-			}
+		td {
+			&.column-user_info {
+				.expand {
+					float: right;
+				}
 
-			.content {
-				margin-left: 0;
-				margin-right: 30px;
+				.content {
+					margin-left: 0;
+					margin-right: 30px;
+				}
 			}
 		}
 	}

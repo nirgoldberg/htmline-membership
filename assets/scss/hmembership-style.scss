@@ -5,13 +5,42 @@
  */
 .wrap {
 	.wp-list-table.hmembership-users {
-		.column-user_info {
-			.expand {
-				float: left;
-				cursor: pointer;
+		td {
+			&.column-user_info {
+				.expand {
+					float: left;
+					cursor: pointer;
 
-				.dashicons {
+					.dashicons {
+						display: none;
+
+						&.open {
+							display: block;
+						}
+					}
+				}
+
+				.content {
+					margin-left: 30px;
 					display: none;
+
+					ul {
+						&:first-child {
+							margin-top: 0;
+						}
+
+						&:last-child {
+							margin-bottom: 0;
+						}
+
+						li {
+							margin-bottom: 5px;
+						}
+					}
+
+					h4 {
+						text-decoration: underline;
+					}
 
 					&.open {
 						display: block;
@@ -19,30 +48,16 @@
 				}
 			}
 
-			.content {
-				margin-left: 30px;
-				display: none;
+			&.column-user_status {
+				span {
+					padding: 3px;
+					color: white;
+					border-radius: 3px;
 
-				ul {
-					&:first-child {
-						margin-top: 0;
-					}
-
-					&:last-child {
-						margin-bottom: 0;
-					}
-
-					li {
-						margin-bottom: 5px;
-					}
-				}
-
-				h4 {
-					text-decoration: underline;
-				}
-
-				&.open {
-					display: block;
+					&.pending { background-color: $info-color; }
+					&.approved { background-color: $success-color; }
+					&.declined { background-color: $warning-color; }
+					&.deleted { background-color: $error-color; }
 				}
 			}
 		}

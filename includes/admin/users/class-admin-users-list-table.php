@@ -3,7 +3,7 @@
  * HTMLineMembership_Users_List_Table
  *
  * Class for displaying registered HTMLine Membership users
- * in a WordPress-like Admin Table with row actions to perform user meta operations
+ * in a WordPress-like Admin Table with row actions to perform user operations
  *
  * @author		Nir Goldberg
  * @package		includes/admin/users
@@ -36,7 +36,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	/**
 	 * prepare_items
 	 *
-	 * This function prepares the list of items for displaying
+	 * This function will prepare the list of items for displaying
 	 * Query, filter data, handle sorting, pagination and any other data manipulation required prior to rendering
 	 *
 	 * @since		1.0.0
@@ -65,6 +65,9 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		$users_per_page = $this->get_items_per_page( 'hmembership_users_per_page' );
 		$table_page = $this->get_pagenum();
 
+		// filter views
+		$this->views();
+
 		// provide the ordered data to the List Table
 		// we need to manually slice the data based on the current pagination
 		$this->items = array_slice( $table_data, ( ( $table_page - 1 ) * $users_per_page ), $users_per_page );
@@ -82,7 +85,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	/**
 	 * get_columns
 	 *
-	 * This function returns an array of columns
+	 * This function will return an array of columns
 	 *
 	 * @since		1.0.0
 	 * @param		N/A
@@ -99,14 +102,14 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		);
 
 		// return
-		return apply_filters( 'hmembership_user_list_table_columns', $table_columns );
+		return apply_filters( 'hmembership_users_list_table_columns', $table_columns );
 
 	}
 
 	/**
 	 * get_sortable_columns
 	 *
-	 * This function returns an array of sortable columns
+	 * This function will return an array of sortable columns
 	 *
 	 * The format is:
 	 * 'internal-name' => 'orderby'
@@ -122,11 +125,8 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	protected function get_sortable_columns() {
 
 		/**
-		 * actual sorting still needs to be done by prepare_items.
-		 * specify which columns should have the sort icon.
-		 *
-		 * key => value
-		 * column name_in_list_table => columnname in the db
+		 * actual sorting still needs to be done by prepare_items
+		 * specify which columns should have the sort icon
 		 */
 		$sortable_columns = array (
 			'user_email'		=> 'user_email',
@@ -135,14 +135,14 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		);
 
 		// return
-		return apply_filters( 'hmembership_user_list_table_sortable_columns', $sortable_columns );
+		return apply_filters( 'hmembership_users_list_table_sortable_columns', $sortable_columns );
 
 	}
 
 	/**
 	 * no_items
 	 *
-	 * Text displayed when no user data is available
+	 * This function will echo text displayed when no user data is available
 	 *
 	 * @since		1.0.0
 	 * @param		N/A
@@ -155,9 +155,116 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	}
 
 	/**
+	 * get_views
+	 *
+	 * This function will get the list of views available on this table
+	 *
+	 * @since		1.0.0
+	 * @param		N/A
+	 * @return		(array)
+	 */
+	protected function get_views() {
+
+		// vars
+		global $wpdb;
+		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+		$admin_page_url	= admin_url( 'admin.php' );
+		$page			= wp_unslash( $_REQUEST[ 'page' ] );
+		$status			= isset( $_REQUEST[ 'status' ] ) ? $_REQUEST[ 'status' ] : 'all';
+		$views			= array();
+
+		// get status counts
+		$sql			= "SELECT user_status, count(*) as count FROM $users_table GROUP BY user_status";
+		$counts			= $wpdb->get_results( $wpdb->prepare( $sql ), ARRAY_A );
+		$counts_arr		= array();
+
+		if ( ! $counts || ! is_array( $counts ) )
+			return;
+
+		foreach ( $counts as $count ) {
+			$counts_arr[ $count[ 'user_status' ] ] = $count[ 'count' ];
+		}
+
+		// all
+		$query_args_all = array(
+			'page'		=> $page,
+		);
+		$class = 'all' == $status ? 'class="current"' : '';
+		$all_url = esc_url( add_query_arg( $query_args_all, $admin_page_url ) );
+		$views[ 'all' ] =	'<a href="' . $all_url . '" ' . $class . '>' . __( 'All', 'hmembership' ) .
+								'<span class="count"> (' . array_sum( $counts_arr ) . ')</span>' .
+							'</a>';
+
+
+		// pending
+		if ( array_key_exists( '0', $counts_arr ) ) {
+
+			$query_args_pending = array(
+				'page'		=> $page,
+				'status'	=> '0',
+			);
+			$class = '0' == $status ? 'class="current"' : '';
+			$pending_url = esc_url( add_query_arg( $query_args_pending, $admin_page_url ) );
+			$views[ 'pending' ] =	'<a href="' . $pending_url . '" ' . $class . '>' . __( 'Pending', 'hmembership' ) .
+										'<span class="count"> (' . $counts_arr['0'] . ')</span>' .
+									'</a>';
+
+		}
+
+		// approved
+		if ( array_key_exists( '1', $counts_arr ) ) {
+
+			$query_args_approved = array(
+				'page'		=> $page,
+				'status'	=> '1',
+			);
+			$class = '1' == $status ? 'class="current"' : '';
+			$approved_url = esc_url( add_query_arg( $query_args_approved, $admin_page_url ) );
+			$views[ 'approved' ] =	'<a href="' . $approved_url . '" ' . $class . '>' . __( 'Approved', 'hmembership' ) .
+										'<span class="count"> (' . $counts_arr['1'] . ')</span>' .
+									'</a>';
+
+		}
+
+		// declined
+		if ( array_key_exists( '2', $counts_arr ) ) {
+
+			$query_args_declined = array(
+				'page'		=> $page,
+				'status'	=> '2',
+			);
+			$class = '2' == $status ? 'class="current"' : '';
+			$declined_url = esc_url( add_query_arg( $query_args_declined, $admin_page_url ) );
+			$views[ 'declined' ] =	'<a href="' . $declined_url . '" ' . $class . '>' . __( 'Declined', 'hmembership' ) .
+										'<span class="count"> (' . $counts_arr['2'] . ')</span>' .
+									'</a>';
+
+		}
+
+		// deleted
+		if ( array_key_exists( '3', $counts_arr ) ) {
+
+			$query_args_deleted = array(
+				'page'		=> $page,
+				'status'	=> '3',
+			);
+			$class = '3' == $status ? 'class="current"' : '';
+			$deleted_url = esc_url( add_query_arg( $query_args_deleted, $admin_page_url ) );
+			$views[ 'deleted' ] =	'<a href="' . $deleted_url . '" ' . $class . '>' . __( 'Deleted', 'hmembership' ) .
+										'<span class="count"> (' . $counts_arr['3'] . ')</span>' .
+									'</a>';
+
+		}
+
+		// return
+		return apply_filters( 'hmembership_users_list_table_views', $views );
+
+	}
+
+	/**
 	 * fetch_table_data
 	 *
-	 * This function fetches table data from the WordPress database
+	 * This function will fetch table data from the WordPress database
 	 *
 	 * @since		1.0.0
 	 * @param		N/A
@@ -168,25 +275,27 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		// vars
 		global $wpdb;
 		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+		$where			= ( isset( $_GET[ 'status' ] ) ) ? 'WHERE user_status = ' . $_GET[ 'status' ] : '';
 		$orderby		= ( isset( $_GET[ 'orderby' ] ) ) ? esc_sql( $_GET[ 'orderby' ] ) : 'user_registered';
 		$order			= ( isset( $_GET[ 'order' ] ) ) ? esc_sql( $_GET[ 'order' ] ) : 'DESC';
 
 		$sql =
 			"SELECT ID, user_email, user_registered, user_info, user_status
-			FROM $users_table ORDER BY $orderby $order";
+			FROM $users_table
+			$where ORDER BY $orderby $order";
 
 		// query output_type will be an associative array with ARRAY_A.
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
-		// return result array to prepare_items.
-		return apply_filters( 'hmembership_user_list_table_data', $results );
+		// return
+		return apply_filters( 'hmembership_users_list_table_data', $results );
 
 	}
 
 	/**
 	 * filter_table_data
 	 *
-	 * This function filters the table data based on the user search key
+	 * This function will filter the table data based on the user search key
 	 *
 	 * @since		1.0.0
 	 * @param		$table_data (array)
@@ -206,21 +315,21 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		} ) );
 
 		// return
-		return $filtered_table_data;
+		return apply_filters( 'hmembership_users_list_table_filtered_data', $filtered_table_data, $table_data, $search_key );
 
 	}
 
 	/**
 	 * column_default
 	 *
-	 * This function renders a column when no column specific method exists
+	 * This function will render a column when no column specific method exists
 	 *
 	 * @since		1.0.0
 	 * @param		$item (array)
 	 * @param		$column_name (string)
 	 * @return		(mixed)
 	 */
-	public function column_default( $item, $column_name ) {
+	protected function column_default( $item, $column_name ) {
 
 		switch ( $column_name ) {
 
@@ -237,10 +346,10 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	/**
 	 * column_cb
 	 *
-	 * This function gets value for checkbox column
+	 * This function will render the cb column
 	 *
 	 * @since		1.0.0
-	 * @param		$item (object) A row's data
+	 * @param		$item (object) Row's data
 	 * @return		(string)
 	 */
 	protected function column_cb( $item ) {
@@ -256,26 +365,23 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	/**
 	 * column_user_email
 	 *
-	 * This function renders the user_email column
+	 * This function will render the user_email column
 	 * Adds row action links to the user_email column
 	 *
 	 * @since		1.0.0
-	 * @param		$item (object) A singular item (one full row's worth of data)
+	 * @param		$item (object) Row's data
 	 * @return		(string)
 	 */
 	protected function column_user_email( $item ) {
 
-		/**
-		 * Build usermeta row actions
-		 *
-		 * e.g. /admin.php?page=hmembership-users&action=approve_user&hmembership_user_id=1&_wpnonce=1984253e5e
-		 */
-
+		// vars
 		$admin_page_url = admin_url( 'admin.php' );
+		$page			= wp_unslash( $_REQUEST[ 'page' ] );
+		$actions		= array();
 
-		// row action to approve user
+		// approve action
 		$query_args_approve_user = array(
-			'page'					=>  wp_unslash( $_REQUEST[ 'page' ] ),
+			'page'					=> $page,
 			'action'				=> 'approve_user',
 			'hmembership_user_id'	=> absint( $item[ 'ID' ] ),
 			'_wpnonce'				=> wp_create_nonce( 'approve_user_nonce' ),
@@ -283,9 +389,9 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		$approve_user_link = esc_url( add_query_arg( $query_args_approve_user, $admin_page_url ) );
 		$actions[ 'approve_user' ] = '<a href="' . $approve_user_link . '">' . __( 'Approve', 'hmembership' ) . '</a>';
 
-		// row action to decline user
+		// decline action
 		$query_args_decline_user = array(
-			'page'					=>  wp_unslash( $_REQUEST[ 'page' ] ),
+			'page'					=> $page,
 			'action'				=> 'decline_user',
 			'hmembership_user_id'	=> absint( $item[ 'ID' ] ),
 			'_wpnonce'				=> wp_create_nonce( 'decline_user_nonce' ),
@@ -293,9 +399,9 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		$decline_user_link = esc_url( add_query_arg( $query_args_decline_user, $admin_page_url ) );
 		$actions[ 'decline_user' ] = '<a href="' . $decline_user_link . '">' . __( 'Decline', 'hmembership' ) . '</a>';
 
-		// row action to delete user
+		// delete action
 		$query_args_delete_user = array(
-			'page'					=>  wp_unslash( $_REQUEST[ 'page' ] ),
+			'page'					=> $page,
 			'action'				=> 'delete_user',
 			'hmembership_user_id'	=> absint( $item[ 'ID' ] ),
 			'_wpnonce'				=> wp_create_nonce( 'delete_user_nonce' ),
@@ -306,22 +412,22 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		$row_value = '<strong><a href="mailto:' . $item[ 'user_email' ] . '">' . $item[ 'user_email' ] . '</a></strong>';
 
 		// return
-		return $row_value . $this->row_actions( $actions );
+		return apply_filters( 'hmembership_users_list_table_column_user_email', $row_value, $item ) . $this->row_actions( $actions );
 
 	}
 
 	/**
 	 * column_user_info
 	 *
-	 * This function renders the user_info column
+	 * This function will render the user_info column
 	 *
 	 * @since		1.0.0
-	 * @param		$item (object)
+	 * @param		$item (object) Row's data
 	 * @return		(string)
 	 */
 	protected function column_user_info( $item ) {
 
-		// var
+		// vars
 		$fields			= HTMLineMembership_Form::get_fields();
 		$info			= unserialize( $item[ 'user_info' ] );
 		$current_info	= array();
@@ -382,27 +488,61 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 
 		}
 
-		$output =	'<div class="expand">
-						<span class="dashicons dashicons-plus-alt2 open"></span>
-						<span class="dashicons dashicons-minus"></span>
-					</div>
-					<div class="content">' . $output . '</div>';
+		if ( $current_info || $old_info ) {
+
+			$output =	'<div class="expand">
+							<span class="dashicons dashicons-plus-alt2 open"></span>
+							<span class="dashicons dashicons-minus"></span>
+						</div>
+						<div class="content">' . $output . '</div>';
+
+		}
 
 		// return
-		return $output;
+		return apply_filters( 'hmembership_users_list_table_column_user_info', $output, $item );
+
+	}
+
+	/**
+	 * column_user_status
+	 *
+	 * This function renders the user_status column
+	 *
+	 * @since		1.0.0
+	 * @param		$item (object) Row's data
+	 * @return		(string)
+	 */
+	protected function column_user_status( $item ) {
+
+		// vars
+		$output = str_replace(
+
+			array( '0', '1', '2', '3' ),
+			array(
+				'<span class="pending">' . __( 'Pending', 'hmembership' ) . '</span>',
+				'<span class="approved">' . __( 'Approved', 'hmembership' ) . '</span>',
+				'<span class="declined">' . __( 'Declined', 'hmembership' ) . '</span>',
+				'<span class="deleted">' . __( 'Deleted', 'hmembership' ) . '</span>',
+			),
+			$item[ 'user_status' ]
+
+		);
+
+		// return
+		return apply_filters( 'hmembership_users_list_table_column_user_status', $output, $item );
 
 	}
 
 	/**
 	 * get_bulk_actions
 	 *
-	 * This function returns an associative array containing the bulk action
+	 * This function will return an associative array containing the bulk actions
 	 *
 	 * @since		1.0.0
 	 * @param		N/A
 	 * @return		(array)
 	 */
-	public function get_bulk_actions() {
+	protected function get_bulk_actions() {
 
 		/**
 		 * on hitting apply in bulk actions the url params are set as
@@ -417,14 +557,14 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		);
 
 		// return
-		return $actions;
+		return apply_filters( 'hmembership_users_list_table_bulk_actions', $actions );
 
 	}
 
 	/**
 	 * handle_table_actions
 	 *
-	 * This function processes actions triggered by the user
+	 * This function will process actions triggered by the user
 	 *
 	 * @since		1.0.0
 	 * @param		N/A
@@ -550,59 +690,61 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	/**
 	 * page_approve_user
 	 *
-	 * This function
-	 *
 	 * @since		1.0.0
-	 * @param		$user_id (int)
+	 * @param		$user_id (int) HTMLine Membership user ID
 	 * @return		N/A
 	 */
+	public function page_approve_user( $user_id ) {}
 
 	/**
-	 * View a user's meta information.
+	 * page_decline_user
 	 *
-	 * @since   1.0.0
-	 *
-	 * @param int $user_id  user's ID
+	 * @since		1.0.0
+	 * @param		$user_id (int) HTMLine Membership user ID
+	 * @return		N/A
 	 */
-	public function page_view_usermeta( $user_id ) {
-
-		$user = get_user_by( 'id', $user_id );
-		include_once( 'views/partials-wp-list-table-demo-view-usermeta.php' );
-
-	}
+	public function page_decline_user( $user_id ) {}
 
 	/**
-	 * Add a meta information for a user.
+	 * page_delete_user
 	 *
-	 * @since   1.0.0
-	 *
-	 * @param int $user_id  user's ID
+	 * @since		1.0.0
+	 * @param		$user_id (int) HTMLine Membership user ID
+	 * @return		N/A
 	 */
-
-	public function page_add_usermeta( $user_id ) {
-
-		$user = get_user_by( 'id', $user_id );
-		include_once( 'views/partials-wp-list-table-demo-add-usermeta.php' );
-
-	}
+	public function page_delete_user( $user_id ) {}
 
 	/**
-	 * Bulk process users.
+	 * page_bulk_approve
 	 *
-	 * @since   1.0.0
-	 *
-	 * @param array $bulk_user_ids
+	 * @since		1.0.0
+	 * @param		$user_ids (array) HTMLine Membership user IDs
+	 * @return		N/A
 	 */
-	public function page_bulk_download( $bulk_user_ids ) {
+	public function page_bulk_approve( $user_id ) {}
 
-		include_once( 'views/partials-wp-list-table-demo-bulk-download.php' );
+	/**
+	 * page_bulk_decline
+	 *
+	 * @since		1.0.0
+	 * @param		$user_ids (array) HTMLine Membership user IDs
+	 * @return		N/A
+	 */
+	public function page_bulk_decline( $user_id ) {}
 
-	}
+	/**
+	 * page_bulk_delete
+	 *
+	 * @since		1.0.0
+	 * @param		$user_ids (array) HTMLine Membership user IDs
+	 * @return		N/A
+	 */
+	public function page_bulk_delete( $user_id ) {}
 
 	/**
 	 * graceful_exit
 	 *
-	 * This function stops execution and exits
+	 * This function will stop execution and exit
 	 *
 	 * @since		1.0.0
 	 * @param		N/A
@@ -617,7 +759,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	/**
 	 * invalid_nonce_redirect
 	 *
-	 * This function dies when the nonce check fails
+	 * This function will die when the nonce check fails
 	 *
 	 * @since		1.0.0
 	 * @param		N/A

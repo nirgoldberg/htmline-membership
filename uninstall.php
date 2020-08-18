@@ -29,7 +29,7 @@ if ( $sites ) {
 
 		$remove_data = get_blog_option( $site_id, 'hmembership_uninstall_remove_data' );
 
-		if ( $remove_data && in_array( 'remove', $remove_data ) ) {
+		if ( $remove_data && in_array( 'true', $remove_data ) ) {
 
 			// remove plugin data
 			hmembership_remove_data( $site_id, $options );

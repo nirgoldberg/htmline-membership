@@ -1,9 +1,31 @@
-@import "hmembership-admin-params";
+@import "hmembership-params";
 
 /**
- * hmembership-admin-style.scss
+ * hmembership-style.scss
  */
 .wrap {
+	.wp-list-table.hmembership-users {
+		.column-user_info {
+			ul {
+				&:first-child {
+					margin-top: 0;
+				}
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+
+				li {
+					margin-bottom: 5px;
+				}
+			}
+
+			h4 {
+				text-decoration: underline;
+			}
+		}
+	}
+
 	.hmembership-admin-box {
 		position: relative;
 		margin: 20px 0;

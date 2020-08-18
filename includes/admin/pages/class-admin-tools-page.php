@@ -38,7 +38,7 @@ class HTMLineMembership_Admin_Tools extends HTMLineMembership_Admin_Page {
 			'tabs'				=> array(
 				'export-users'	=> array(
 					'title'			=> __( 'Export Users', 'hmembership' ),
-					'permission'	=> get_option( 'hmembership_export_users', array( 'can' ) ),
+					'permission'	=> get_option( 'hmembership_export_users', array( 'true' ) ),
 				),
 			),
 			'active_tab'		=> '',

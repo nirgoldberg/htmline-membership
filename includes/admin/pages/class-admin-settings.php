@@ -40,9 +40,14 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 				'users'					=> array(
 					'title'				=> __( 'Users', 'hmembership' ),
 					'sections'			=> array(
+						'registration_form'		=> array(
+							'type'				=> 'static',
+							'title'				=> __( 'Registration Form', 'hmembership' ),
+							'description'		=> '',
+						),
 						'user_custom_fields'	=> array(
 							'type'				=> 'dynamic',
-							'title'				=> __( 'User Custom fields', 'hmembership' ),
+							'title'				=> __( 'User Custom Fields', 'hmembership' ),
 							'description'		=> __( 'Custom fields for user registration form', 'hmembership' ),
 						),
 					),
@@ -91,6 +96,30 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 			// fields
 			'fields'				=> array(
 				array(
+					'uid'				=> 'hmembership_user_registration_form_status',
+					'label'				=> __( 'Status', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_registration_form_status',
+					'tab'				=> 'users',
+					'section'			=> 'registration_form',
+					'type'				=> 'checkbox',
+					'options'			=> array(
+						'true'			=> 'Active',
+					),
+					'default'			=> array( 'true' ),
+					'helper'			=> sprintf( __( '(Default: %s)', 'hmembership' ), __( 'active', 'hmembership' ) ),
+				),
+				array(
+					'uid'				=> 'hmembership_user_email_field_label',
+					'label'				=> __( 'User Email Field Label', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_email_field_label',
+					'tab'				=> 'users',
+					'section'			=> 'registration_form',
+					'type'				=> 'text',
+					'placeholder'		=> __( 'Email Address', 'hmembership' ),
+					'supplimental'		=> __( 'This field is used as the user identification', 'hmembership' ),
+					'helper'			=> sprintf( __( '(Default: %s)', 'hmembership' ), __( 'Email Address', 'hmembership' ) ),
+				),
+				array(
 					'uid'				=> 'hmembership_user_custom_field_label',
 					'label'				=> __( 'Field Label', 'hmembership' ),
 					'label_for'			=> 'hmembership_user_custom_field_label',
@@ -134,18 +163,29 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'supplimental'		=> __( 'One option name from above options', 'hmembership' ),
 				),
 				array(
+					'uid'				=> 'hmembership_user_custom_field_required',
+					'label'				=> __( 'Required Field', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_custom_field_required',
+					'tab'				=> 'users',
+					'section'			=> 'user_custom_fields',
+					'type'				=> 'checkbox',
+					'options'			=> array(
+						'true'			=> '',
+					),
+				),
+				array(
 					'uid'				=> 'hmembership_export_users',
-					'label'				=> __( 'Export users', 'hmembership' ),
+					'label'				=> __( 'Export Users', 'hmembership' ),
 					'label_for'			=> 'hmembership_export_users',
 					'tab'				=> 'permissions',
 					'section'			=> 'export',
 					'type'				=> 'checkbox',
 					'options'			=> array(
-						'can'			=> '',
+						'true'			=> '',
 					),
-					'default'			=> array( 'can' ),
+					'default'			=> array( 'true' ),
 					'supplimental'		=> __( 'Check this option to allow exporting of users', 'hmembership' ),
-					'helper'			=> __( '(Default: true)', 'hmembership' ),
+					'helper'			=> sprintf( __( '(Default: %s)', 'hmembership' ), __( 'true', 'hmembership' ) ),
 				),
 				array(
 					'uid'				=> 'hmembership_admin_email',
@@ -154,20 +194,21 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'tab'				=> 'general',
 					'section'			=> 'general',
 					'type'				=> 'email',
-					'supplimental'		=> __( 'Default: ' . get_option( 'admin_email' ), 'hmembership' ),
+					'placeholder'		=> get_option( 'admin_email' ),
+					'supplimental'		=> sprintf( __( 'Default: %s', 'hmembership' ), get_option( 'admin_email' ) ),
 				),
 				array(
 					'uid'				=> 'hmembership_uninstall_remove_data',
-					'label'				=> __( 'Remove data on uninstall', 'hmembership' ),
+					'label'				=> __( 'Remove Data on Uninstall', 'hmembership' ),
 					'label_for'			=> 'hmembership_uninstall_remove_data',
 					'tab'				=> 'uninstall',
 					'section'			=> 'uninstall',
 					'type'				=> 'checkbox',
 					'options'			=> array(
-						'remove'		=> '',
+						'true'		=> '',
 					),
 					'supplimental'		=> __( 'Caution: all data will be removed without any option to restore', 'hmembership' ),
-					'helper'			=> __( '(Default: false)', 'hmembership' ),
+					'helper'			=> sprintf( __( '(Default: %s)', 'hmembership' ), __( 'false', 'hmembership' ) ),
 				),
 			),
 

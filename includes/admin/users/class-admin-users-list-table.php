@@ -92,9 +92,9 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 
 		$table_columns = array(
 			'cb'				=> '<input type="checkbox" />',
-			'user_login'		=> __( 'Username', 'hmembership' ),
-			'user_email'		=> __( 'Email', 'hmembership' ),
-			'user_registered'	=> _x( 'Registered On', 'column name', 'hmembership' ),
+			'user_email'		=> __( 'User Email', 'hmembership' ),
+			'user_registered'	=> __( 'Registered On', 'hmembership' ),
+			'user_info'			=> __( 'User Info', 'hmembership' ),
 			'user_status'		=> __( 'Status', 'hmembership' ),
 		);
 
@@ -129,7 +129,6 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		 * column name_in_list_table => columnname in the db
 		 */
 		$sortable_columns = array (
-			'user_login'		=> 'user_login',
 			'user_email'		=> 'user_email',
 			'user_registered'	=> 'user_registered',
 			'user_status'		=> 'user_status',
@@ -169,11 +168,11 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		// vars
 		global $wpdb;
 		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
-		$orderby		= ( isset( $_GET[ 'orderby' ] ) ) ? esc_sql( $_GET[ 'orderby' ] ) : 'user_login';
-		$order			= ( isset( $_GET[ 'order' ] ) ) ? esc_sql( $_GET[ 'order' ] ) : 'ASC';
+		$orderby		= ( isset( $_GET[ 'orderby' ] ) ) ? esc_sql( $_GET[ 'orderby' ] ) : 'user_registered';
+		$order			= ( isset( $_GET[ 'order' ] ) ) ? esc_sql( $_GET[ 'order' ] ) : 'DESC';
 
 		$sql =
-			"SELECT ID, user_login, user_email, user_registered, user_status
+			"SELECT ID, user_email, user_registered, user_info, user_status
 			FROM $users_table ORDER BY $orderby $order";
 
 		// query output_type will be an associative array with ARRAY_A.
@@ -223,8 +222,15 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	 */
 	public function column_default( $item, $column_name ) {
 
-		// return
-		return $item[ $column_name ];
+		switch ( $column_name ) {
+
+			case 'user_registered':
+				return $item[$column_name];
+
+			default:
+				return $item[$column_name];
+
+		}
 
 	}
 
@@ -241,23 +247,23 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 
 		// return
 		return sprintf(
-			'<label class="screen-reader-text" for="hmembership_user_' . $item[ 'ID' ] . '">' . sprintf( __( 'Select %s' ), $item[ 'user_login' ] ) . '</label>' .
+			'<label class="screen-reader-text" for="hmembership_user_' . $item[ 'ID' ] . '">' . sprintf( __( 'Select %s' ), $item[ 'user_email' ] ) . '</label>' .
 			"<input type='checkbox' name='hmembership_users[]' id='hmembership_user_{$item[ 'ID' ]}' value='{$item[ 'ID' ]}' />"
 		);
 
 	}
 
 	/**
-	 * column_user_login
+	 * column_user_email
 	 *
-	 * This function renders the user_login column
-	 * Adds row action links to the user_login column
+	 * This function renders the user_email column
+	 * Adds row action links to the user_email column
 	 *
 	 * @since		1.0.0
 	 * @param		$item (object) A singular item (one full row's worth of data)
 	 * @return		(string)
 	 */
-	protected function column_user_login( $item ) {
+	protected function column_user_email( $item ) {
 
 		/**
 		 * Build usermeta row actions
@@ -287,10 +293,97 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		$decline_user_link = esc_url( add_query_arg( $query_args_decline_user, $admin_page_url ) );
 		$actions[ 'decline_user' ] = '<a href="' . $decline_user_link . '">' . __( 'Decline', 'hmembership' ) . '</a>';
 
-		$row_value = '<strong>' . $item[ 'user_login' ] . '</strong>';
+		// row action to delete user
+		$query_args_delete_user = array(
+			'page'					=>  wp_unslash( $_REQUEST[ 'page' ] ),
+			'action'				=> 'delete_user',
+			'hmembership_user_id'	=> absint( $item[ 'ID' ] ),
+			'_wpnonce'				=> wp_create_nonce( 'delete_user_nonce' ),
+		);
+		$delete_user_link = esc_url( add_query_arg( $query_args_delete_user, $admin_page_url ) );
+		$actions[ 'delete_user' ] = '<a href="' . $delete_user_link . '">' . __( 'Delete', 'hmembership' ) . '</a>';
+
+		$row_value = '<strong><a href="mailto:' . $item[ 'user_email' ] . '">' . $item[ 'user_email' ] . '</a></strong>';
 
 		// return
 		return $row_value . $this->row_actions( $actions );
+
+	}
+
+	/**
+	 * column_user_info
+	 *
+	 * This function renders the user_info column
+	 *
+	 * @since		1.0.0
+	 * @param		$item (object)
+	 * @return		(string)
+	 */
+	protected function column_user_info( $item ) {
+
+		// var
+		$fields			= HTMLineMembership_Form::get_fields();
+		$info			= unserialize( $item[ 'user_info' ] );
+		$current_info	= array();
+		$old_info		= array();
+		$output			= '';
+
+		// exit if no expected info
+		if ( ! is_array( $info ) )
+			return $item[ 'user_info' ];
+
+		// exit if no user custom fields defined
+		if ( ! is_array( $fields ) )
+			return $item[ 'user_info' ];
+
+		// loop
+		foreach ( $info as $key => $value ) {
+
+			// check if is a current or old info
+			$current	= false !== array_search( $key, array_column( $fields, 'id' ) );
+			$li			= array();
+
+			if ( in_array( $value[ 'type' ], array( 'radio', 'checkbox' ) ) ) {
+
+				// radio/checkbox
+				if ( is_array( $value[ 'value' ] ) ) {
+
+					foreach ( $value[ 'value' ] as $val ) {
+						$li[] = '<li><b>' . $val . '</b></li>';
+					}
+
+				}
+
+			} else {
+
+				// other
+				$li[] = '<li>' . $value[ 'label' ] . ': <b>' . $value[ 'value' ] . '</b></li>';
+
+			}
+
+			if ( $li ) {
+				if ( $current ) {
+					$current_info = array_merge( $current_info, $li );
+				} else {
+					$old_info = array_merge( $old_info, $li );
+				}
+			}
+
+		}
+
+		if ( $current_info ) {
+			$output .= '<ul class="hmembership-users-list-table-current-info-col">' . implode( '', $current_info ) . '</ul>';
+		}
+
+		if ( $old_info ) {
+
+			$output .= '<h4>' . __( 'Old User Info', 'hmembership' ) . '</h4>';
+			$output .= '<ul class="hmembership-users-list-table-old-info-col">' . implode( '', $old_info ) . '</ul>';
+
+		}
+
+		// return
+		return $output;
 
 	}
 
@@ -314,6 +407,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		$actions = array(
 			'bulk-approve'	=> __( 'Approve', 'hmembership' ),
 			'bulk-decline'	=> __( 'Decline', 'hmembership' ),
+			'bulk-delete'	=> __( 'Delete', 'hmembership' ),
 		);
 
 		// return
@@ -372,6 +466,21 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 
 		}
 
+		if ( 'delete_user' === $the_table_action ) {
+
+			$nonce = wp_unslash( $_REQUEST[ '_wpnonce' ] );
+
+			// verify the nonce.
+			if ( ! wp_verify_nonce( $nonce, 'delete_user_nonce' ) ) {
+				$this->invalid_nonce_redirect();
+			}
+			else {
+				$this->page_delete_user( absint( $_REQUEST[ 'hmembership_user_id' ] ) );
+				$this->graceful_exit();
+			}
+
+		}
+
 		// check for table bulk actions
 		if ( ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'bulk-approve' ) || ( isset( $_REQUEST[ 'action2' ] ) && $_REQUEST[ 'action2' ] === 'bulk-approve' ) ) {
 
@@ -411,12 +520,31 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 
 		}
 
+		if ( ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'bulk-delete' ) || ( isset( $_REQUEST[ 'action2' ] ) && $_REQUEST[ 'action2' ] === 'bulk-delete' ) ) {
+
+			$nonce = wp_unslash( $_REQUEST[ '_wpnonce' ] );
+
+			// verify the nonce.
+			/**
+			 * Note: the nonce field is set by the parent class
+			 * wp_nonce_field( 'bulk-' . $this->_args[ 'plural' ] );
+			 */
+			if ( ! wp_verify_nonce( $nonce, 'bulk-' . $this->_args[ 'plural' ] ) ) {
+				$this->invalid_nonce_redirect();
+			}
+			else {
+				$this->page_bulk_delete( $_REQUEST[ 'hmembership_users' ] );
+				$this->graceful_exit();
+			}
+
+		}
+
 	}
 
 	/**
 	 * page_approve_user
 	 *
-	 * This function 
+	 * This function
 	 *
 	 * @since		1.0.0
 	 * @param		$user_id (int)

@@ -72,7 +72,7 @@ class HTMLineMembership_Admin_Email_Field extends HTMLineMembership_Admin_Field 
 		}
 
 		// return
-		return apply_filters( $this->field[ 'type' ] . '/sanitize', $output, $value );
+		return apply_filters( 'hmembership_field_' . $this->field[ 'type' ] . '/sanitize', $output, $value );
 
 	}
 

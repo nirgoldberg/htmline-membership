@@ -107,11 +107,15 @@ class HTMLineMembership {
 		add_action( 'init',	array( $this, 'init' ) );
 		add_action( 'init',	array( $this, 'register_assets' ) );
 
-		// admin
 		if ( is_admin() ) {
 
-			// actions
+			// admin actions
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
+
+		} else {
+
+			// front actions
+			add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts') );
 
 		}
 
@@ -180,13 +184,21 @@ class HTMLineMembership {
 
 		// append styles
 		$styles = array(
-			'hmembership-admin'		=> array(
-				'src'	=> hmembership_get_url( 'assets/css/hmembership-admin-style.css' ),
+			'hmembership'			=> array(
+				'src'	=> hmembership_get_url( 'assets/css/hmembership-style.css' ),
 				'deps'	=> false,
 			),
-			'hmembership-admin-rtl'	=> array(
-				'src'	=> hmembership_get_url( 'assets/css/hmembership-admin-style-rtl.css' ),
-				'deps'	=> array( 'hmembership-admin' ),
+			'hmembership-rtl'		=> array(
+				'src'	=> hmembership_get_url( 'assets/css/hmembership-style-rtl.css' ),
+				'deps'	=> array( 'hmembership' ),
+			),
+			'hmembership-front'		=> array(
+				'src'	=> hmembership_get_url( 'assets/css/hmembership-front-style.css' ),
+				'deps'	=> false,
+			),
+			'hmembership-front-rtl'	=> array(
+				'src'	=> hmembership_get_url( 'assets/css/hmembership-front-style-rtl.css' ),
+				'deps'	=> array( 'hmembership' ),
 			),
 			'jquery-ui'				=> array(
 				'src'	=> '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css',
@@ -204,6 +216,10 @@ class HTMLineMembership {
 				'src'	=> hmembership_get_url( 'assets/js/min/hmembership.min.js' ),
 				'deps'	=> array( 'jquery-ui' ),
 			),
+			'hmembership-front'	=> array(
+				'src'	=> hmembership_get_url( 'assets/js/min/hmembership-front.min.js' ),
+				'deps'	=> array( 'jquery' ),
+			),
 		);
 
 		// register styles
@@ -219,6 +235,44 @@ class HTMLineMembership {
 	}
 
 	/**
+	 * wp_enqueue_scripts
+	 *
+	 * This function will enque scripts and styles
+	 *
+	 * @since		1.0.0
+	 * @param		N/A
+	 * @return		N/A
+	 */
+	public function wp_enqueue_scripts() {
+
+		// enqueue styles
+		wp_enqueue_style( 'hmembership-front' );
+
+		// rtl
+		if ( is_rtl() ) {
+
+			wp_enqueue_style( 'hmembership-front-rtl' );
+
+		}
+
+		// localize hmembership-front
+		$translation_arr	= array(
+			'settings'		=> array(),
+			'strings'		=> array(
+				'error'			=> __( 'Error', 'hmembership' ),
+				'success'		=> __( 'Request was sent successfuly for user:', 'hmembership' ),
+				'failed'		=> __( 'Request failed', 'hmembership' ),
+			),
+			'ajaxurl'		=> admin_url( 'admin-ajax.php' ),
+		);
+		wp_localize_script( 'hmembership-front', '_hmembership_front', $translation_arr );
+
+		// Enqueued script with localized data.
+		wp_enqueue_script( 'hmembership-front' );
+
+	}
+
+	/**
 	 * admin_enqueue_scripts
 	 *
 	 * This function will enque admin scripts and styles
@@ -230,13 +284,13 @@ class HTMLineMembership {
 	public function admin_enqueue_scripts() {
 
 		// enqueue styles
-		wp_enqueue_style( 'hmembership-admin' );
+		wp_enqueue_style( 'hmembership' );
 		wp_enqueue_style( 'jquery-ui' );
 
 		// rtl
 		if ( is_rtl() ) {
 
-			wp_enqueue_style( 'hmembership-admin-rtl' );
+			wp_enqueue_style( 'hmembership-rtl' );
 
 		}
 

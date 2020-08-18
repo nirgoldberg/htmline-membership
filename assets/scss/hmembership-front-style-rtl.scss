@@ -1,0 +1,28 @@
+@import "hmembership-params";
+
+/**
+ * hmembership-front-style-rtl.scss
+ */
+.hmembership-form {
+	table {
+		tr {
+			&.fieldset {
+				fieldset {
+					label {
+						input {
+							margin-left: 10px;
+							margin-right: auto;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.submit {
+		.ajax-loading {
+			margin-left: auto;
+			margin-right: 5px;
+		}
+	}
+}

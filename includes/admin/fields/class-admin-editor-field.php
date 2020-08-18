@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin settings textarea field
+ * Admin settings editor field
  *
  * @author		Nir Goldberg
  * @package		includes/admin/fields
@@ -9,12 +9,12 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class HTMLineMembership_Admin_Textarea_Field extends HTMLineMembership_Admin_Field {
+class HTMLineMembership_Admin_Editor_Field extends HTMLineMembership_Admin_Field {
 
 	/**
 	 * display_field
 	 *
-	 * This function will display a textarea field
+	 * This function will display an editor field
 	 *
 	 * @since		1.0.0
 	 * @param		N/A
@@ -23,18 +23,13 @@ class HTMLineMembership_Admin_Textarea_Field extends HTMLineMembership_Admin_Fie
 	public function display_field() {
 
 		// vars
-		$index	= $this->field[ 'index' ];
-		$id		= $this->field[ 'uid' ] . ( $index ? '_' . $index : '' );
-		$name	= $this->field[ 'uid' ] . ( $index ? '[]' : '' );
-		$values	= get_option( $this->field[ 'uid' ] );
-		$value	= $index ? $values[ $index-1 ] : $values;
+		$id		= $this->field[ 'uid' ];
+		$name	= $this->field[ 'uid' ];
+		$value	= get_option( $this->field[ 'uid' ] );
 
-		printf( '<textarea name="%2$s" id="%1$s" placeholder="%3$s" rows="5" cols="50">%4$s</textarea>',
-			$id,
-			$name,
-			$this->field[ 'placeholder' ],
-			( $value !== false ) ? $value : ''
-		);
+		wp_editor( $value, $id, array(
+			'textarea_name'	=> $name,
+		) );
 
 		$this->display_field_meta();
 
@@ -54,7 +49,7 @@ class HTMLineMembership_Admin_Textarea_Field extends HTMLineMembership_Admin_Fie
 		// vars
 		$output = false;
 
-		// sanitize textarea
+		// sanitize email
 		if ( is_array( $value ) ) {
 
 			// dynamic section setting
@@ -62,12 +57,12 @@ class HTMLineMembership_Admin_Textarea_Field extends HTMLineMembership_Admin_Fie
 			$output = array();
 
 			foreach ( $value as $key => $val ) {
-				$output[ $key ] = sanitize_textarea_field( $val );
+				$output[ $key ] = wp_kses_post( $val );
 			}
 
-		} elseif ( ! ( empty( $value ) && '0' !== $value ) ) {
+		} elseif ( ! empty( $value ) ) {
 
-			$output = sanitize_textarea_field( $value );
+			$output = wp_kses_post( $value );
 
 		}
 

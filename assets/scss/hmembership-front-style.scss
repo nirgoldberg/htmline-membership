@@ -1,0 +1,117 @@
+@import "hmembership-params";
+
+/**
+ * hmembership-front-style.scss
+ */
+.hmembership-form {
+	margin: 0 auto;
+	max-width: 550px;
+
+	table {
+		width: 100%;
+		border-collapse: separate;
+		border-spacing: 0 15px;
+
+		tr {
+			th,
+			td {
+				width: 100%;
+				display: block;
+			}
+
+			th {
+				label {
+					margin-bottom: 0;
+				}
+
+				span {
+					font-weight: bold;
+					color: $error-color;
+				}
+			}
+
+			&.fieldset {
+				th {
+					display: none;
+				}
+
+				fieldset {
+					label {
+						input {
+							margin-right: 10px;
+						}
+					}
+				}
+			}
+
+			&.required {
+				&.fieldset {
+					fieldset {
+						label {
+							&:after {
+								content: " *";
+								color: $error-color;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.submit {
+		.ajax-loading {
+			margin-left: 5px;
+			width: 24px;
+			height: 24px;
+			font-size: 24px;
+			vertical-align: middle;
+			visibility: hidden;
+			-webkit-animation:	rotating 2s linear infinite;
+			-moz-animation:		rotating 2s linear infinite;
+			-ms-animation:		rotating 2s linear infinite;
+			-o-animation:		rotating 2s linear infinite;
+			animation:			rotating 2s linear infinite;
+		}
+
+		&.active {
+			.ajax-loading {
+				visibility: visible;
+			}
+		}
+	}
+}
+
+/**********************/
+/* rotating animation */
+/**********************/
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+	from {
+		-webkit-transform:	rotate(0deg);
+		-o-transform:		rotate(0deg);
+		transform:			rotate(0deg);
+	}
+	to {
+		-webkit-transform:	rotate(360deg);
+		-o-transform:		rotate(360deg);
+		transform:			rotate(360deg);
+	}
+}
+
+@keyframes rotating {
+	from {
+		-webkit-transform:	rotate(0deg);
+		-moz-transform:		rotate(0deg);
+		-ms-transform:		rotate(0deg);
+		-o-transform:		rotate(0deg);
+		transform:			rotate(0deg);
+	}
+	to {
+		-webkit-transform:	rotate(360deg);
+		-moz-transform:		rotate(360deg);
+		-ms-transform:		rotate(360deg);
+		-o-transform:		rotate(360deg);
+		transform:			rotate(360deg);
+	}
+}

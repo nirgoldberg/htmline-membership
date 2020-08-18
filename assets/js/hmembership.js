@@ -187,7 +187,7 @@ var $ = jQuery,
 		 */
 		var dsResetSection = function(el) {
 
-			// input/password/number/textarea
+			// text/password/number/email/textarea
 			el.find('input[type="text"],input[type="password"],input[type="number"],textarea').val('');
 
 			// select/multiselect
@@ -210,7 +210,7 @@ var $ = jQuery,
 		 */
 		var dsSortSectionFields = function(el, index) {
 
-			// input/password/number/textarea/select/multiselect
+			// text/password/number/email/textarea/select/multiselect
 			el.find('input[type="text"],input[type="password"],input[type="number"],textarea,select').each(function() {
 				// vars
 				var id = $(this).attr('id');

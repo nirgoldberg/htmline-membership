@@ -147,7 +147,7 @@ class HTMLineMembership_Admin_Settings_Page {
 			 *		'label_for'		=> [field label_for],
 			 *		'tab'			=> [tab slug],
 			 *		'section'		=> [section slug],
-			 *		'type'			=> [field type: text/password/number/email/textarea/select/multiselect/radio/checkbox],
+			 *		'type'			=> [field type: text/password/number/email/textarea/editor/select/multiselect/radio/checkbox],
 			 *		'placeholder'	=> [field placeholder],
 			 *		'options'		=> [array of field options: slugs and labels],
 			 *		'default'		=> [array of field option slug],
@@ -203,6 +203,7 @@ class HTMLineMembership_Admin_Settings_Page {
 		hmembership_include( 'includes/admin/fields/class-admin-text-field.php' );
 		hmembership_include( 'includes/admin/fields/class-admin-email-field.php' );
 		hmembership_include( 'includes/admin/fields/class-admin-textarea-field.php' );
+		hmembership_include( 'includes/admin/fields/class-admin-editor-field.php' );
 		hmembership_include( 'includes/admin/fields/class-admin-select-field.php' );
 		hmembership_include( 'includes/admin/fields/class-admin-radio-field.php' );
 
@@ -487,6 +488,10 @@ class HTMLineMembership_Admin_Settings_Page {
 
 			case 'textarea':
 				$field = new HTMLineMembership_Admin_Textarea_Field( $field_args );
+				break;
+
+			case 'editor':
+				$field = new HTMLineMembership_Admin_Editor_Field( $field_args );
 				break;
 
 			case 'select':

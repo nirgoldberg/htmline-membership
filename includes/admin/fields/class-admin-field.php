@@ -48,7 +48,7 @@ class HTMLineMembership_Admin_Field {
 		 *		'label_for'		=> [field label_for],
 		 *		'tab'			=> [tab slug],
 		 *		'section'		=> [section slug],
-		 *		'type'			=> [field type: text/password/number/email/textarea/select/multiselect/radio/checkbox],
+		 *		'type'			=> [field type: text/password/number/email/textarea/editor/select/multiselect/radio/checkbox],
 		 *		'placeholder'	=> [field placeholder],
 		 *		'options'		=> [array of field options: slugs and labels],
 		 *		'default'		=> [array of field option slug],
@@ -125,7 +125,7 @@ class HTMLineMembership_Admin_Field {
 	public function sanitize( $value ) {
 
 		// return
-		return apply_filters( $this->field[ 'type' ] . '/sanitize', $value, $value );
+		return apply_filters( 'hmembership_field_' . $this->field[ 'type' ] . '/sanitize', $value, $value );
 
 	}
 

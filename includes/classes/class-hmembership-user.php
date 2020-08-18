@@ -100,7 +100,6 @@ class HTMLineMembership_User {
 		$sql =
 			"CREATE TABLE IF NOT EXISTS {$users_table} (
 				ID bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				user_login varchar(60) NOT NULL DEFAULT '',
 				user_email varchar(100) NOT NULL DEFAULT '',
 				user_registered datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 				user_status int(11) NOT NULL DEFAULT '0',
@@ -121,7 +120,7 @@ class HTMLineMembership_User {
 	 *
 	 * @since		1.0.0
 	 * @param		N/A
-	 * @return		(array)
+	 * @return		(mixed)
 	 */
 	public function get_users() {
 
@@ -130,7 +129,27 @@ class HTMLineMembership_User {
 		$users_table = $wpdb->prefix . HTMLineMembership_USERS_TABLE;
 
 		// return
-		return $wpdb->get_results( "SELECT * FROM $users_table" );
+		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $users_table" ), ARRAY_A );
+
+	}
+
+	/**
+	 * get_user
+	 *
+	 * This function will return HTMLine Membership user data
+	 *
+	 * @since		1.0.0
+	 * @param		$user_email (string)
+	 * @return		(mixed)
+	 */
+	public function get_user( $user_email ) {
+
+		// vars
+		global $wpdb;
+		$users_table = $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+
+		// return
+		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $users_table WHERE user_email = '$user_email'" ), ARRAY_A );
 
 	}
 

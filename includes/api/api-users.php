@@ -41,6 +41,22 @@ function hmembership_users_get_users() {
 }
 
 /**
+ * hmembership_users_get_user
+ *
+ * Alias of hmembership_user()->get_user()
+ *
+ * @since		1.0.0
+ * @param		$user_email
+ * @return		(mixed)
+ */
+function hmembership_users_get_user( $user_email ) {
+
+	// return
+	return hmembership_user()->get_user( $user_email );
+
+}
+
+/**
  * hmembership_users_get_list_table
  *
  * This function will return the HTMLineMembership_Users_List_Table object found in the hmembership_admin_users object

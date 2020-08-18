@@ -1,7 +1,7 @@
 {
 "version": 3,
 "mappings": "AAcI,6FAAgB,CACf,IAAI,CAAE,IAAI,CACV,KAAK,CAAE,IAAI,CAOd,2BAAc,CACb,WAAW,CAAE,CAAC,CACd,YAAY,CAAE,GAAG",
-"sources": ["../scss/hmembership-admin-style-rtl.scss"],
+"sources": ["../scss/hmembership-style-rtl.scss"],
 "names": [],
-"file": "hmembership-admin-style-rtl.css"
+"file": "hmembership-style-rtl.css"
 }

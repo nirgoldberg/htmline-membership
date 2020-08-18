@@ -45,14 +45,14 @@ class HTMLineMembership_Admin_Radio_Field extends HTMLineMembership_Admin_Field 
 
 				$iterator++;
 				$options_markup .=	sprintf( '<label for="%1$s_%7$s"><input id="%1$s_%7$s" name="%2$s[]" type="%3$s" value="%4$s" %5$s /> %6$s</label><br/>',
-					$id,
-					$name,
-					$this->field[ 'type' ],
-					$key,
-					( $value !== false && is_array( $value ) ) ? checked( $value[ array_search( $key, $value, true ) ], $key, false ) : '',
-					$label,
-					$iterator
-				);
+										$id,
+										$name,
+										$this->field[ 'type' ],
+										$key,
+										( $value !== false && is_array( $value ) ) ? checked( $value[ array_search( $key, $value, true ) ], $key, false ) : '',
+										$label,
+										$iterator
+									);
 
 			}
 
@@ -102,7 +102,7 @@ class HTMLineMembership_Admin_Radio_Field extends HTMLineMembership_Admin_Field 
 		}
 
 		// return
-		return apply_filters( $this->field[ 'type' ] . '/sanitize', $output, $value );
+		return apply_filters( 'hmembership_field_' . $this->field[ 'type' ] . '/sanitize', $output, $value );
 
 	}
 

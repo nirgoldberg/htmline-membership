@@ -116,8 +116,7 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'section'			=> 'registration_form',
 					'type'				=> 'text',
 					'placeholder'		=> __( 'Email Address', 'hmembership' ),
-					'supplimental'		=> __( 'This field is used as the user identification', 'hmembership' ),
-					'helper'			=> sprintf( __( '(Default: %s)', 'hmembership' ), __( 'Email Address', 'hmembership' ) ),
+					'supplimental'		=> sprintf( __( 'Default: %s', 'hmembership' ), __( 'Email Address', 'hmembership' ) ),
 				),
 				array(
 					'uid'				=> 'hmembership_user_custom_field_label',

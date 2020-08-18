@@ -31,6 +31,9 @@ var $ = jQuery,
 			// dynamic settings
 			dynamicSettings();
 
+			// users list table
+			usersListTable();
+
 		};
 
 		/**
@@ -290,6 +293,37 @@ var $ = jQuery,
 			if (!sections.length) {
 				sections_wrap.parent().addClass('no-sections');
 			}
+
+		};
+
+		/**
+		 * usersListTable
+		 *
+		 * Handles users list table
+		 *
+		 * @since		1.0.0
+		 * @param		N/A
+		 * @return		N/A
+		 */
+		var usersListTable = function() {
+
+			// vars
+			var table = $('.wp-list-table.hmembership-users');
+
+			if (!table.length)
+				return;
+
+			var column_user_info = table.find('.column-user_info'),
+				expand = column_user_info.children('.expand');
+
+			expand.on('click', function() {
+				// vars
+				var btn = $(this).children(),
+					content = $(this).next();
+
+				btn.toggleClass('open');
+				content.toggleClass('open');
+			});
 
 		};
 

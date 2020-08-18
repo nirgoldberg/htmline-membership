@@ -382,6 +382,12 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 
 		}
 
+		$output =	'<div class="expand">
+						<span class="dashicons dashicons-plus-alt2 open"></span>
+						<span class="dashicons dashicons-minus"></span>
+					</div>
+					<div class="content">' . $output . '</div>';
+
 		// return
 		return $output;
 

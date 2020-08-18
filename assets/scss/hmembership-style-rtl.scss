@@ -4,6 +4,19 @@
  * hmembership-style-rtl.scss
  */
 .wrap {
+	.wp-list-table.hmembership-users {
+		.column-user_info {
+			.expand {
+				float: right;
+			}
+
+			.content {
+				margin-left: 0;
+				margin-right: 30px;
+			}
+		}
+	}
+
 	.hmembership-admin-box {
 
 		/********************/

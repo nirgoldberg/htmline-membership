@@ -6,22 +6,44 @@
 .wrap {
 	.wp-list-table.hmembership-users {
 		.column-user_info {
-			ul {
-				&:first-child {
-					margin-top: 0;
-				}
+			.expand {
+				float: left;
+				cursor: pointer;
 
-				&:last-child {
-					margin-bottom: 0;
-				}
+				.dashicons {
+					display: none;
 
-				li {
-					margin-bottom: 5px;
+					&.open {
+						display: block;
+					}
 				}
 			}
 
-			h4 {
-				text-decoration: underline;
+			.content {
+				margin-left: 30px;
+				display: none;
+
+				ul {
+					&:first-child {
+						margin-top: 0;
+					}
+
+					&:last-child {
+						margin-bottom: 0;
+					}
+
+					li {
+						margin-bottom: 5px;
+					}
+				}
+
+				h4 {
+					text-decoration: underline;
+				}
+
+				&.open {
+					display: block;
+				}
 			}
 		}
 	}

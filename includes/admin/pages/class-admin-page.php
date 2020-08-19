@@ -108,6 +108,9 @@ class HTMLineMembership_Admin_Page {
 			'tabs'			=> array(),
 			'active_tab'	=> '',
 
+			// actions
+			'actions'		=> array(),
+
 		);
 
 	}
@@ -213,6 +216,7 @@ class HTMLineMembership_Admin_Page {
 			'page_title'	=> $this->settings[ 'page_title' ],
 			'tabs'			=> $this->settings[ 'tabs' ],
 			'active_tab'	=> $this->settings[ 'active_tab' ],
+			'actions'		=> $this->settings[ 'actions' ],
 
 		);
 
@@ -236,6 +240,46 @@ class HTMLineMembership_Admin_Page {
 	 * @return		N/A
 	 */
 	public function load_page() {}
+
+	/**
+	 * admin_notice
+	 *
+	 * This function will display admin notice
+	 *
+	 * @since		1.0.0
+	 * @param		$type (string)
+	 * @param		$msg (string)
+	 * @return		N/A
+	 */
+	protected function admin_notice( $type, $msg ) {
+
+		// vars
+		$class = "notice $type is-dismissible";
+
+		printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $msg );
+
+	}
+
+	/**
+	 * invalid_nonce_redirect
+	 *
+	 * This function will die when nonce check fails
+	 *
+	 * @since		1.0.0
+	 * @param		N/A
+	 * @return		N/A
+	 */
+	protected function invalid_nonce_redirect() {
+
+		wp_die( __( 'Invalid Nonce', 'hmembership' ),
+				__( 'Error', 'hmembership' ),
+				array(
+					'response'	=> 403,
+					'back_link'	=> esc_url( add_query_arg( array( 'page' => wp_unslash( $_REQUEST[ 'page' ] ) ), admin_url( 'admin.php' ) ) ),
+				)
+		);
+
+	}
 
 	/**
 	 * get_instances

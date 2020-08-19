@@ -10,7 +10,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // vars
-$nonce = wp_create_nonce( 'export_users' );
+$nonce = wp_create_nonce( 'hmembership_export_users_nonce' );
 
 ?>
 

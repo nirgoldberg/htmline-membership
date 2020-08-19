@@ -38,8 +38,7 @@ function hmembership_form_submission() {
 		$result = json_encode( $result );
 		echo $result;
 
-	}
-	else {
+	} else {
 
 		header( "Location: " . $_SERVER[ "HTTP_REFERER" ] );
 
@@ -204,10 +203,9 @@ function hmembership_form_insert_user( $fields, &$result ) {
 
 	// vars
 	global $wpdb;
-	$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
-	$user_email		= $fields[ 'hmembership_user_email' ][ 'value' ];
+	$user_email = $fields[ 'hmembership_user_email' ][ 'value' ];
 
-	if ( hmembership_users_get_user( $user_email ) ) {
+	if ( hmembership_users_get_user_by_email( $user_email ) ) {
 
 		// log - user already exist
 		hmembership_result_log( 'errors', array(
@@ -222,11 +220,8 @@ function hmembership_form_insert_user( $fields, &$result ) {
 
 	unset( $fields[ 'hmembership_user_email' ] );
 
-	$insert = 	$wpdb->insert( $users_table, array(
-					'user_email'		=> $user_email,
-					'user_registered'	=> current_time( 'mysql' ),
-					'user_info'			=> serialize( $fields ),
-				));
+	// insert user
+	$insert = hmembership_users_insert_user( $user_email, serialize( $fields ) );
 
 	if ( ! $insert ) {
 

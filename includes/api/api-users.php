@@ -25,34 +25,100 @@ function hmembership_users_create_db_table() {
 }
 
 /**
- * hmembership_users_get_users
+ * hmembership_users_insert_user
  *
- * Alias of hmembership_user()->get_users()
+ * Alias of hmembership_user()->insert_user()
  *
  * @since		1.0.0
- * @param		N/A
- * @return		(array)
+ * @param		$user_email (string)
+ * @param		$user_info (string)
+ * @return		(mixed) Number of rows inserted, or false on error
  */
-function hmembership_users_get_users() {
+function hmembership_users_insert_user( $user_email, $user_info ) {
 
 	// return
-	return hmembership_user()->get_users();
+	return hmembership_user()->insert_user( $user_email, $user_info );
 
 }
 
 /**
- * hmembership_users_get_user
+ * hmembership_users_update_users_status
  *
- * Alias of hmembership_user()->get_user()
+ * Alias of hmembership_user()->update_users_status()
+ *
+ * @since		1.0.0
+ * @param		$user_ids (array)
+ * @param		$user_status (int)
+ * @return		(mixed) Number of rows updated, or false on error
+ */
+function hmembership_users_update_users_status( $user_ids, $user_status ) {
+
+	// return
+	return hmembership_user()->update_users_status( $user_ids, $user_status );
+
+}
+
+/**
+ * hmembership_users_delete_user
+ *
+ * Alias of hmembership_user()->delete_user()
+ *
+ * @since		1.0.0
+ * @param		$user_id (int)
+ * @return		(mixed) Number of rows deleted, or false on error
+ */
+function hmembership_users_delete_user( $user_id ) {
+
+	// return
+	return hmembership_user()->delete_user( $user_id );
+
+}
+
+/**
+ * hmembership_users_delete_users
+ *
+ * Alias of hmembership_user()->delete_users()
+ *
+ * @since		1.0.0
+ * @param		$user_ids (array)
+ * @return		(mixed) Number of rows deleted, or false on error
+ */
+function hmembership_users_delete_users( $user_ids ) {
+
+	// return
+	return hmembership_user()->delete_users( $user_ids );
+
+}
+
+/**
+ * hmembership_users_get_users_by_id
+ *
+ * Alias of hmembership_user()->get_users_by_id()
+ *
+ * @since		1.0.0
+ * @param		user_ids (array)
+ * @return		(mixed)
+ */
+function hmembership_users_get_users_by_id( $user_ids ) {
+
+	// return
+	return hmembership_user()->get_users_by_id( $user_ids );
+
+}
+
+/**
+ * hmembership_users_get_user_by_email
+ *
+ * Alias of hmembership_user()->get_user_by_email()
  *
  * @since		1.0.0
  * @param		$user_email
  * @return		(mixed)
  */
-function hmembership_users_get_user( $user_email ) {
+function hmembership_users_get_user_by_email( $user_email ) {
 
 	// return
-	return hmembership_user()->get_user( $user_email );
+	return hmembership_user()->get_user_by_email( $user_email );
 
 }
 

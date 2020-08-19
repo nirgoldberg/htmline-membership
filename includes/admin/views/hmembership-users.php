@@ -12,6 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // extract args
 extract( $args );
 
+// modify $page_title if within an action
+if ( isset( $_REQUEST[ 'action' ] ) && '-1' != $_REQUEST[ 'action' ] && isset( $actions[ $_REQUEST[ 'action' ] ] ) ) {
+	$page_title = $actions[ $_REQUEST[ 'action' ] ][ 'page_title' ];
+} elseif ( isset( $_REQUEST[ 'action2' ] ) && '-1' != $_REQUEST[ 'action2' ] && isset( $actions[ $_REQUEST[ 'action2' ] ] ) ) {
+	$page_title = $actions[ $_REQUEST[ 'action2' ] ][ 'page_title' ];
+}
+
 ?>
 
 <div class="wrap hmembership-wrap" id="<?php echo $menu_slug; ?>">
@@ -27,23 +34,30 @@ extract( $args );
 			if ( $users_list_table ) {
 
 				// query, filter, and sort the data
-				$users_list_table->prepare_items(); ?>
+				$users_list_table->prepare_items();
 
-				<form id="users-list-form" method="get">
+				if ( ! ( isset( $_REQUEST[ 'action' ] ) && '-1' != $_REQUEST[ 'action' ] || isset( $_REQUEST[ 'action2' ] ) && '-1' != $_REQUEST[ 'action2' ] ) ) { ?>
 
-					<input type="hidden" name="page" value="<?php echo $menu_slug; ?>">
+					<form id="users-list-form" method="get">
 
-					<?php
-						// display search box
-						$users_list_table->search_box( __( 'Search Users', 'hmembership' ), 'search' );
+						<input type="hidden" name="page" value="<?php echo $menu_slug; ?>">
 
-						// display data
-						$users_list_table->display();
-					?>
+						<?php
+							// display search box
+							$users_list_table->search_box( __( 'Search Users', 'hmembership' ), 'search' );
 
-				</form>
+							// display filter views
+							$users_list_table->views();
 
-			<?php }
+							// display data
+							$users_list_table->display();
+						?>
+
+					</form>
+
+				<?php }
+
+			}
 
 		?>
 

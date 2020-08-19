@@ -306,8 +306,7 @@ class HTMLineMembership_Admin_Settings_Page {
 				}
 
 			}
-		}
-		elseif ( ! empty( $sections ) ) {
+		} elseif ( ! empty( $sections ) ) {
 			// no tabs, only sections
 			foreach ( $sections as $section_slug => $section ) {
 

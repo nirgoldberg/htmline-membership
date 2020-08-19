@@ -43,7 +43,7 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 						'registration_form'		=> array(
 							'type'				=> 'static',
 							'title'				=> __( 'Registration Form', 'hmembership' ),
-							'description'		=> '',
+							'description'		=> __( 'Place the following shortcode in order to display registration form on screen: ', 'hmembership' ) . '[hmembership-form]',
 						),
 						'user_custom_fields'	=> array(
 							'type'				=> 'dynamic',
@@ -171,6 +171,20 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'options'			=> array(
 						'true'			=> '',
 					),
+				),
+				array(
+					'uid'				=> 'hmembership_delete_users',
+					'label'				=> __( 'Delete Users', 'hmembership' ),
+					'label_for'			=> 'hmembership_delete_users',
+					'tab'				=> 'permissions',
+					'section'			=> 'users_management',
+					'type'				=> 'checkbox',
+					'options'			=> array(
+						'true'			=> '',
+					),
+					'default'			=> array( 'true' ),
+					'supplimental'		=> __( 'Check this option to allow deleting of users', 'hmembership' ),
+					'helper'			=> sprintf( __( '(Default: %s)', 'hmembership' ), __( 'true', 'hmembership' ) ),
 				),
 				array(
 					'uid'				=> 'hmembership_export_users',

@@ -529,8 +529,7 @@ class HTMLineMembership {
 
 			if ( file_exists( plugin_dir_path( __DIR__ ) . $path ) ) {
 				$name = get_plugin_data( plugin_dir_path( __DIR__ ) . $path )[ 'Name' ];
-			}
-			else {
+			} else {
 				$name = $plugin;
 			}
 

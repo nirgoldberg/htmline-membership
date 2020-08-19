@@ -114,42 +114,172 @@ class HTMLineMembership_User {
 	}
 
 	/**
-	 * get_users
+	 * insert_user
 	 *
-	 * This function will return HTMLine Membership users data
+	 * This function will insert HTMLine Membership user to DB table
 	 *
 	 * @since		1.0.0
-	 * @param		N/A
-	 * @return		(mixed)
+	 * @param		$user_email (string)
+	 * @param		$user_info (string)
+	 * @return		(mixed) Number of rows inserted, or false on error
 	 */
-	public function get_users() {
+	public function insert_user( $user_email, $user_info ) {
+
+		if ( ! $user_email || ! $user_info )
+			return false;
 
 		// vars
 		global $wpdb;
 		$users_table = $wpdb->prefix . HTMLineMembership_USERS_TABLE;
 
+		$insert = 	$wpdb->insert( $users_table, array(
+						'user_email'		=> $user_email,
+						'user_registered'	=> current_time( 'mysql' ),
+						'user_info'			=> $user_info,
+					));
+
 		// return
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $users_table" ), ARRAY_A );
+		return $insert;
 
 	}
 
 	/**
-	 * get_user
+	 * hmembership_users_update_users_status
 	 *
-	 * This function will return HTMLine Membership user data
+	 * This function will update HTMLine Membership users status in DB table
+	 *
+	 * @since		1.0.0
+	 * @param		$user_ids (array)
+	 * @param		$user_status (int)
+	 * @return		(mixed) Number of rows updated, or false on error
+	 */
+	public function update_users_status( $user_ids, $user_status ) {
+
+		if ( ! $user_ids )
+			return false;
+
+		// vars
+		global $wpdb;
+		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+		$user_ids		= implode( ',', array_map( 'intval', $user_ids ) );
+
+		$sql =	"UPDATE $users_table
+				SET user_status = $user_status
+				WHERE ID IN ($user_ids)";
+
+		$updated = $wpdb->query( $wpdb->prepare( $sql ) );
+
+		// return
+		return $updated;
+
+	}
+
+	/**
+	 * delete_user
+	 *
+	 * This function will delete HTMLine Membership user from DB table
+	 *
+	 * @since		1.0.0
+	 * @param		$user_id (int)
+	 * @return		(mixed) Number of rows deleted, or false on error
+	 */
+	public function delete_user( $user_id ) {
+
+		if ( ! $user_id )
+			return false;
+
+		// vars
+		global $wpdb;
+		$users_table = $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+
+		$delete = 	$wpdb->delete( $users_table, array(
+						'ID' => $user_id,
+					));
+
+		// return
+		return $delete;
+
+	}
+
+	/**
+	 * delete_users
+	 *
+	 * This function will delete HTMLine Membership users from DB table
+	 *
+	 * @since		1.0.0
+	 * @param		$user_ids (array)
+	 * @return		(mixed) Number of rows deleted, or false on error
+	 */
+	public function delete_users( $user_ids ) {
+
+		if ( ! $user_ids )
+			return false;
+
+		// vars
+		global $wpdb;
+		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+		$user_ids		= implode( ',', array_map( 'intval', $user_ids ) );
+
+		$sql =	"DELETE FROM $users_table
+				WHERE ID IN ($user_ids)";
+
+		$delete = $wpdb->query( $wpdb->prepare( $sql ) );
+
+		// return
+		return $delete;
+
+	}
+
+	/**
+	 * get_users_by_id
+	 *
+	 * This function will return HTMLine Membership users data by their IDs
+	 *
+	 * @since		1.0.0
+	 * @param		user_ids (array)
+	 * @return		(mixed)
+	 */
+	public function get_users_by_id( $user_ids ) {
+
+		if ( ! $user_ids || ! is_array( $user_ids ) )
+			return false;
+
+		// vars
+		global $wpdb;
+		$users_table 	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+		$user_ids		= implode( ',', array_map( 'intval', $user_ids ) );
+
+		$sql =	"SELECT * FROM $users_table
+				WHERE ID IN ($user_ids)";
+
+		// return
+		return $wpdb->get_results( $wpdb->prepare( $sql ), ARRAY_A );
+
+	}
+
+	/**
+	 * get_user_by_email
+	 *
+	 * This function will return HTMLine Membership user data by email
 	 *
 	 * @since		1.0.0
 	 * @param		$user_email (string)
 	 * @return		(mixed)
 	 */
-	public function get_user( $user_email ) {
+	public function get_user_by_email( $user_email ) {
+
+		if ( ! $user_email )
+			return false;
 
 		// vars
 		global $wpdb;
 		$users_table = $wpdb->prefix . HTMLineMembership_USERS_TABLE;
 
+		$sql =	"SELECT * FROM $users_table
+				WHERE user_email = '$user_email'";
+
 		// return
-		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $users_table WHERE user_email = '$user_email'" ), ARRAY_A );
+		return $wpdb->get_row( $wpdb->prepare( $sql ), ARRAY_A );
 
 	}
 

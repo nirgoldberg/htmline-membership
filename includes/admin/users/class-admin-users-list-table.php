@@ -167,7 +167,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
 		$admin_page_url	= admin_url( 'admin.php' );
 		$page			= wp_unslash( $_REQUEST[ 'page' ] );
-		$status			= isset( $_REQUEST[ 'status' ] ) ? $_REQUEST[ 'status' ] : 'all';
+		$current		= isset( $_REQUEST[ 'status' ] ) ? $_REQUEST[ 'status' ] : 'all';
 		$views			= array();
 
 		// get status counts
@@ -186,69 +186,29 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		$query_args_all = array(
 			'page'		=> $page,
 		);
-		$class = 'all' == $status ? 'class="current"' : '';
+		$class = 'all' == $current ? 'class="current"' : '';
 		$all_url = esc_url( add_query_arg( $query_args_all, $admin_page_url ) );
 		$views[ 'all' ] =	'<a href="' . $all_url . '" ' . $class . '>' . __( 'All', 'hmembership' ) .
 								'<span class="count"> (' . array_sum( $counts_arr ) . ')</span>' .
 							'</a>';
 
-		// pending
-		if ( array_key_exists( '0', $counts_arr ) ) {
+		foreach ( hmembership_status()->statuses() as $key => $status ) {
 
-			$query_args_pending = array(
-				'page'		=> $page,
-				'status'	=> '0',
-			);
-			$class = '0' == $status ? 'class="current"' : '';
-			$pending_url = esc_url( add_query_arg( $query_args_pending, $admin_page_url ) );
-			$views[ 'pending' ] =	'<a href="' . $pending_url . '" ' . $class . '>' . __( 'Pending', 'hmembership' ) .
-										'<span class="count"> (' . $counts_arr['0'] . ')</span>' .
-									'</a>';
+			$code = strval( $status[ 'code' ] );
 
-		}
+			if ( array_key_exists( $code, $counts_arr ) ) {
 
-		// approved
-		if ( array_key_exists( '1', $counts_arr ) ) {
+				$query_args = array(
+					'page'		=> $page,
+					'status'	=> $code,
+				);
+				$class = $code == $current ? 'class="current"' : '';
+				$url = esc_url( add_query_arg( $query_args, $admin_page_url ) );
+				$views[ $key ] =	'<a href="' . $url . '" ' . $class . '>' . $status[ 'label' ] .
+												'<span class="count"> (' . $counts_arr[ $code ] . ')</span>' .
+											'</a>';
 
-			$query_args_approved = array(
-				'page'		=> $page,
-				'status'	=> '1',
-			);
-			$class = '1' == $status ? 'class="current"' : '';
-			$approved_url = esc_url( add_query_arg( $query_args_approved, $admin_page_url ) );
-			$views[ 'approved' ] =	'<a href="' . $approved_url . '" ' . $class . '>' . __( 'Approved', 'hmembership' ) .
-										'<span class="count"> (' . $counts_arr['1'] . ')</span>' .
-									'</a>';
-
-		}
-
-		// declined
-		if ( array_key_exists( '2', $counts_arr ) ) {
-
-			$query_args_declined = array(
-				'page'		=> $page,
-				'status'	=> '2',
-			);
-			$class = '2' == $status ? 'class="current"' : '';
-			$declined_url = esc_url( add_query_arg( $query_args_declined, $admin_page_url ) );
-			$views[ 'declined' ] =	'<a href="' . $declined_url . '" ' . $class . '>' . __( 'Declined', 'hmembership' ) .
-										'<span class="count"> (' . $counts_arr['2'] . ')</span>' .
-									'</a>';
-
-		}
-
-		// deleted
-		if ( array_key_exists( '3', $counts_arr ) ) {
-
-			$query_args_deleted = array(
-				'page'		=> $page,
-				'status'	=> '3',
-			);
-			$class = '3' == $status ? 'class="current"' : '';
-			$deleted_url = esc_url( add_query_arg( $query_args_deleted, $admin_page_url ) );
-			$views[ 'deleted' ] =	'<a href="' . $deleted_url . '" ' . $class . '>' . __( 'Deleted', 'hmembership' ) .
-										'<span class="count"> (' . $counts_arr['3'] . ')</span>' .
-									'</a>';
+			}
 
 		}
 
@@ -373,49 +333,32 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		// vars
 		$admin_page_url 	= admin_url( 'admin.php' );
 		$page				= wp_unslash( $_REQUEST[ 'page' ] );
-		$delete_permission	= get_option( 'hmembership_delete_users', array( 'true' ) );
-		$delete_permission	= $delete_permission && in_array( 'true', $delete_permission );
+		$available_actions	= hmembership_action()->actions();
 		$actions			= array();
 
-		// approve action
-		if ( in_array( $item[ 'user_status' ], array( '0', '2' ) ) ) {
+		foreach ( $available_actions as $key => $action ) {
 
-			$query_args_approve_user = array(
-				'page'					=> $page,
-				'action'				=> 'approve-user',
-				'hmembership_user_id'	=> absint( $item[ 'ID' ] ),
-				'_wpnonce'				=> wp_create_nonce( 'hmembership_approve_user_nonce' ),
-			);
-			$approve_user_link = esc_url( add_query_arg( $query_args_approve_user, $admin_page_url ) );
-			$actions[ 'approve-user' ] = '<a href="' . $approve_user_link . '">' . __( 'Approve', 'hmembership' ) . '</a>';
+			// vars
+			$user_status		= hmembership_status()->get_status_by_code( $item[ 'user_status' ] );
+			$allowed_actions	= hmembership_status()->can( $key );
+			$permission 		= hmembership_action()->action_allowed( $action );
 
-		}
+			if ( $permission && in_array( $user_status, $allowed_actions ) ) {
 
-		// decline action
-		if ( in_array( $item[ 'user_status' ], array( '0' ) ) ) {
+				// vars
+				$action_name	= $action[ 'singular' ];
+				$action_label	= $action[ 'label' ];
 
-			$query_args_decline_user = array(
-				'page'					=> $page,
-				'action'				=> 'decline-user',
-				'hmembership_user_id'	=> absint( $item[ 'ID' ] ),
-				'_wpnonce'				=> wp_create_nonce( 'hmembership_decline_user_nonce' ),
-			);
-			$decline_user_link = esc_url( add_query_arg( $query_args_decline_user, $admin_page_url ) );
-			$actions[ 'decline-user' ] = '<a href="' . $decline_user_link . '">' . __( 'Decline', 'hmembership' ) . '</a>';
+				$query_args = array(
+					'page'					=> $page,
+					'action'				=> $action_name,
+					'hmembership_user_id'	=> absint( $item[ 'ID' ] ),
+					'_wpnonce'				=> wp_create_nonce( 'hmembership_' . $key . '_user_nonce' ),
+				);
+				$url = esc_url( add_query_arg( $query_args, $admin_page_url ) );
+				$actions[ $action_name ] = '<a href="' . $url . '">' . $action_label . '</a>';
 
-		}
-
-		// delete action
-		if ( $delete_permission && in_array( $item[ 'user_status' ], array( '0', '2', '3' ) ) ) {
-
-			$query_args_delete_user = array(
-				'page'					=> $page,
-				'action'				=> 'delete-user',
-				'hmembership_user_id'	=> absint( $item[ 'ID' ] ),
-				'_wpnonce'				=> wp_create_nonce( 'hmembership_delete_user_nonce' ),
-			);
-			$delete_user_link = esc_url( add_query_arg( $query_args_delete_user, $admin_page_url ) );
-			$actions[ 'delete-user' ] = '<a href="' . $delete_user_link . '">' . __( 'Delete', 'hmembership' ) . '</a>';
+			}
 
 		}
 
@@ -525,18 +468,12 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	protected function column_user_status( $item ) {
 
 		// vars
-		$output = str_replace(
+		$class	= hmembership_status()->get_status_by_code( $item[ 'user_status' ] );
+		$label	= hmembership_status()->get_label_by_code( $item[ 'user_status' ] );
+		$output	= '';
 
-			array( '0', '1', '2', '3' ),
-			array(
-				'<span class="pending">' . __( 'Pending', 'hmembership' ) . '</span>',
-				'<span class="approved">' . __( 'Approved', 'hmembership' ) . '</span>',
-				'<span class="declined">' . __( 'Declined', 'hmembership' ) . '</span>',
-				'<span class="deleted">' . __( 'Deleted', 'hmembership' ) . '</span>',
-			),
-			$item[ 'user_status' ]
-
-		);
+		if ( $class && $label )
+			$output =	"<span class='$class'>$label</span>";
 
 		// return
 		return apply_filters( 'hmembership_users_list_table_column_user_status', $output, $item );
@@ -607,16 +544,20 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		 */
 
 		// vars
-		$delete_permission	= get_option( 'hmembership_delete_users', array( 'true' ) );
-		$delete_permission	= $delete_permission && in_array( 'true', $delete_permission );
+		$available_actions	= hmembership_action()->actions();
+		$actions			= array();
 
-		$actions = array(
-			'bulk-approve'	=> __( 'Approve', 'hmembership' ),
-			'bulk-decline'	=> __( 'Decline', 'hmembership' ),
-		);
+		foreach ( $available_actions as $key => $action ) {
 
-		if ( $delete_permission ) {
-			$actions[ 'bulk-delete' ] = __( 'Delete', 'hmembership' );
+			// vars
+			$action_name	= $action[ 'plural' ];
+			$label			= $action[ 'label' ];
+			$permission 	= hmembership_action()->action_allowed( $action );
+
+			if ( $permission ) {
+				$actions[ $action_name ] = $label;
+			}
+
 		}
 
 		// return
@@ -645,93 +586,40 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		// check for individual row actions
 		$the_table_action = $this->current_action();
 
-		if ( 'approve-user' === $the_table_action ) {
+		// singular action
+		$action = hmembership_action()->get_action_by_singular( $the_table_action );
+
+		if ( $action ) {
 
 			$nonce = wp_unslash( $_REQUEST[ '_wpnonce' ] );
 
 			// verify the nonce.
-			if ( ! wp_verify_nonce( $nonce, 'hmembership_approve_user_nonce' ) ) {
+			if ( ! wp_verify_nonce( $nonce, 'hmembership_' . key( $action ) . '_user_nonce' ) ) {
 				$this->invalid_nonce_redirect();
 			} else {
-				$this->do_action( 'approve-users', absint( $_REQUEST[ 'hmembership_user_id' ] ) );
+				$this->do_action( $action, absint( $_REQUEST[ 'hmembership_user_id' ] ) );
 			}
 
-		}
+		} else {
 
-		elseif ( 'decline-user' === $the_table_action ) {
+			// plural action
+			$action = hmembership_action()->get_action_by_plural( $the_table_action );
 
-			$nonce = wp_unslash( $_REQUEST[ '_wpnonce' ] );
+			if ( $action ) {
 
-			// verify the nonce.
-			if ( ! wp_verify_nonce( $nonce, 'hmembership_decline_user_nonce' ) ) {
-				$this->invalid_nonce_redirect();
-			} else {
-				$this->do_action( 'decline-users', absint( $_REQUEST[ 'hmembership_user_id' ] ) );
-			}
+				$nonce = wp_unslash( $_REQUEST[ '_wpnonce' ] );
 
-		}
+				// verify the nonce.
+				/**
+				 * Note: the nonce field is set by the parent class
+				 * wp_nonce_field( 'bulk-' . $this->_args[ 'plural' ] );
+				 */
+				if ( ! wp_verify_nonce( $nonce, 'bulk-' . $this->_args[ 'plural' ] ) ) {
+					$this->invalid_nonce_redirect();
+				} else {
+					$this->do_action( $action, $_REQUEST[ 'hmembership_user_ids' ] );
+				}
 
-		elseif ( 'delete-user' === $the_table_action ) {
-
-			$nonce = wp_unslash( $_REQUEST[ '_wpnonce' ] );
-
-			// verify the nonce.
-			if ( ! wp_verify_nonce( $nonce, 'hmembership_delete_user_nonce' ) ) {
-				$this->invalid_nonce_redirect();
-			} else {
-				$this->do_action( 'delete-users', absint( $_REQUEST[ 'hmembership_user_id' ] ) );
-			}
-
-		}
-
-		// check for table bulk actions
-		elseif ( ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'bulk-approve' ) || ( isset( $_REQUEST[ 'action2' ] ) && $_REQUEST[ 'action2' ] === 'bulk-approve' ) ) {
-
-			$nonce = wp_unslash( $_REQUEST[ '_wpnonce' ] );
-
-			// verify the nonce.
-			/**
-			 * Note: the nonce field is set by the parent class
-			 * wp_nonce_field( 'bulk-' . $this->_args[ 'plural' ] );
-			 */
-			if ( ! wp_verify_nonce( $nonce, 'bulk-' . $this->_args[ 'plural' ] ) ) {
-				$this->invalid_nonce_redirect();
-			} else {
-				$this->do_action( 'approve-users', $_REQUEST[ 'hmembership_user_ids' ] );
-			}
-
-		}
-
-		elseif ( ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'bulk-decline' ) || ( isset( $_REQUEST[ 'action2' ] ) && $_REQUEST[ 'action2' ] === 'bulk-decline' ) ) {
-
-			$nonce = wp_unslash( $_REQUEST[ '_wpnonce' ] );
-
-			// verify the nonce.
-			/**
-			 * Note: the nonce field is set by the parent class
-			 * wp_nonce_field( 'bulk-' . $this->_args[ 'plural' ] );
-			 */
-			if ( ! wp_verify_nonce( $nonce, 'bulk-' . $this->_args[ 'plural' ] ) ) {
-				$this->invalid_nonce_redirect();
-			} else {
-				$this->do_action( 'decline-users', $_REQUEST[ 'hmembership_user_ids' ] );
-			}
-
-		}
-
-		elseif ( ( isset( $_REQUEST[ 'action' ] ) && $_REQUEST[ 'action' ] === 'bulk-delete' ) || ( isset( $_REQUEST[ 'action2' ] ) && $_REQUEST[ 'action2' ] === 'bulk-delete' ) ) {
-
-			$nonce = wp_unslash( $_REQUEST[ '_wpnonce' ] );
-
-			// verify the nonce.
-			/**
-			 * Note: the nonce field is set by the parent class
-			 * wp_nonce_field( 'bulk-' . $this->_args[ 'plural' ] );
-			 */
-			if ( ! wp_verify_nonce( $nonce, 'bulk-' . $this->_args[ 'plural' ] ) ) {
-				$this->invalid_nonce_redirect();
-			} else {
-				$this->do_action( 'delete-users', $_REQUEST[ 'hmembership_user_ids' ] );
 			}
 
 		}
@@ -751,7 +639,8 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	private function do_action( $action, $user_ids ) {
 
 		// load action view
-		hmembership_get_view( 'hmembership-users-' . $action, array(
+		hmembership_get_view( 'hmembership-users-list-table-action', array(
+			'action'	=> $action,
 			'user_ids'	=> $user_ids,
 		) );
 

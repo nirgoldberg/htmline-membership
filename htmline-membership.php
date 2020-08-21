@@ -98,7 +98,8 @@ class HTMLineMembership {
 		hmembership_define( 'HTMLineMembership_PATH',		$path );
 
 		// classes
-		hmembership_include( 'includes/classes/class-hmembership-core.php' );
+		hmembership_include( 'includes/classes/class-hmembership-status.php' );
+		hmembership_include( 'includes/classes/class-hmembership-action.php' );
 		hmembership_include( 'includes/classes/class-hmembership-user.php' );
 		hmembership_include( 'includes/classes/class-hmembership-form.php' );
 		hmembership_include( 'includes/classes/class-hmembership-content.php' );
@@ -122,6 +123,9 @@ class HTMLineMembership {
 		// plugin activation / deactivation
 		register_activation_hook	( __FILE__,	array( $this, 'hmembership_activate' ) );
 		register_deactivation_hook	( __FILE__,	array( $this, 'hmembership_deactivate' ) );
+
+		// plugin activation for new network site activation
+		add_action( 'wpmu_new_blog', array( $this, 'hmembership_activate_new_site' ) );
 
 	}
 
@@ -396,7 +400,9 @@ class HTMLineMembership {
 	 */
 	public function update_setting( $name, $value ) {
 
-		$this->settings[ $name ] = $value;
+		if ( $name && $value ) {
+			$this->settings[ $name ] = $value;
+		}
 
 		// return
 		return true;
@@ -409,10 +415,72 @@ class HTMLineMembership {
 	 * Actions perform on activation of plugin
 	 *
 	 * @since		1.0.0
+	 * @param		$network_wide (bool)
+	 * @return		N/A
+	 */
+	public function hmembership_activate( $network_wide ) {
+
+		if ( is_multisite() && $network_wide ) {
+
+			// get sites
+			$sites = get_sites( array( 'fields' => 'ids' ) );
+
+			if ( $sites ) {
+				foreach ( $sites as $site_id ) {
+
+					switch_to_blog( $site_id );
+
+					$this->hmembership_activate_single_site();
+
+					restore_current_blog();
+
+				}
+			}
+
+		} else {
+
+			$this->hmembership_activate_single_site();
+
+		}
+
+	}
+
+	/**
+	 * hmembership_activate_new_site
+	 *
+	 * Actions perform on activation of plugin
+	 *
+	 * @since		1.0.0
+	 * @param		$site_id (int)
+	 * @return		N/A
+	 */
+	public function hmembership_activate_new_site( $site_id ) {
+
+		if ( is_plugin_active_for_network( $this->settings[ 'basename' ] ) ) {
+
+			switch_to_blog( $site_id );
+
+			$this->hmembership_activate_single_site();
+
+			restore_current_blog();
+
+		}
+
+	}
+
+	/**
+	 * hmembership_activate_single_site
+	 *
+	 * Actions perform on activation of plugin per single site
+	 *
+	 * @since		1.0.0
 	 * @param		N/A
 	 * @return		N/A
 	 */
-	public function hmembership_activate() {
+	private function hmembership_activate_single_site() {
+
+		// add the HTMLine Membership user role
+		hmembership_users_add_user_role();
 
 		// create HTMLine Membership users DB table
 		hmembership_users_create_db_table();
@@ -425,10 +493,66 @@ class HTMLineMembership {
 	 * Actions perform on deactivation of plugin
 	 *
 	 * @since		1.0.0
+	 * @param		$network_wide (bool)
+	 * @return		N/A
+	 */
+	public function hmembership_deactivate( $network_wide ) {
+
+		if ( is_multisite() && $network_wide ) {
+
+			// get sites
+			$sites		= get_sites( array( 'fields' => 'ids' ) );
+			$basename	= $this->settings[ 'basename' ];
+
+			if ( $sites ) {
+				foreach ( $sites as $site_id ) {
+
+					switch_to_blog( $site_id );
+
+					// is plugin activated manually
+					$active_plugins = get_option( 'active_plugins', array() );
+
+					$key = array_search( $basename, $active_plugins, true );
+
+					if ( false !== $key ) {
+						unset( $active_plugins[ $key ] );
+
+						update_option( 'active_plugins', $active_plugins );
+					}
+
+					$this->hmembership_deactivate_single_site();
+
+					restore_current_blog();
+
+				}
+			}
+
+		} else {
+
+			$this->hmembership_deactivate_single_site();
+
+		}
+
+	}
+
+	/**
+	 * hmembership_deactivate_single_site
+	 *
+	 * Actions perform on deactivation of plugin per single site
+	 *
+	 * @since		1.0.0
 	 * @param		N/A
 	 * @return		N/A
 	 */
-	public function hmembership_deactivate() {}
+	private function hmembership_deactivate_single_site() {
+
+		// remove the HTMLine Membership user role
+		hmembership_users_remove_user_role();
+
+		// drop HTMLine Membership users DB table
+		hmembership_users_drop_db_table();
+
+	}
 
 	/**
 	 * check_required_plugins
@@ -551,6 +675,9 @@ class HTMLineMembership {
 	 * @return		N/A
 	 */
 	private function admin_notices_error( $msg ) {
+
+		if ( ! $msg )
+			return;
 
 		// vars
 		$class = 'notice notice-error is-dismissible';

@@ -120,6 +120,10 @@
 				position: relative;
 				margin: 15px;
 				border: 1px solid $gray-color1;
+				cursor: move; /* fallback if grab cursor is unsupported */
+				cursor: grab;
+				cursor: -moz-grab;
+				cursor: -webkit-grab;
 
 				.remove-section {
 					position: absolute;
@@ -133,6 +137,12 @@
 
 				&.ui-sortable-helper {
 					background-color: $gray-color4;
+				}
+
+				&:active {
+					cursor: grabbing;
+					cursor: -moz-grabbing;
+					cursor: -webkit-grabbing;
 				}
 			}
 		}

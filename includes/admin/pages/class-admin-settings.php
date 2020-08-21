@@ -201,6 +201,16 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'helper'			=> sprintf( __( '(Default: %s)', 'hmembership' ), __( 'true', 'hmembership' ) ),
 				),
 				array(
+					'uid'				=> 'hmembership_user_role_display_name',
+					'label'				=> __( 'User Role Display Name', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_role_display_name',
+					'tab'				=> 'general',
+					'section'			=> 'general',
+					'type'				=> 'text',
+					'placeholder'		=> __( 'Member', 'hmembership' ),
+					'supplimental'		=> sprintf( __( 'Default: %s', 'hmembership' ), __( 'Member', 'hmembership' ) ),
+				),
+				array(
 					'uid'				=> 'hmembership_admin_email',
 					'label'				=> __( 'Admin Email Address', 'hmembership' ),
 					'label_for'			=> 'hmembership_admin_email',

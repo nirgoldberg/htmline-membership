@@ -210,9 +210,15 @@ class HTMLineMembership_Admin_Users extends HTMLineMembership_Admin_Page {
 	 */
 	private function do_approve( $user_ids ) {
 
+		if ( ! $user_ids || ! is_array( $user_ids ) )
+			return;
+
+		// create WordPress users
+		$users = (array) hmembership_users_create_wp_users( $user_ids );
+
 		// approve
 		$this->users_update_type	= 'approve';
-		$this->users_effected		= hmembership_users_update_users_status( $user_ids, 1 );
+		$this->users_effected		= hmembership_users_set_users_wp_user( $users );
 
 		// redirect after action processed
 		$this->complete_update_users();
@@ -230,9 +236,12 @@ class HTMLineMembership_Admin_Users extends HTMLineMembership_Admin_Page {
 	 */
 	private function do_decline( $user_ids ) {
 
+		if ( ! $user_ids || ! is_array( $user_ids ) )
+			return;
+
 		// decline
 		$this->users_update_type	= 'decline';
-		$this->users_effected		= hmembership_users_update_users_status( $user_ids, 2 );
+		$this->users_effected		= hmembership_users_update_users_status( $user_ids, 'declined' );
 
 		// redirect after action processed
 		$this->complete_update_users();
@@ -249,6 +258,9 @@ class HTMLineMembership_Admin_Users extends HTMLineMembership_Admin_Page {
 	 * @return		N/A
 	 */
 	private function do_delete( $user_ids ) {
+
+		if ( ! $user_ids || ! is_array( $user_ids ) )
+			return;
 
 		// delete
 		$this->users_update_type	= 'delete';

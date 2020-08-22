@@ -65,7 +65,7 @@ class HTMLineMembership_Status {
 			'unassigned'	=> array(
 				'code'			=> 3,
 				'label'			=> __( 'Unassigned', 'hmembership' ),
-				'actions'		=> array(),
+				'actions'		=> array( 'delete' ),
 			),
 			'deleted'		=> array(
 				'code'			=> 4,

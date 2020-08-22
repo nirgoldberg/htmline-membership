@@ -80,8 +80,12 @@ class HTMLineMembership_User {
 		hmembership_include( 'includes/api/api-users.php' );
 
 		// actions
-		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'deleted_user', array( $this, 'before_delete_user' ), 10, 2 );
+		add_action( 'init',						array( $this, 'init' ) );
+		add_action( 'add_user_to_blog',			array( $this, 'after_add_user_to_blog' ), 10, 3 );
+		add_action( 'remove_user_from_blog',	array( $this, 'before_remove_user_from_blog' ), 10, 3 );
+		add_action( 'deleted_user',				array( $this, 'before_delete_user' ), 10, 2 );
+		add_action( 'set_user_role',			array( $this, 'after_set_user_role' ), 10, 3 );
+		add_action( 'remove_user_role',			array( $this, 'after_remove_user_role' ), 10, 2 );
 
 	}
 
@@ -229,8 +233,83 @@ class HTMLineMembership_User {
 	}
 
 	/**
+	 * after_add_user_to_blog
+	 *
+	 * Fires after a user is added to a multisite site
+	 * This function will indicate HTMLine Membership user as approved only if is indicated as unassigned
+	 *
+	 * @since		1.0.0
+	 * @param		$user_id (int)
+	 * @param		$role (string)
+	 * @param		$site_id (int)
+	 * @return		N/A
+	 */
+	public function after_add_user_to_blog( $user_id, $role, $site_id ) {
+
+		// verify is an HTMLine Membership user
+		$user = $this->get_user_by_wp_user_id( $user_id );
+
+		if ( $user ) {
+
+			// verify user role
+			if ( $this->role != $role )
+				return;
+
+			// verify current site
+			if ( get_current_blog_id() != $site_id )
+				return;
+
+			// verify user is indicated as unassigned
+			if ( 'unassigned' == hmembership_status()->get_status_by_code( $user[ 'user_status' ] ) ) {
+
+				// approve user
+				$this->update_users_status( array( $user[ 'ID' ] ), 'approved' );
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * before_remove_user_from_blog
+	 *
+	 * Fires before a user is removed from a multisite site
+	 * This function will indicate HTMLine Membership user as unassigned only if is indicated as approved
+	 *
+	 * @since		1.0.0
+	 * @param		$user_id (int)
+	 * @param		$site_id (int)
+	 * @param		$reassign (int|null)
+	 * @return		N/A
+	 */
+	public function before_remove_user_from_blog( $user_id, $site_id, $reassign ) {
+
+		// verify is an HTMLine Membership user
+		$user = $this->get_user_by_wp_user_id( $user_id );
+
+		if ( $user ) {
+
+			// verify current site
+			if ( get_current_blog_id() != $site_id )
+				return;
+
+			// verify user is indicated as approved
+			if ( 'approved' == hmembership_status()->get_status_by_code( $user[ 'user_status' ] ) ) {
+
+				// unassign
+				$this->update_users_status( array( $user[ 'ID' ] ), 'unassigned' );
+
+			}
+
+		}
+
+	}
+
+	/**
 	 * before_delete_user
 	 *
+	 * Fires before a user is deleted from site
 	 * This function will unlink HTMLine Membership user from his WordPress user ID and update his user status accordingly
 	 *
 	 * @since		1.0.0
@@ -240,12 +319,90 @@ class HTMLineMembership_User {
 	 */
 	public function before_delete_user( $user_id, $reassign ) {
 
-		// verify it's an HTMLine Membership user
+		// verify is an HTMLine Membership user
 		$user = $this->get_user_by_wp_user_id( $user_id );
 
 		if ( $user ) {
 
 			$this->unset_users_wp_user( array( $user[ 'ID' ] ) );
+
+		}
+
+	}
+
+	/**
+	 * after_set_user_role
+	 *
+	 * Fires after a user role has changed
+	 * This function will indicate HTMLine Membership user as approved as a function of his assignment to HTMLine Membership role
+	 *
+	 * @since		1.0.0
+	 * @param		$user_id (int)
+	 * @param		$role (string)
+	 * @param		$old_roles (array)
+	 * @return		N/A
+	 */
+	public function after_set_user_role( $user_id, $role, $old_roles ) {
+
+		// verify is an HTMLine Membership user
+		$user = $this->get_user_by_wp_user_id( $user_id );
+
+		if ( $user ) {
+
+			// check user role
+			if ( $this->role == $role ) {
+
+				// verify user is indicated as unassigned
+				if ( 'unassigned' == hmembership_status()->get_status_by_code( $user[ 'user_status' ] ) ) {
+
+					// approve user
+					$this->update_users_status( array( $user[ 'ID' ] ), 'approved' );
+
+				}
+
+			} else {
+
+				// verify user roles conatain HTMLine Membership role
+				$userdata = get_userdata( $user_id );
+
+				if ( ! in_array( $this->role, $userdata->roles ) ) {
+
+					// unassign user
+					$this->update_users_status( array( $user[ 'ID' ] ), 'unassigned' );
+
+				}
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * after_remove_user_role
+	 *
+	 * Fires after a user role has removed
+	 * This function will indicate HTMLine Membership user as unassigned as a function of his assignment to HTMLine Membership role
+	 *
+	 * @since		1.0.0
+	 * @param		$user_id (int)
+	 * @param		$role (string)
+	 * @return		N/A
+	 */
+	public function after_remove_user_role( $user_id, $role ) {
+
+		// verify is an HTMLine Membership user
+		$user = $this->get_user_by_wp_user_id( $user_id );
+
+		if ( $user ) {
+
+			// check user role
+			if ( $this->role == $role ) {
+
+				// unassign user
+				$this->update_users_status( array( $user[ 'ID' ] ), 'unassigned' );
+
+			}
 
 		}
 
@@ -299,7 +456,7 @@ class HTMLineMembership_User {
 
 		// vars
 		global $wpdb;
-		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+		$users_table = $wpdb->prefix . HTMLineMembership_USERS_TABLE;
 
 		$sql = "DROP TABLE IF EXISTS $users_table";
 
@@ -440,6 +597,9 @@ class HTMLineMembership_User {
 		$users_table	= $wpdb->prefix . HTMLineMembership_USERS_TABLE;
 		$user_ids		= implode( ',', array_map( 'intval', $user_ids ) );
 		$status			= hmembership_status()->get_code( $user_status );
+
+		if ( ! $status )
+			return false;
 
 		$sql =	"UPDATE $users_table
 				SET user_status = $status

@@ -57,6 +57,7 @@
 					&.pending { background-color: $info-color; }
 					&.approved { background-color: $success-color; }
 					&.declined { background-color: $warning-color; }
+					&.unassigned { background-color: $black; }
 					&.deleted { background-color: $error-color; }
 				}
 			}

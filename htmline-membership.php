@@ -448,7 +448,7 @@ class HTMLineMembership {
 	/**
 	 * hmembership_activate_new_site
 	 *
-	 * Actions perform on activation of plugin
+	 * Actions perform on registration of new multisite site
 	 *
 	 * @since		1.0.0
 	 * @param		$site_id (int)

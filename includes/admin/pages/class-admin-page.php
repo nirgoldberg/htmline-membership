@@ -108,9 +108,6 @@ class HTMLineMembership_Admin_Page {
 			'tabs'			=> array(),
 			'active_tab'	=> '',
 
-			// actions
-			'actions'		=> array(),
-
 		);
 
 	}
@@ -216,7 +213,6 @@ class HTMLineMembership_Admin_Page {
 			'page_title'	=> $this->settings[ 'page_title' ],
 			'tabs'			=> $this->settings[ 'tabs' ],
 			'active_tab'	=> $this->settings[ 'active_tab' ],
-			'actions'		=> $this->settings[ 'actions' ],
 
 		);
 

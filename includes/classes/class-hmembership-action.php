@@ -48,6 +48,7 @@ class HTMLineMembership_Action {
 
 		$this->actions = array(
 			'approve'		=> array(
+				'page_title'	=> __( 'Approve Users', 'hmembership' ),
 				'label'			=> __( 'Approve', 'hmembership' ),
 				'singular'		=> 'approve-user',
 				'plural'		=> 'bulk-approve',
@@ -61,6 +62,7 @@ class HTMLineMembership_Action {
 				),
 			),
 			'decline'		=> array(
+				'page_title'	=> __( 'Decline Users', 'hmembership' ),
 				'label'			=> __( 'Decline', 'hmembership' ),
 				'singular'		=> 'decline-user',
 				'plural'		=> 'bulk-decline',
@@ -74,6 +76,7 @@ class HTMLineMembership_Action {
 				),
 			),
 			'delete'		=> array(
+				'page_title'	=> __( 'Delete Users from HTMLine Membership', 'hmembership' ),
 				'label'			=> __( 'Delete', 'hmembership' ),
 				'singular'		=> 'delete-user',
 				'plural'		=> 'bulk-delete',
@@ -244,6 +247,45 @@ class HTMLineMembership_Action {
 		return	isset( $this->actions[ $action ] ) && $this->actions[ $action ][ 'permission' ] ?
 				$this->actions[ $action ][ 'permission' ] :
 				$default;
+
+	}
+
+	/**
+	 * get_page_title
+	 *
+	 * This function will return action page title
+	 *
+	 * @since		1.0.0
+	 * @param		$action (string)
+	 * @param		$default (mix)
+	 * @return		(mixed)
+	 */
+	public function get_page_title( $action, $default = null ) {
+
+		// check singular list table action
+		$titles = array_column( $this->actions, 'page_title', 'singular' );
+
+		if ( is_array( $titles ) && isset( $titles[ $action ] ) ) {
+
+			// return
+			return $titles[ $action ];
+
+		} else {
+
+			// check plural list table action
+			$titles = array_column( $this->actions, 'page_title', 'plural' );
+
+			if ( is_array( $titles ) && isset( $titles[ $action ] ) ) {
+
+				// return
+				return $titles[ $action ];
+
+			}
+
+		}
+
+		// return
+		return $default;
 
 	}
 

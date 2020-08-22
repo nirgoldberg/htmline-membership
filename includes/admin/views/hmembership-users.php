@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 extract( $args );
 
 // modify $page_title if within an action
-if ( isset( $_REQUEST[ 'action' ] ) && '-1' != $_REQUEST[ 'action' ] && isset( $actions[ $_REQUEST[ 'action' ] ] ) ) {
-	$page_title = $actions[ $_REQUEST[ 'action' ] ][ 'page_title' ];
-} elseif ( isset( $_REQUEST[ 'action2' ] ) && '-1' != $_REQUEST[ 'action2' ] && isset( $actions[ $_REQUEST[ 'action2' ] ] ) ) {
-	$page_title = $actions[ $_REQUEST[ 'action2' ] ][ 'page_title' ];
+if ( isset( $_REQUEST[ 'action' ] ) && '-1' != $_REQUEST[ 'action' ] ) {
+	$page_title = hmembership_action()->get_page_title( $_REQUEST[ 'action' ] );
+} elseif ( isset( $_REQUEST[ 'action2' ] ) && '-1' != $_REQUEST[ 'action2' ] ) {
+	$page_title = hmembership_action()->get_page_title( $_REQUEST[ 'action2' ] );
 }
 
 ?>

@@ -80,28 +80,6 @@ class HTMLineMembership_Admin_Users extends HTMLineMembership_Admin_Page {
 			'tabs'				=> array(),
 			'active_tab'		=> '',
 
-			// actions
-			'actions'			=> array(
-				'approve-user'		=> array(
-					'page_title'	=> __( 'Approve Users', 'hmembership' ),
-				),
-				'decline-user'		=> array(
-					'page_title'	=> __( 'Decline Users', 'hmembership' ),
-				),
-				'delete-user'		=> array(
-					'page_title'	=> __( 'Delete Users from HTMLine Membership', 'hmembership' ),
-				),
-				'bulk-approve'		=> array(
-					'page_title'	=> __( 'Approve Users', 'hmembership' ),
-				),
-				'bulk-decline'		=> array(
-					'page_title'	=> __( 'Decline Users', 'hmembership' ),
-				),
-				'bulk-delete'		=> array(
-					'page_title'	=> __( 'Delete Users from HTMLine Membership', 'hmembership' ),
-				),
-			),
-
 		);
 
 		$this->screen			= 'toplevel_page_' . $this->settings[ 'menu_slug' ];

@@ -22,6 +22,32 @@ if ( $sites ) {
 
 	// set options
 	$options = array(
+		// users
+		'hmembership_user_registration_form_status',
+		'hmembership_user_email_field_label',
+		'hmembership_user_custom_field_label',
+		'hmembership_user_custom_field_type',
+		'hmembership_user_custom_field_options',
+		'hmembership_user_custom_field_default',
+		'hmembership_user_custom_field_required',
+		// emails
+		'hmembership_user_registration_email_to_user_subject',
+		'hmembership_user_registration_email_to_user_message',
+		'hmembership_user_registration_email_to_admin_subject',
+		'hmembership_user_registration_email_to_admin_message',
+		'hmembership_user_approval_email_to_user_subject',
+		'hmembership_user_approval_email_to_user_message',
+		'hmembership_user_rejection_email_to_user_subject',
+		'hmembership_user_rejection_email_to_user_message',
+		// permissions
+		'hmembership_delete_users',
+		'hmembership_export_users',
+		// general
+		'hmembership_user_role_display_name',
+		'hmembership_admin_email',
+		'hmembership_email_from_name',
+		'hmembership_email_from_address',
+		// uninstall
 		'hmembership_uninstall_remove_data',
 	);
 
@@ -87,4 +113,12 @@ function hmembership_remove_options_data( $site_id, &$options = array() ) {
  * @param		$site_id (int) site ID
  * @return		N/A
  */
-function hmembership_remove_db_data( $site_id ) {}
+function hmembership_remove_db_data( $site_id ) {
+
+	// remove the HTMLine Membership user role
+	hmembership_users_remove_user_role();
+
+	// drop HTMLine Membership users DB table
+	hmembership_users_drop_db_table();
+
+}

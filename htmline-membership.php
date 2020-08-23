@@ -545,15 +545,7 @@ class HTMLineMembership {
 	 * @param		N/A
 	 * @return		N/A
 	 */
-	private function hmembership_deactivate_single_site() {
-
-		// remove the HTMLine Membership user role
-		hmembership_users_remove_user_role();
-
-		// drop HTMLine Membership users DB table
-		hmembership_users_drop_db_table();
-
-	}
+	private function hmembership_deactivate_single_site() {}
 
 	/**
 	 * check_required_plugins

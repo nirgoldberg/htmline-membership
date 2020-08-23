@@ -231,11 +231,22 @@ function hmembership_form_insert_user( $fields, &$result ) {
 			'description'	=> sprintf( __( 'SQL Error: %s', 'hmembership' ), $wpdb->last_error ),
 		), $result );
 
-	} else {
-
-		// log
-		hmembership_result_log( 'data', $user_email, $result );
+		// return
+		return;
 
 	}
+
+	if ( ! hmembership_registration_notification( $user_email, serialize( $fields), 'both' ) ) {
+
+		// log
+		hmembership_result_log( 'errors', array(
+			'code'			=> '6',
+			'description'	=> __( 'Email submission failed', 'hmembership' ),
+		), $result );
+
+	}
+
+	// log
+	hmembership_result_log( 'data', $user_email, $result );
 
 }

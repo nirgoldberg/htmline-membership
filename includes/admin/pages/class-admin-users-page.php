@@ -198,6 +198,16 @@ class HTMLineMembership_Admin_Users extends HTMLineMembership_Admin_Page {
 		$this->users_update_type	= 'approve';
 		$this->users_effected		= hmembership_users_set_users_wp_user( $users );
 
+		// get approved users data
+		$users = hmembership_users_get_users_by_id( array_keys( $users ) );
+
+		foreach ( $users as $user ) {
+
+			// send approval notification to user
+			hmembership_approval_notification_to_user( $user[ 'user_email' ], $user[ 'user_info' ] );
+
+		}
+
 		// redirect after action processed
 		$this->complete_update_users();
 
@@ -220,6 +230,16 @@ class HTMLineMembership_Admin_Users extends HTMLineMembership_Admin_Page {
 		// decline
 		$this->users_update_type	= 'decline';
 		$this->users_effected		= hmembership_users_update_users_status( $user_ids, 'declined' );
+
+		// get declined users data
+		$users = hmembership_users_get_users_by_id( $user_ids );
+
+		foreach ( $users as $user ) {
+
+			// send rejection notification to user
+			hmembership_rejection_notification_to_user( $user[ 'user_email' ], $user[ 'user_info' ] );
+
+		}
 
 		// redirect after action processed
 		$this->complete_update_users();

@@ -248,3 +248,184 @@ function hmembership_users_get_list_table( $default = null ) {
 	return $users_list_table ? $users_list_table : $default;
 
 }
+
+/**
+ * hmembership_registration_notification
+ *
+ * This function will send notification after a user registration
+ * Returns true/false according to email sent reesult
+ *
+ * @since		1.0.0
+ * @param		$user_email (string)
+ * @param		$user_info (string)
+ * @param		$notify (string) type of notification (admin|user|both)
+ * @return		(bool)
+ */
+function hmembership_registration_notification( $user_email, $user_info, $notify = 'user' ) {
+
+	// vars
+	$result			= true;
+
+	// accepts only 'user', 'admin', 'both'
+	if ( ! in_array( $notify, array( 'user', 'admin', 'both' ), true ) )
+		return false;
+
+	if ( 'user' == $notify || 'both' == $notify ) {
+
+		// send notification to user
+		$result = hmembership_registration_notification_to_user( $user_email, $user_info );
+
+	}
+
+	if ( $result && ( 'admin' == $notify || 'both' == $notify ) ) {
+
+		// send notification to admin
+		$result = hmembership_registration_notification_to_admin( $user_email, $user_info );
+
+	}
+
+	// return
+	return $result;
+
+}
+
+/**
+ * hmembership_registration_notification_to_user
+ *
+ * This function will send notification to user after a user registration
+ * Returns true/false according to email sent reesult
+ *
+ * @since		1.0.0
+ * @param		$user_email (string)
+ * @param		$user_info (string)
+ * @return		(bool)
+ */
+function hmembership_registration_notification_to_user( $user_email, $user_info ) {
+
+	// vars
+	$subject	= get_option( 'hmembership_user_registration_email_to_user_subject', sprintf( __( 'Your registration request to %s', 'hmembership' ), get_bloginfo( 'name' ) ) );
+	$subject	= $subject ? $subject : sprintf( __( 'Your registration request to %s', 'hmembership' ), get_bloginfo( 'name' ) );
+	$message	= str_replace( '{user_email}', $user_email, get_option( 'hmembership_user_registration_email_to_user_message' ) );
+
+	// filters for 3rd party
+	$subject	= apply_filters( 'hmembership_registration_notification_to_user_subject', $subject, $user_email, $user_info );
+	$to			= apply_filters( 'hmembership_registration_notification_to_user_to', $user_email, $user_email, $user_info );
+	$message	= apply_filters( 'hmembership_registration_notification_to_user_message', $message, $user_email, $user_info );
+
+	if ( ! $subject || ! $to || ! $message )
+		return false;
+
+	// return
+	return hmembership_email()->send(
+		$subject,
+		$to,
+		apply_filters( 'the_content', $message )
+	);
+
+}
+
+/**
+ * hmembership_registration_notification_to_admin
+ *
+ * This function will send notification to admin after a user registration
+ * Returns true/false according to email sent reesult
+ *
+ * @since		1.0.0
+ * @param		$user_email (string)
+ * @param		$user_info (string)
+ * @return		(bool)
+ */
+function hmembership_registration_notification_to_admin( $user_email, $user_info ) {
+
+	// vars
+	$subject		= get_option( 'hmembership_user_registration_email_to_admin_subject', sprintf( __( '[%s] A new registration request', 'hmembership' ), get_bloginfo( 'name' ) ) );
+	$subject		= $subject ? $subject : sprintf( __( '[%s] A new registration request', 'hmembership' ), get_bloginfo( 'name' ) );
+	$admin_email	= get_option( 'hmembership_admin_email', get_option( 'admin_email' ) );
+	$admin_email	= $admin_email ? $admin_email : get_option( 'admin_email' );
+	$message		= str_replace( '{user_email}', $user_email, get_option( 'hmembership_user_registration_email_to_admin_message' ) );
+
+	// filters for 3rd party
+	$subject	= apply_filters( 'hmembership_registration_notification_to_admin_subject', $subject, $user_email, $user_info );
+	$message	= apply_filters( 'hmembership_registration_notification_to_admin_message', $message, $user_email, $user_info );
+
+	if ( ! $subject || ! $message )
+		return false;
+
+	// return
+	return hmembership_email()->send(
+		$subject,
+		$admin_email,
+		apply_filters( 'the_content', $message )
+	);
+
+}
+
+/**
+ * hmembership_approval_notification_to_user
+ *
+ * This function will send notification to user after a user approval
+ * Returns true/false according to email sent reesult
+ *
+ * @since		1.0.0
+ * @param		$user_email (string)
+ * @param		$user_info (string)
+ * @return		(bool)
+ */
+function hmembership_approval_notification_to_user( $user_email, $user_info ) {
+
+	// vars
+	$subject	= get_option( 'hmembership_user_approval_email_to_user_subject', sprintf( __( 'Your registration request to %s is approved', 'hmembership' ), get_bloginfo( 'name' ) ) );
+	$subject	= $subject ? $subject : sprintf( __( 'Your registration request to %s is approved', 'hmembership' ), get_bloginfo( 'name' ) );
+	$message	= str_replace( '{user_email}', $user_email, get_option( 'hmembership_user_approval_email_to_user_message' ) );
+
+	// filters for 3rd party
+	$subject	= apply_filters( 'hmembership_approval_notification_to_user_subject', $subject, $user_email, $user_info );
+	$to			= apply_filters( 'hmembership_approval_notification_to_user_to', $user_email, $user_email, $user_info );
+	$message	= apply_filters( 'hmembership_approval_notification_to_user_message', $message, $user_email, $user_info );
+
+	if ( ! $subject || ! $to || ! $message )
+		return false;
+
+	// return
+	return hmembership_email()->send(
+		$subject,
+		$to,
+		apply_filters( 'the_content', $message )
+	);
+
+}
+
+/**
+ * hmembership_rejection_notification_to_user
+ *
+ * This function will send notification to user after a user rejection
+ * Returns true/false according to email sent reesult
+ *
+ * @since		1.0.0
+ * @param		$user_email (string)
+ * @param		$user_info (string)
+ * @return		(bool)
+ */
+function hmembership_rejection_notification_to_user( $user_email, $user_info ) {
+
+	// vars
+	$subject	= get_option( 'hmembership_user_rejection_email_to_user_subject', sprintf( __( 'Your registration request to %s is declined', 'hmembership' ), get_bloginfo( 'name' ) ) );
+	$subject	= $subject ? $subject : sprintf( __( 'Your registration request to %s is declined', 'hmembership' ), get_bloginfo( 'name' ) );
+	$message	= str_replace( '{user_email}', $user_email, get_option( 'hmembership_user_rejection_email_to_user_message' ) );
+
+	// filters for 3rd party
+	$subject	= apply_filters( 'hmembership_rejection_notification_to_user_subject', $subject, $user_email, $user_info );
+	$to			= apply_filters( 'hmembership_rejection_notification_to_user_to', $user_email, $user_email, $user_info );
+	$message	= apply_filters( 'hmembership_rejection_notification_to_user_message', $message, $user_email, $user_info );
+
+	if ( ! $subject || ! $to || ! $message )
+		return false;
+
+	// return
+	return hmembership_email()->send(
+		$subject,
+		$to,
+		apply_filters( 'the_content', $message )
+	);
+
+}

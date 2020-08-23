@@ -99,7 +99,9 @@ var $ = jQuery,
 						$.each(response.errors, function(i, error) {
 							msg += _hmembership_front.strings.error + ' #' + error.code + ': ' + error.description + '<br />';
 						});
-					} else if (response.data.length) {
+					}
+
+					if (response.data.length) {
 						msg += _hmembership_front.strings.success + ' <b><i>' + response.data + '</i></b>';
 					}
 				},

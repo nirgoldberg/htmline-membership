@@ -48,8 +48,10 @@ class HTMLineMembership_Admin_Page_Screen_Options {
 		$this->option_name			= $option_name;
 		$this->default_per_page		= $default_per_page;
 
-		// hooks
+		// actions
 		$this->add_action( 'admin_head',						array( $this, 'add_screen_options' ) );
+
+		// filters
 		$this->add_filter( 'set-screen-option',					array( $this, 'set_screen_options_filter' ), 10, 3 );
 		$this->add_filter( "set_screen_option_{$option_name}",	array( $this, 'set_screen_options_filter' ), 10, 3 );
 

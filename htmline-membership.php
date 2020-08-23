@@ -102,6 +102,7 @@ class HTMLineMembership {
 		hmembership_include( 'includes/classes/class-hmembership-action.php' );
 		hmembership_include( 'includes/classes/class-hmembership-user.php' );
 		hmembership_include( 'includes/classes/class-hmembership-form.php' );
+		hmembership_include( 'includes/classes/class-hmembership-email.php' );
 		hmembership_include( 'includes/classes/class-hmembership-content.php' );
 
 		// actions

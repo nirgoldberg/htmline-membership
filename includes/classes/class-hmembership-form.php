@@ -129,8 +129,11 @@ class HTMLineMembership_Form {
 		$fields = self::get_fields();
 		$output = '';
 
-		if ( is_user_logged_in() || ! $fields )
+		if ( ! $fields )
 			return;
+
+		if ( is_user_logged_in() )
+			return $this->logged_in_user();
 
 		// attributes
 		$atts = shortcode_atts( $this->defaults, $atts );
@@ -169,6 +172,31 @@ class HTMLineMembership_Form {
 
 		// return
 		return apply_filters( 'hmembership_form/add_shortcode', $output, $atts );
+
+	}
+
+	/**
+	 * logged_in_user
+	 *
+	 * This function will return user logged in info in case of user is logged in
+	 *
+	 * @since		1.0.0
+	 * @param		N/A
+	 * @return		(string)
+	 */
+	private function logged_in_user() {
+
+		// vars
+		global $current_user;
+		$output = '';
+
+		$output .=	'<p>' .
+						sprintf( __( 'Logged in as <b>%s</b>, ', 'hmembership' ), $current_user->user_login ) .
+						'<a href="' . wp_logout_url( get_permalink() ) . '" title="' . __( 'Log out of this account', 'hmembership' ) . '">' . __( 'Log out &raquo;', 'hmembership' ) . '</a>' .
+					'</p>';
+
+		// return
+		return $output;
 
 	}
 

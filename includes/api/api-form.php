@@ -163,7 +163,7 @@ function hmembership_form_validate_fields( $fields, &$result ) {
 			// log - required field
 			hmembership_result_log( 'errors', array(
 				'code'			=> '2',
-				'description'	=> sprintf( __( "<b><i>%s</i></b> can't be empty", 'hmembership' ), $label ),
+				'description'	=> sprintf( __( "<b><i>%s</i></b> can't be empty", 'hmembership' ), stripcslashes( $label ) ),
 			), $result );
 
 			// not valid

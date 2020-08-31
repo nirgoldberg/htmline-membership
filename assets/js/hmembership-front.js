@@ -182,6 +182,11 @@ var $ = jQuery,
 						});
 						break;
 
+					default:
+
+						// continue
+						return true;
+
 				}
 
 				fieldsArr[id] = {

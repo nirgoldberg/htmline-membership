@@ -408,7 +408,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 				if ( is_array( $value[ 'value' ] ) ) {
 
 					foreach ( $value[ 'value' ] as $val ) {
-						$li[] = '<li><b>' . $val . '</b></li>';
+						$li[] = '<li><b>' . stripslashes( $val ) . '</b></li>';
 					}
 
 				}
@@ -416,7 +416,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 			} else {
 
 				// other
-				$li[] = '<li>' . $value[ 'label' ] . ': <b>' . $value[ 'value' ] . '</b></li>';
+				$li[] = '<li>' . $value[ 'label' ] . ': <b>' . stripslashes( $value[ 'value' ] ) . '</b></li>';
 
 			}
 

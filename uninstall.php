@@ -115,10 +115,14 @@ function hmembership_remove_options_data( $site_id, &$options = array() ) {
  */
 function hmembership_remove_db_data( $site_id ) {
 
+	switch_to_blog( $site_id );
+
 	// remove the HTMLine Membership user role
 	hmembership_users_remove_user_role();
 
 	// drop HTMLine Membership users DB table
 	hmembership_users_drop_db_table();
+
+	restore_current_blog();
 
 }

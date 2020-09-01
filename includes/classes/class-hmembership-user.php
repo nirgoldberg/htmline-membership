@@ -83,7 +83,7 @@ class HTMLineMembership_User {
 		add_action( 'init',						array( $this, 'init' ) );
 		add_action( 'add_user_to_blog',			array( $this, 'after_add_user_to_blog' ), 10, 3 );
 		add_action( 'remove_user_from_blog',	array( $this, 'before_remove_user_from_blog' ), 10, 3 );
-		add_action( 'deleted_user',				array( $this, 'before_delete_user' ), 10, 2 );
+		add_action( 'deleted_user',				array( $this, 'before_delete_user' ), 10, 1 );
 		add_action( 'set_user_role',			array( $this, 'after_set_user_role' ), 10, 3 );
 		add_action( 'remove_user_role',			array( $this, 'after_remove_user_role' ), 10, 2 );
 
@@ -294,10 +294,6 @@ class HTMLineMembership_User {
 
 		if ( $user ) {
 
-			// verify current site
-			if ( get_current_blog_id() != $site_id )
-				return;
-
 			// verify user is indicated as approved
 			if ( 'approved' == hmembership_status()->get_status_by_code( $user[ 'user_status' ] ) ) {
 
@@ -318,17 +314,30 @@ class HTMLineMembership_User {
 	 *
 	 * @since		1.0.0
 	 * @param		$user_id (int)
-	 * @param		$reassign (int|null)
 	 * @return		N/A
 	 */
-	public function before_delete_user( $user_id, $reassign ) {
+	public function before_delete_user( $user_id ) {
 
-		// verify is an HTMLine Membership user
-		$user = $this->get_user_by_wp_user_id( $user_id );
+		// loop through all network sites in order to update associated HTMLine Membership users
+		$sites = get_sites( array( 'fields' => 'ids' ) );
 
-		if ( $user ) {
+		if ( ! $sites )
+			return;
 
-			$this->unset_users_wp_user( array( $user[ 'ID' ] ) );
+		foreach ( $sites as $site_id ) {
+
+			switch_to_blog( $site_id );
+
+			// verify is an HTMLine Membership user
+			$user = $this->get_user_by_wp_user_id( $user_id );
+
+			if ( $user ) {
+
+				$this->unset_users_wp_user( array( $user[ 'ID' ] ) );
+
+			}
+
+			restore_current_blog();
 
 		}
 

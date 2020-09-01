@@ -253,7 +253,7 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'tab'				=> 'emails',
 					'section'			=> 'approval',
 					'type'				=> 'editor',
-					'supplimental'		=> sprintf( __( 'Available patterns: %s', 'hmembership' ), '{user_email}' ),
+					'supplimental'		=> sprintf( __( 'Available patterns: %s', 'hmembership' ), '{user_email}&nbsp;&nbsp;{username}&nbsp;&nbsp;{password_reset_link}' ),
 				),
 				array(
 					'uid'				=> 'hmembership_user_rejection_email_to_user_subject',

@@ -204,7 +204,7 @@ class HTMLineMembership_Admin_Users extends HTMLineMembership_Admin_Page {
 		foreach ( $users as $user ) {
 
 			// send approval notification to user
-			hmembership_approval_notification_to_user( $user[ 'user_email' ], $user[ 'user_info' ] );
+			hmembership_approval_notification_to_user( $user[ 'wp_user_id' ], $user[ 'user_email' ], $user[ 'user_info' ] );
 
 		}
 

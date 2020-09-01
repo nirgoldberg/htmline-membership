@@ -367,16 +367,40 @@ function hmembership_registration_notification_to_admin( $user_email, $user_info
  * Returns true/false according to email sent reesult
  *
  * @since		1.0.0
+ * @param		$wp_user_id (int)
  * @param		$user_email (string)
  * @param		$user_info (string)
  * @return		(bool)
  */
-function hmembership_approval_notification_to_user( $user_email, $user_info ) {
+function hmembership_approval_notification_to_user( $wp_user_id, $user_email, $user_info ) {
+
+	// get userdata
+	$user = get_userdata( $wp_user_id );
+
+	if ( ! $user )
+		return false;
+
+	// create and get user password reset key
+	$key = get_password_reset_key( $user );
+
+	if ( is_wp_error( $key ) )
+		return false;
 
 	// vars
 	$subject	= get_option( 'hmembership_user_approval_email_to_user_subject', sprintf( __( 'Your registration request to %s is approved', 'hmembership' ), get_bloginfo( 'name' ) ) );
 	$subject	= $subject ? $subject : sprintf( __( 'Your registration request to %s is approved', 'hmembership' ), get_bloginfo( 'name' ) );
-	$message	= str_replace( '{user_email}', $user_email, get_option( 'hmembership_user_approval_email_to_user_message' ) );
+
+	// message patterns
+	$patterns	= array(
+		'{user_email}'			=> $user_email,
+		'{username}'			=> $user->user_login,
+		'{password_reset_link}'	=> network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ),
+	);
+
+	// filter $patterns for 3rd party
+	$patterns	= apply_filters( 'hmembership_approval_notification_to_user_message_patterns', $patterns, $user, $user_email, $user_info );
+
+	$message	= str_replace( array_keys( $patterns ), $patterns, get_option( 'hmembership_user_approval_email_to_user_message' ) );
 
 	// filters for 3rd party
 	$subject	= apply_filters( 'hmembership_approval_notification_to_user_subject', $subject, $user_email, $user_info );

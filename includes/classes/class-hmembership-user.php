@@ -221,7 +221,11 @@ class HTMLineMembership_User {
 				$result[ $user[ 'ID' ] ] = $wp_user_id;
 
 				// send user notificcation
-				wp_new_user_notification( $wp_user_id, null, 'user' );
+				/**
+				 * Removed because of notification problem in multisite subsites
+				 * This function will be replaced by integrating user password reset link as part of hmembership_approval_notification_to_user()
+				 */
+				//wp_new_user_notification( $wp_user_id, null, 'user' );
 
 			}
 

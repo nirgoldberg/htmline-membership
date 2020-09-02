@@ -221,7 +221,7 @@ function hmembership_form_insert_user( $fields, &$result ) {
 	unset( $fields[ 'hmembership_user_email' ] );
 
 	// insert user
-	$insert = hmembership_users_insert_user( $user_email, serialize( $fields ) );
+	$insert = hmembership_users_insert_user( $user_email, json_encode( $fields ) );
 
 	if ( ! $insert ) {
 
@@ -236,7 +236,7 @@ function hmembership_form_insert_user( $fields, &$result ) {
 
 	}
 
-	if ( ! hmembership_registration_notification( $user_email, serialize( $fields), 'both' ) ) {
+	if ( ! hmembership_registration_notification( $user_email, json_encode( $fields), 'both' ) ) {
 
 		// log
 		hmembership_result_log( 'errors', array(

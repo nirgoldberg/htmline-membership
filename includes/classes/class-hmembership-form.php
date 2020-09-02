@@ -412,6 +412,7 @@ class HTMLineMembership_Form {
 		$field_options		= get_option( 'hmembership_user_custom_field_options' );
 		$field_defaults		= get_option( 'hmembership_user_custom_field_default' );
 		$field_required		= get_option( 'hmembership_user_custom_field_required' );
+		$field_column		= get_option( 'hmembership_user_custom_field_column' );
 		$fields				= array();
 
 		if ( ! $fields_count )
@@ -419,7 +420,7 @@ class HTMLineMembership_Form {
 
 		for( $i=0 ; $i<$fields_count ; $i++ ) {
 
-			if ( ! isset( $field_labels[ $i ] ) || ! isset( $field_types[ $i ] ) || ! isset( $field_options[ $i ] ) || ! isset( $field_defaults[ $i ] ) || ! isset( $field_required[ $i ] ) )
+			if ( ! isset( $field_labels[ $i ] ) || ! isset( $field_types[ $i ] ) || ! isset( $field_options[ $i ] ) || ! isset( $field_defaults[ $i ] ) || ! isset( $field_required[ $i ] ) || ! isset( $field_column[ $i ] ) )
 				continue;
 
 			// build options and default
@@ -446,6 +447,7 @@ class HTMLineMembership_Form {
 				'options'	=> $options,
 				'default'	=> $default,
 				'required'	=> is_array( $field_required[ $i ] ) && in_array( 'true', $field_required[ $i ] ),
+				'column'	=> is_array( $field_column[ $i ] ) && in_array( 'true', $field_column[ $i ] ),
 			);
 
 		}

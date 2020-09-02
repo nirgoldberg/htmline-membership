@@ -6,6 +6,10 @@
 .wrap {
 	.wp-list-table.hmembership-users {
 		td {
+			& > ul {
+				margin: 0;
+			}
+
 			&.column-user_info {
 				.expand {
 					float: left;

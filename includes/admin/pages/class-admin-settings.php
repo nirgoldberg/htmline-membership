@@ -195,6 +195,17 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 						'true'			=> '',
 					),
 				),
+				array(
+					'uid'				=> 'hmembership_user_custom_field_column',
+					'label'				=> __( 'Set as Column in Users Table', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_custom_field_column',
+					'tab'				=> 'users',
+					'section'			=> 'user_custom_fields',
+					'type'				=> 'checkbox',
+					'options'			=> array(
+						'true'			=> '',
+					),
+				),
 
 				// emails
 

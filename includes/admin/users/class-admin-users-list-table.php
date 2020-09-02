@@ -17,6 +17,13 @@ if ( ! class_exists( 'HTMLineMembership_Users_List_Table' ) ) :
 class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table {
 
 	/**
+	 * Custom columns
+	 *
+	 * @var (array)
+	 */
+	private $custom_columns;
+
+	/**
 	* __construct
 	*
 	* @since		1.0.0
@@ -30,6 +37,9 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 			'singular'	=> 'hmembership-user',		// singular label for an object being listed
 			'ajax'		=> false,					// if true, the parent class will call the _js_vars() method in the footer
 		) );
+
+		// custom columns
+		$this->custom_columns = $this->get_custom_columns();
 
 	}
 
@@ -80,6 +90,37 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 	}
 
 	/**
+	 * get_custom_columns
+	 *
+	 * This function will return an array of custom columns taken from HTMLineMembership_Form::get_fields()
+	 *
+	 * @since		1.0.0
+	 * @param		N/A
+	 * @return		(array)
+	 */
+	private function get_custom_columns() {
+
+		$fields			= HTMLineMembership_Form::get_fields();
+		$custom_columns	= array();
+
+		foreach ( $fields as $field ) {
+			if ( $field[ 'column' ] ) {
+
+				preg_match( '/(hmembership-\d+)/', $field[ 'id' ], $matches );
+				$custom_columns[ $matches[0] ] = array(
+					'key'	=> $field[ 'id' ],
+					'value'	=> $field[ 'label' ],
+				);
+
+			}
+		}
+
+		// return
+		return $custom_columns;
+
+	}
+
+	/**
 	 * get_columns
 	 *
 	 * This function will return an array of columns
@@ -96,6 +137,13 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 			'user_registered'	=> __( 'Registered On', 'hmembership' ),
 			'user_info'			=> __( 'User Info', 'hmembership' ),
 			'user_status'		=> __( 'Status', 'hmembership' ),
+		);
+
+		// add custom columns
+		$table_columns = array_merge(
+			array_slice( $table_columns, 0, 3 ),
+			array_map( function( $column ) { return $column[ 'value' ]; }, $this->custom_columns ),
+			array_slice( $table_columns, 3, 2 )
 		);
 
 		// return
@@ -129,6 +177,18 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 			'user_email'		=> 'user_email',
 			'user_registered'	=> 'user_registered',
 			'user_status'		=> 'user_status',
+		);
+
+		// add custom columns
+		$custom_sortable_columns = array();
+
+		foreach ( $this->custom_columns as $key => $value ) {
+			$custom_sortable_columns[ $key ] = $key;
+		}
+
+		$sortable_columns = array_merge(
+			$sortable_columns,
+			$custom_sortable_columns
 		);
 
 		// return
@@ -235,10 +295,25 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		$orderby		= ( isset( $_GET[ 'orderby' ] ) ) ? esc_sql( $_GET[ 'orderby' ] ) : 'user_registered';
 		$order			= ( isset( $_GET[ 'order' ] ) ) ? esc_sql( $_GET[ 'order' ] ) : 'DESC';
 
-		$sql =
-			"SELECT ID, user_email, user_registered, user_info, user_status
-			FROM $users_table
-			$where ORDER BY $orderby $order";
+		// check whether a custom column is set as order by clause
+		if ( array_key_exists( $orderby, $this->custom_columns ) ) {
+
+			// get the actual user info key
+			$user_info_key = $this->custom_columns[ $orderby ][ 'key' ];
+
+			$sql =
+				"SELECT ID, user_email, user_registered, user_info, user_status, JSON_EXTRACT(user_info, '$.\"" . $user_info_key . "\".value') AS custom_column
+				FROM $users_table
+				$where ORDER BY custom_column $order";
+
+		} else {
+
+			$sql =
+				"SELECT ID, user_email, user_registered, user_info, user_status
+				FROM $users_table
+				$where ORDER BY $orderby $order";
+
+		}
 
 		// query output_type will be an associative array with ARRAY_A.
 		$results = $wpdb->get_results( $wpdb->prepare( $sql ), ARRAY_A );
@@ -290,10 +365,56 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 		switch ( $column_name ) {
 
 			case 'user_registered':
-				return $item[$column_name];
+				return $item[ $column_name ];
 
 			default:
-				return $item[$column_name];
+				// maybe custom column
+				if ( 'hmembership' == substr( $column_name, 0, 11 ) ) {
+
+					// get data from $item[ 'user_info' ]
+					$info = json_decode( $item[ 'user_info' ] );
+
+					// exit if no expected info
+					if ( ! $info )
+						return $item[ 'user_info' ];
+
+					$data = '';
+
+					// loop
+					foreach ( $info as $key => $value ) {
+
+						if ( strpos( $key, $column_name ) === false )
+							continue;
+
+						if ( in_array( $value->type, array( 'radio', 'checkbox' ) ) ) {
+
+							// radio/checkbox
+							if ( ! empty ( $value->value ) ) {
+
+								$data .= '<ul>';
+
+								foreach ( $value->value as $val ) {
+									$data .= '<li>' . stripslashes( $val ) . '</li>';
+								}
+
+								$data .= '</ul>';
+
+							}
+
+						} else {
+
+							// other
+							$data .= stripslashes( $value->value );
+
+						}
+
+					}
+
+					return $data;
+
+				} else {
+					return $item[ $column_name ];
+				}
 
 		}
 
@@ -382,13 +503,13 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 
 		// vars
 		$fields			= HTMLineMembership_Form::get_fields();
-		$info			= unserialize( $item[ 'user_info' ] );
+		$info			= json_decode( $item[ 'user_info' ] );
 		$current_info	= array();
 		$old_info		= array();
 		$output			= '';
 
 		// exit if no expected info
-		if ( ! is_array( $info ) )
+		if ( ! $info )
 			return $item[ 'user_info' ];
 
 		// exit if no user custom fields defined
@@ -402,12 +523,12 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 			$current	= false !== array_search( $key, array_column( $fields, 'id' ) );
 			$li			= array();
 
-			if ( in_array( $value[ 'type' ], array( 'radio', 'checkbox' ) ) ) {
+			if ( in_array( $value->type, array( 'radio', 'checkbox' ) ) ) {
 
 				// radio/checkbox
-				if ( is_array( $value[ 'value' ] ) ) {
+				if ( ! empty( $value->value ) ) {
 
-					foreach ( $value[ 'value' ] as $val ) {
+					foreach ( $value->value as $val ) {
 						$li[] = '<li><b>' . stripslashes( $val ) . '</b></li>';
 					}
 
@@ -416,7 +537,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 			} else {
 
 				// other
-				$li[] = '<li>' . $value[ 'label' ] . ': <b>' . stripslashes( $value[ 'value' ] ) . '</b></li>';
+				$li[] = '<li>' . $value->label . ': <b>' . stripslashes( $value->value ) . '</b></li>';
 
 			}
 

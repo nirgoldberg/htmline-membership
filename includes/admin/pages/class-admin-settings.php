@@ -335,7 +335,7 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'label_for'			=> 'hmembership_admin_email',
 					'tab'				=> 'general',
 					'section'			=> 'general',
-					'type'				=> 'email',
+					'type'				=> 'text',
 					'placeholder'		=> get_option( 'admin_email' ),
 					'supplimental'		=> sprintf( __( 'Default: %s', 'hmembership' ), get_option( 'admin_email' ) ),
 				),

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ms-taxonomies-sync 1.0.0\n"
-"POT-Creation-Date: 2020-08-14 14:19+0300\n"
-"PO-Revision-Date: 2020-08-14 14:19+0300\n"
+"POT-Creation-Date: 2020-09-06 23:17+0300\n"
+"PO-Revision-Date: 2020-09-06 23:17+0300\n"
 "Last-Translator: Nir Goldberg <nir@htmline.com>\n"
 "Language-Team: Nir Goldberg <nir@htmline.com>\n"
 "Language: he_IL\n"
@@ -30,7 +30,24 @@ msgstr ""
 msgid "HTMLine Membership"
 msgstr ""
 
-#: htmline-membership.php:470
+#: htmline-membership.php:268 includes/admin/pages/class-admin-page.php:271
+#: includes/admin/users/class-admin-users-list-table.php:782
+msgid "Error"
+msgstr "שגיאה"
+
+#: htmline-membership.php:269
+msgid "Request was sent successfuly for user:"
+msgstr "הבקשה נשלחה בהצלחה עבור המשתמש:"
+
+#: htmline-membership.php:270
+msgid "Request failed"
+msgstr "הבקשה נכשלה"
+
+#: htmline-membership.php:312
+msgid "Export process has been failed"
+msgstr "תהליך היצוא נכשל"
+
+#: htmline-membership.php:646
 #, php-format
 msgid ""
 "<strong>%s</strong> plugin can't be activated.<br />The following plugins "
@@ -65,6 +82,7 @@ msgstr ""
 
 #: includes/admin/lib/class-admin-wp-list-table.php:548
 #: includes/admin/lib/class-admin-wp-list-table.php:1434
+#: includes/admin/users/class-admin-users-list-table.php:642
 msgid "Show more details"
 msgstr ""
 
@@ -163,9 +181,14 @@ msgstr ""
 msgid "Select All"
 msgstr "בחר הכל"
 
-#: includes/admin/pages/class-admin-page-screen-options.php:120
+#: includes/admin/pages/class-admin-page-screen-options.php:122
 msgid "Number of items per page:"
 msgstr "מספר פריטים בעמוד:"
+
+#: includes/admin/pages/class-admin-page.php:270
+#: includes/admin/users/class-admin-users-list-table.php:781
+msgid "Invalid Nonce"
+msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:35
 msgid "HTMLine Membership Settings"
@@ -176,115 +199,286 @@ msgid "Settings"
 msgstr "הגדרות"
 
 #: includes/admin/pages/class-admin-settings.php:41
-#: includes/admin/pages/class-admin-users-page.php:63
+#: includes/admin/pages/class-admin-users-page.php:77
 msgid "Users"
 msgstr "משתמשים"
 
 #: includes/admin/pages/class-admin-settings.php:45
-msgid "User Custom fields"
-msgstr "שדות מיוחדים למשתמשים"
+msgid "Registration Form"
+msgstr "טופס הרשמה"
 
 #: includes/admin/pages/class-admin-settings.php:46
+msgid ""
+"Place the following shortcode in order to display registration form on "
+"screen: "
+msgstr "הדבק את הקישור הבא על מנת להציג את טופס ההרשמה בעמוד"
+
+#: includes/admin/pages/class-admin-settings.php:50
+msgid "User Custom Fields"
+msgstr "שדות מיוחדים למשתמשים"
+
+#: includes/admin/pages/class-admin-settings.php:51
 msgid "Custom fields for user registration form"
 msgstr "שדות עבור טופס הרשמה למשתמשים"
 
-#: includes/admin/pages/class-admin-settings.php:51
-msgid "Display"
-msgstr "תצוגה"
+#: includes/admin/pages/class-admin-settings.php:56
+msgid "Emails"
+msgstr "מיילים"
 
-#: includes/admin/pages/class-admin-settings.php:55
-msgid "User Interface Settings"
-msgstr "הגדרות ממשק משתמש"
+#: includes/admin/pages/class-admin-settings.php:60
+msgid "User Registration"
+msgstr "רישום משתמש"
 
-#: includes/admin/pages/class-admin-settings.php:61
+#: includes/admin/pages/class-admin-settings.php:65
+msgid "User Approval"
+msgstr "אישור משתמש"
+
+#: includes/admin/pages/class-admin-settings.php:70
+msgid "User Rejection"
+msgstr "דחיית משתמש"
+
+#: includes/admin/pages/class-admin-settings.php:76
 msgid "Permissions"
 msgstr "הרשאות"
 
-#: includes/admin/pages/class-admin-settings.php:65
-msgid "Edit Settings"
-msgstr "הגדרות עריכה"
+#: includes/admin/pages/class-admin-settings.php:80
+msgid "Users Management Settings"
+msgstr "הגדרות ניהול משתמשים"
 
-#: includes/admin/pages/class-admin-settings.php:70
+#: includes/admin/pages/class-admin-settings.php:85
 msgid "Export Settings"
 msgstr "הגדרות יצוא"
 
-#: includes/admin/pages/class-admin-settings.php:76
+#: includes/admin/pages/class-admin-settings.php:91
+msgid "General"
+msgstr "כללי"
+
+#: includes/admin/pages/class-admin-settings.php:95
+msgid "General Settings"
+msgstr "הגדרות כלליות"
+
+#: includes/admin/pages/class-admin-settings.php:101
 msgid "Uninstall"
 msgstr "הסרת תוסף"
 
-#: includes/admin/pages/class-admin-settings.php:80
+#: includes/admin/pages/class-admin-settings.php:105
 msgid "Uninstall Settings"
 msgstr "הגדרות הסרת תוסף"
 
-#: includes/admin/pages/class-admin-settings.php:95
+#: includes/admin/pages/class-admin-settings.php:123
+#: includes/admin/users/class-admin-users-list-table.php:139
+msgid "Status"
+msgstr "סטטוס"
+
+#: includes/admin/pages/class-admin-settings.php:132
+#: includes/admin/pages/class-admin-settings.php:303
+#: includes/admin/pages/class-admin-settings.php:317
+#: includes/admin/pages/class-admin-settings.php:376
+#, php-format
+msgid "(Default: %s)"
+msgstr "(ברירת מחדל: %s)"
+
+#: includes/admin/pages/class-admin-settings.php:132
+msgid "active"
+msgstr "פעיל"
+
+#: includes/admin/pages/class-admin-settings.php:136
+msgid "User Email Field Label"
+msgstr "כותרת שדה דואר אלקטרוני"
+
+#: includes/admin/pages/class-admin-settings.php:141
+#: includes/admin/pages/class-admin-settings.php:142
+#: includes/classes/class-hmembership-form.php:142
+#: includes/classes/class-hmembership-form.php:143
+msgid "Email Address"
+msgstr "דואר אלקטרוני"
+
+#: includes/admin/pages/class-admin-settings.php:142
+#: includes/admin/pages/class-admin-settings.php:220
+#: includes/admin/pages/class-admin-settings.php:239
+#: includes/admin/pages/class-admin-settings.php:258
+#: includes/admin/pages/class-admin-settings.php:277
+#: includes/admin/pages/class-admin-settings.php:330
+#: includes/admin/pages/class-admin-settings.php:340
+#: includes/admin/pages/class-admin-settings.php:350
+#: includes/admin/pages/class-admin-settings.php:360
+#, php-format
+msgid "Default: %s"
+msgstr "(ברירת מחדל: %s)"
+
+#: includes/admin/pages/class-admin-settings.php:146
 msgid "Field Label"
 msgstr "כותרת שדה"
 
-#: includes/admin/pages/class-admin-settings.php:103
+#: includes/admin/pages/class-admin-settings.php:154
 msgid "Field Type"
 msgstr "סוג שדה"
 
-#: includes/admin/pages/class-admin-settings.php:109
+#: includes/admin/pages/class-admin-settings.php:160
 msgid "Text"
 msgstr "טקסט"
 
-#: includes/admin/pages/class-admin-settings.php:110
+#: includes/admin/pages/class-admin-settings.php:161
+msgid "Email"
+msgstr "מייל"
+
+#: includes/admin/pages/class-admin-settings.php:162
 msgid "Textarea"
 msgstr "אזור טקסט"
 
-#: includes/admin/pages/class-admin-settings.php:111
+#: includes/admin/pages/class-admin-settings.php:163
 msgid "Select"
 msgstr "בחירה מתפריט"
 
-#: includes/admin/pages/class-admin-settings.php:112
+#: includes/admin/pages/class-admin-settings.php:164
 msgid "Multiselect"
 msgstr "בחירה מרובה"
 
-#: includes/admin/pages/class-admin-settings.php:113
+#: includes/admin/pages/class-admin-settings.php:165
 msgid "Radio Button"
 msgstr "כפתורי רדיו"
 
-#: includes/admin/pages/class-admin-settings.php:114
+#: includes/admin/pages/class-admin-settings.php:166
 msgid "Checkbox"
 msgstr "תיבות סימון"
 
-#: includes/admin/pages/class-admin-settings.php:120
+#: includes/admin/pages/class-admin-settings.php:171
 msgid "Field Options"
 msgstr "אפשרויות שדה"
 
-#: includes/admin/pages/class-admin-settings.php:125
+#: includes/admin/pages/class-admin-settings.php:176
 msgid "Each option per row"
 msgstr "כל אפשרות בשורה"
 
-#: includes/admin/pages/class-admin-settings.php:129
-msgid "Field Default"
-msgstr "ברירת מחדל לשדה"
+#: includes/admin/pages/class-admin-settings.php:180
+msgid "Default Option"
+msgstr "אפשרות ברירת מחדל"
 
-#: includes/admin/pages/class-admin-settings.php:138
-#: includes/admin/pages/class-admin-settings.php:165
-msgid "(Default: false)"
-msgstr "(ברירת מחדל: לא)"
+#: includes/admin/pages/class-admin-settings.php:185
+msgid "One option name from above options"
+msgstr "אפשרות אחת מתוך האפשרויות למעלה"
 
-#: includes/admin/pages/class-admin-settings.php:142
-#: includes/admin/views/hmembership-tools-export-users.php:17
-msgid "Export users"
+#: includes/admin/pages/class-admin-settings.php:189
+msgid "Required Field"
+msgstr "שדה חובה"
+
+#: includes/admin/pages/class-admin-settings.php:200
+msgid "Set as Column in Users Table"
+msgstr "קבע כעמודה בטבלת משתמשים"
+
+#: includes/admin/pages/class-admin-settings.php:214
+#: includes/admin/pages/class-admin-settings.php:252
+#: includes/admin/pages/class-admin-settings.php:271
+msgid "Email Subject Sent to User"
+msgstr "נושא המייל הנשלח למשתמש"
+
+#: includes/admin/pages/class-admin-settings.php:219
+#: includes/admin/pages/class-admin-settings.php:220
+#: includes/api/api-users.php:306 includes/api/api-users.php:307
+#, php-format
+msgid "Your registration request to %s"
+msgstr "בקשת ההרשמה לך ל%s"
+
+#: includes/admin/pages/class-admin-settings.php:224
+#: includes/admin/pages/class-admin-settings.php:262
+#: includes/admin/pages/class-admin-settings.php:281
+msgid "Email Message Sent to User"
+msgstr "הודעת המייל הנשלח למשתמש"
+
+#: includes/admin/pages/class-admin-settings.php:229
+#: includes/admin/pages/class-admin-settings.php:248
+#: includes/admin/pages/class-admin-settings.php:267
+#: includes/admin/pages/class-admin-settings.php:286
+#, php-format
+msgid "Available patterns: %s"
+msgstr "תבניות אפשריות: %s"
+
+#: includes/admin/pages/class-admin-settings.php:233
+msgid "Email Subject Sent to Website Admin"
+msgstr "נושא המייל הנשלח למנהל האתר"
+
+#: includes/admin/pages/class-admin-settings.php:238
+#: includes/admin/pages/class-admin-settings.php:239
+#: includes/api/api-users.php:341 includes/api/api-users.php:342
+#, php-format
+msgid "[%s] A new registration request"
+msgstr "[%s] בקשת הרשמה חדשה"
+
+#: includes/admin/pages/class-admin-settings.php:243
+msgid "Email Message Sent to Website Admin"
+msgstr "הודעת המייל הנשלח למנהל האתר"
+
+#: includes/admin/pages/class-admin-settings.php:257
+#: includes/admin/pages/class-admin-settings.php:258
+#: includes/api/api-users.php:390 includes/api/api-users.php:391
+#, php-format
+msgid "Your registration request to %s is approved"
+msgstr "בקשת ההרשמה שלך ל%s אושרה"
+
+#: includes/admin/pages/class-admin-settings.php:276
+#: includes/admin/pages/class-admin-settings.php:277
+#: includes/api/api-users.php:436 includes/api/api-users.php:437
+#, php-format
+msgid "Your registration request to %s is declined"
+msgstr "בקשת ההרשמה שלך ל%s נדחתה"
+
+#: includes/admin/pages/class-admin-settings.php:293
+msgid "Delete Users"
+msgstr "מחק משתמשים"
+
+#: includes/admin/pages/class-admin-settings.php:302
+msgid "Check this option to allow deleting of users"
+msgstr "סימון אפשרות זו יאפשר מחיקת משתמשים"
+
+#: includes/admin/pages/class-admin-settings.php:303
+#: includes/admin/pages/class-admin-settings.php:317
+msgid "true"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:307
+#: includes/admin/pages/class-admin-tools-page.php:40
+#: includes/admin/views/hmembership-tools-export-users.php:20
+msgid "Export Users"
 msgstr "יצוא משתמשים"
 
-#: includes/admin/pages/class-admin-settings.php:151
+#: includes/admin/pages/class-admin-settings.php:316
 msgid "Check this option to allow exporting of users"
 msgstr "סימון אפשרות זו יאפשר יצוא משתמשים"
 
-#: includes/admin/pages/class-admin-settings.php:152
-msgid "(Default: true)"
-msgstr "(ברירת מחדל: כן)"
+#: includes/admin/pages/class-admin-settings.php:324
+msgid "User Role Display Name"
+msgstr "שם תפקיד לתצוגה"
 
-#: includes/admin/pages/class-admin-settings.php:156
-msgid "Remove data on uninstall"
+#: includes/admin/pages/class-admin-settings.php:329
+#: includes/admin/pages/class-admin-settings.php:330
+#: includes/classes/class-hmembership-user.php:67
+#: includes/classes/class-hmembership-user.php:68
+msgid "Member"
+msgstr "חבר"
+
+#: includes/admin/pages/class-admin-settings.php:334
+msgid "Admin Email Address"
+msgstr "כתובת מייל מנהל האתר"
+
+#: includes/admin/pages/class-admin-settings.php:344
+msgid "Emails \"From\" Name"
+msgstr "שם שדה \"מאת\""
+
+#: includes/admin/pages/class-admin-settings.php:354
+msgid "Emails \"From\" Address"
+msgstr "כתובת שדה \"מאת\""
+
+#: includes/admin/pages/class-admin-settings.php:367
+msgid "Remove Data on Uninstall"
 msgstr "מחיקת כלל נתוני התוסף עם הסרתו"
 
-#: includes/admin/pages/class-admin-settings.php:164
+#: includes/admin/pages/class-admin-settings.php:375
 msgid "Caution: all data will be removed without any option to restore"
 msgstr "אזהרה: כל המידע יימחק ללא אפשרות שחזור"
+
+#: includes/admin/pages/class-admin-settings.php:376
+msgid "false"
+msgstr ""
 
 #: includes/admin/pages/class-admin-tools-page.php:34
 msgid "HTMLine Membership Tools"
@@ -294,62 +488,81 @@ msgstr "כלים"
 msgid "Tools"
 msgstr "כלים"
 
-#: includes/admin/pages/class-admin-tools-page.php:40
-#: includes/admin/views/hmembership-tools-export-users.php:20
-msgid "Export Users"
-msgstr "יצוא משתמשים"
-
-#: includes/admin/pages/class-admin-users-page.php:62
+#: includes/admin/pages/class-admin-users-page.php:76
 msgid "HTMLine Membership Users"
 msgstr "משתמשים"
+
+#: includes/admin/pages/class-admin-users-page.php:326
+#, php-format
+msgid "%s user approved successfully"
+msgid_plural "%s users approved successfully"
+msgstr[0] "משתמש אחד אושר בהצלחה"
+msgstr[1] "שני משתמשים אושרו בהצלחה"
+msgstr[2] "%s משתמשים אושרו בהצלחה"
+msgstr[3] "%s משתמשים אושרו בהצלחה"
+
+#: includes/admin/pages/class-admin-users-page.php:328
+msgid "User approved successfully"
+msgstr "משתמש אושר בהצלחה"
+
+#: includes/admin/pages/class-admin-users-page.php:350
+#, php-format
+msgid "%s user declined successfully"
+msgid_plural "%s users declined successfully"
+msgstr[0] "משתמש אחד נדחה בהצלחה"
+msgstr[1] "שני משתמשים נדחו בהצלחה"
+msgstr[2] "%s משתמשים נדחו בהצלחה"
+msgstr[3] "%s משתמשים נדחו בהצלחה"
+
+#: includes/admin/pages/class-admin-users-page.php:352
+msgid "User declined successfully"
+msgstr "משתמש נדחה בהצלחה"
+
+#: includes/admin/pages/class-admin-users-page.php:374
+#, php-format
+msgid "%s user deleted successfully"
+msgid_plural "%s users deleted successfully"
+msgstr[0] "משתמש אחד נמחק בהצלחה"
+msgstr[1] "שני משתמשים נמחקו בהצלחה"
+msgstr[2] "%s משתמשים נמחקו בהצלחה"
+msgstr[3] "%s משתמשים נמחקו בהצלחה"
+
+#: includes/admin/pages/class-admin-users-page.php:376
+msgid "User deleted successfully"
+msgstr "משתמש נמחק בהצלחה"
 
 #: includes/admin/pages/class-admin.php:60
 msgid "Membership"
 msgstr ""
 
-#: includes/admin/users/class-admin-users-list-table.php:95
-msgid "Username"
-msgstr "שם משתמש"
-
-#: includes/admin/users/class-admin-users-list-table.php:96
-msgid "Email"
+#: includes/admin/users/class-admin-users-list-table.php:136
+msgid "User Email"
 msgstr "מייל"
 
-#: includes/admin/users/class-admin-users-list-table.php:97
-msgctxt "column name"
+#: includes/admin/users/class-admin-users-list-table.php:137
 msgid "Registered On"
 msgstr "נרשם בתאריך"
 
-#: includes/admin/users/class-admin-users-list-table.php:98
-msgid "Status"
-msgstr "סטטוס"
+#: includes/admin/users/class-admin-users-list-table.php:138
+msgid "User Info"
+msgstr "מידע משתמש"
 
-#: includes/admin/users/class-admin-users-list-table.php:154
+#: includes/admin/users/class-admin-users-list-table.php:210
 msgid "No users avaliable."
 msgstr "לא נמצאו משתמשים."
 
-#: includes/admin/users/class-admin-users-list-table.php:244
+#: includes/admin/users/class-admin-users-list-table.php:251
+msgid "All"
+msgstr "הכל"
+
+#: includes/admin/users/class-admin-users-list-table.php:436
 #, php-format
 msgid "Select %s"
 msgstr "בחר %s"
 
-#: includes/admin/users/class-admin-users-list-table.php:278
-#: includes/admin/users/class-admin-users-list-table.php:315
-msgid "Approve"
-msgstr "אישור"
-
-#: includes/admin/users/class-admin-users-list-table.php:288
-#: includes/admin/users/class-admin-users-list-table.php:316
-msgid "Decline"
-msgstr "דחיה"
-
-#: includes/admin/users/class-admin-users-list-table.php:494
-msgid "Invalid Nonce"
-msgstr ""
-
-#: includes/admin/users/class-admin-users-list-table.php:495
-msgid "Error"
-msgstr "שגיאה"
+#: includes/admin/users/class-admin-users-list-table.php:560
+msgid "Old User Info"
+msgstr "מידע משתמש ישן"
 
 #: includes/admin/views/hmembership-settings-form.php:43
 #: includes/admin/views/hmembership-settings.php:117
@@ -368,10 +581,183 @@ msgstr "הגדרות נשמרו."
 msgid "Save Settings"
 msgstr "שמור הגדרות"
 
+#: includes/admin/views/hmembership-tools-export-users.php:17
+msgid "Export users"
+msgstr "יצוא משתמשים"
+
 #: includes/admin/views/hmembership-tools.php:65
 msgid "There are no available tools"
 msgstr "לא נמצאו כלים זמינים"
 
-#: includes/admin/views/hmembership-users.php:38
+#: includes/admin/views/hmembership-users-list-table-action.php:24
+msgid "You are not allowed to make this request."
+msgstr "אינך מורשה לבצע פעולה זו."
+
+#: includes/admin/views/hmembership-users-list-table-action.php:32
+#, php-format
+msgid "No users have been specified for %s."
+msgstr "לא הוגדרו משתמשים ל%s"
+
+#: includes/admin/views/hmembership-users-list-table-action.php:46
+msgid "Error getting user information."
+msgid_plural "Error getting users information."
+msgstr[0] "שגיאה בקבלת נתוני משתמש."
+msgstr[1] "שגיאה בקבלת נתוני משתמשים."
+msgstr[2] "שגיאה בקבלת נתוני משתמשים."
+msgstr[3] "שגיאה בקבלת נתוני משתמשים."
+
+#: includes/admin/views/hmembership-users-list-table-action.php:71
+#, php-format
+msgid "You have specified this user for %1$s:"
+msgid_plural "You have specified these users for %1$s:"
+msgstr[0] "הגדרת את המשתמש הבא ל%s"
+msgstr[1] "הגדרת את המשתמשים הבאים ל%s"
+msgstr[2] "הגדרת את המשתמשים הבאים ל%s"
+msgstr[3] "הגדרת את המשתמשים הבאים ל%s"
+
+#: includes/admin/views/hmembership-users-list-table-action.php:84
+#, php-format
+msgid "%s user cannot be %s"
+msgstr "לא ניתן %s משתמש %s"
+
+#: includes/admin/views/hmembership-users-list-table-action.php:89
+msgid "ID"
+msgstr ""
+
+#: includes/admin/views/hmembership-users-list-table-action.php:90
+msgid "Will not be processed"
+msgstr "לא יתבצע"
+
+#: includes/admin/views/hmembership-users-list-table-action.php:100
+#, php-format
+msgid "Confirm %s"
+msgstr "אשר %s"
+
+#: includes/admin/views/hmembership-users.php:47
 msgid "Search Users"
 msgstr "חפש משתמשים"
+
+#: includes/api/api-form.php:70
+msgid "Empty request"
+msgstr "בקשה ריקה"
+
+#: includes/api/api-form.php:166
+#, php-format
+msgid "<b><i>%s</i></b> can't be empty"
+msgstr "<b><i>%s</i></b> לא יכול להיות ריק"
+
+#: includes/api/api-form.php:179
+#, php-format
+msgid "<b><i>%s</i></b> is not a valid Email address"
+msgstr "<b><i>%s</i></b> אינה כתובת מייל חוקית"
+
+#: includes/api/api-form.php:213
+#, php-format
+msgid "User <b><i>%s</i></b> is already exists"
+msgstr "User <b><i>%s</i></b> כבר קיים"
+
+#: includes/api/api-form.php:231
+#, php-format
+msgid "SQL Error: %s"
+msgstr "שגיאת SQL: %s"
+
+#: includes/api/api-form.php:244
+msgid "Email submission failed"
+msgstr "שליחת מייל נכשלה"
+
+#: includes/classes/class-hmembership-action.php:51
+msgid "Approve Users"
+msgstr "אישור משתמשים"
+
+#: includes/classes/class-hmembership-action.php:52
+msgid "Approve"
+msgstr "אישור"
+
+#: includes/classes/class-hmembership-action.php:59
+msgid "Approval"
+msgstr "אישור"
+
+#: includes/classes/class-hmembership-action.php:60
+msgid "approval"
+msgstr "אישור"
+
+#: includes/classes/class-hmembership-action.php:61
+msgid "approved"
+msgstr "לאשר"
+
+#: includes/classes/class-hmembership-action.php:65
+msgid "Decline Users"
+msgstr "דחיית משתמשים"
+
+#: includes/classes/class-hmembership-action.php:66
+msgid "Decline"
+msgstr "דחיה"
+
+#: includes/classes/class-hmembership-action.php:73
+msgid "Rejection"
+msgstr "דחיה"
+
+#: includes/classes/class-hmembership-action.php:74
+msgid "rejection"
+msgstr "דחיה"
+
+#: includes/classes/class-hmembership-action.php:75
+msgid "declined"
+msgstr "לדחות"
+
+#: includes/classes/class-hmembership-action.php:79
+msgid "Delete Users from HTMLine Membership"
+msgstr "מחיקת משתמשים"
+
+#: includes/classes/class-hmembership-action.php:80
+msgid "Delete"
+msgstr "מחיקה"
+
+#: includes/classes/class-hmembership-action.php:90
+msgid "Removal"
+msgstr "הסרה"
+
+#: includes/classes/class-hmembership-action.php:91
+msgid "removal"
+msgstr "הסרה"
+
+#: includes/classes/class-hmembership-action.php:92
+msgid "deleted"
+msgstr "להסיר"
+
+#: includes/classes/class-hmembership-form.php:167
+msgid "Register"
+msgstr "הרשמה"
+
+#: includes/classes/class-hmembership-form.php:194
+#, php-format
+msgid "Logged in as <b>%s</b>, "
+msgstr "מחובר כ<b>%s</b>, "
+
+#: includes/classes/class-hmembership-form.php:195
+msgid "Log out of this account"
+msgstr "התנתק מחשבון זה"
+
+#: includes/classes/class-hmembership-form.php:195
+msgid "Log out &raquo;"
+msgstr "התנתק &laquo;"
+
+#: includes/classes/class-hmembership-status.php:52
+msgid "Pending"
+msgstr "ממתין"
+
+#: includes/classes/class-hmembership-status.php:57
+msgid "Approved"
+msgstr "מאושר"
+
+#: includes/classes/class-hmembership-status.php:62
+msgid "Declined"
+msgstr "נדחה"
+
+#: includes/classes/class-hmembership-status.php:67
+msgid "Unassigned"
+msgstr "מנותק"
+
+#: includes/classes/class-hmembership-status.php:72
+msgid "Deleted"
+msgstr "נמחק"

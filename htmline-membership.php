@@ -104,6 +104,7 @@ class HTMLineMembership {
 		hmembership_include( 'includes/classes/class-hmembership-form.php' );
 		hmembership_include( 'includes/classes/class-hmembership-email.php' );
 		hmembership_include( 'includes/classes/class-hmembership-content.php' );
+		hmembership_include( 'includes/classes/class-hmembership-export.php' );
 
 		// actions
 		add_action( 'init',	array( $this, 'init' ) );
@@ -304,8 +305,12 @@ class HTMLineMembership {
 
 		// localize hmembership
 		$translation_arr	= array(
-			'settings'		=> array(),
-			'strings'		=> array(),
+			'settings'		=> array(
+				'export_users'				=> get_option( 'hmembership_export_users', array( 'true' ) ),
+			),
+			'strings'		=> array(
+				'failed_export'				=> __( 'Export process has been failed', 'hmembership' ),
+			),
 			'ajaxurl'		=> admin_url( 'admin-ajax.php' ),
 		);
 		wp_localize_script( 'hmembership', '_hmembership', $translation_arr );

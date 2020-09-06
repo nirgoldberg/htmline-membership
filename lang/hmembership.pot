@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ms-taxonomies-sync 1.0.0\n"
-"POT-Creation-Date: 2020-08-14 14:19+0300\n"
+"POT-Creation-Date: 2020-09-06 23:17+0300\n"
 "PO-Revision-Date: 2019-08-21 17:56+0300\n"
 "Last-Translator: Nir Goldberg <nir@htmline.com>\n"
 "Language-Team: Nir Goldberg <nir@htmline.com>\n"
@@ -31,7 +31,24 @@ msgstr ""
 msgid "HTMLine Membership"
 msgstr ""
 
-#: htmline-membership.php:470
+#: htmline-membership.php:268 includes/admin/pages/class-admin-page.php:271
+#: includes/admin/users/class-admin-users-list-table.php:782
+msgid "Error"
+msgstr ""
+
+#: htmline-membership.php:269
+msgid "Request was sent successfuly for user:"
+msgstr ""
+
+#: htmline-membership.php:270
+msgid "Request failed"
+msgstr ""
+
+#: htmline-membership.php:312
+msgid "Export process has been failed"
+msgstr ""
+
+#: htmline-membership.php:646
 #, php-format
 msgid ""
 "<strong>%s</strong> plugin can't be activated.<br />The following plugins "
@@ -64,6 +81,7 @@ msgstr ""
 
 #: includes/admin/lib/class-admin-wp-list-table.php:548
 #: includes/admin/lib/class-admin-wp-list-table.php:1434
+#: includes/admin/users/class-admin-users-list-table.php:642
 msgid "Show more details"
 msgstr ""
 
@@ -162,8 +180,13 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: includes/admin/pages/class-admin-page-screen-options.php:120
+#: includes/admin/pages/class-admin-page-screen-options.php:122
 msgid "Number of items per page:"
+msgstr ""
+
+#: includes/admin/pages/class-admin-page.php:270
+#: includes/admin/users/class-admin-users-list-table.php:781
+msgid "Invalid Nonce"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:35
@@ -175,114 +198,285 @@ msgid "Settings"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:41
-#: includes/admin/pages/class-admin-users-page.php:63
+#: includes/admin/pages/class-admin-users-page.php:77
 msgid "Users"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:45
-msgid "User Custom fields"
+msgid "Registration Form"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:46
-msgid "Custom fields for user registration form"
+msgid ""
+"Place the following shortcode in order to display registration form on "
+"screen: "
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:50
+msgid "User Custom Fields"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:51
-msgid "Display"
+msgid "Custom fields for user registration form"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:55
-msgid "User Interface Settings"
+#: includes/admin/pages/class-admin-settings.php:56
+msgid "Emails"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:61
-msgid "Permissions"
+#: includes/admin/pages/class-admin-settings.php:60
+msgid "User Registration"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:65
-msgid "Edit Settings"
+msgid "User Approval"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:70
-msgid "Export Settings"
+msgid "User Rejection"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:76
-msgid "Uninstall"
+msgid "Permissions"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:80
-msgid "Uninstall Settings"
+msgid "Users Management Settings"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:85
+msgid "Export Settings"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:91
+msgid "General"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:95
-msgid "Field Label"
+msgid "General Settings"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:103
-msgid "Field Type"
+#: includes/admin/pages/class-admin-settings.php:101
+msgid "Uninstall"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:109
-msgid "Text"
+#: includes/admin/pages/class-admin-settings.php:105
+msgid "Uninstall Settings"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:110
-msgid "Textarea"
+#: includes/admin/pages/class-admin-settings.php:123
+#: includes/admin/users/class-admin-users-list-table.php:139
+msgid "Status"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:111
-msgid "Select"
+#: includes/admin/pages/class-admin-settings.php:132
+#: includes/admin/pages/class-admin-settings.php:303
+#: includes/admin/pages/class-admin-settings.php:317
+#: includes/admin/pages/class-admin-settings.php:376
+#, php-format
+msgid "(Default: %s)"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:112
-msgid "Multiselect"
+#: includes/admin/pages/class-admin-settings.php:132
+msgid "active"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:113
-msgid "Radio Button"
+#: includes/admin/pages/class-admin-settings.php:136
+msgid "User Email Field Label"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:114
-msgid "Checkbox"
-msgstr ""
-
-#: includes/admin/pages/class-admin-settings.php:120
-msgid "Field Options"
-msgstr ""
-
-#: includes/admin/pages/class-admin-settings.php:125
-msgid "Each option per row"
-msgstr ""
-
-#: includes/admin/pages/class-admin-settings.php:129
-msgid "Field Default"
-msgstr ""
-
-#: includes/admin/pages/class-admin-settings.php:138
-#: includes/admin/pages/class-admin-settings.php:165
-msgid "(Default: false)"
+#: includes/admin/pages/class-admin-settings.php:141
+#: includes/admin/pages/class-admin-settings.php:142
+#: includes/classes/class-hmembership-form.php:142
+#: includes/classes/class-hmembership-form.php:143
+msgid "Email Address"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:142
-#: includes/admin/views/hmembership-tools-export-users.php:17
-msgid "Export users"
+#: includes/admin/pages/class-admin-settings.php:220
+#: includes/admin/pages/class-admin-settings.php:239
+#: includes/admin/pages/class-admin-settings.php:258
+#: includes/admin/pages/class-admin-settings.php:277
+#: includes/admin/pages/class-admin-settings.php:330
+#: includes/admin/pages/class-admin-settings.php:340
+#: includes/admin/pages/class-admin-settings.php:350
+#: includes/admin/pages/class-admin-settings.php:360
+#, php-format
+msgid "Default: %s"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:151
-msgid "Check this option to allow exporting of users"
+#: includes/admin/pages/class-admin-settings.php:146
+msgid "Field Label"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:152
-msgid "(Default: true)"
+#: includes/admin/pages/class-admin-settings.php:154
+msgid "Field Type"
 msgstr ""
 
-#: includes/admin/pages/class-admin-settings.php:156
-msgid "Remove data on uninstall"
+#: includes/admin/pages/class-admin-settings.php:160
+msgid "Text"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:161
+msgid "Email"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:162
+msgid "Textarea"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:163
+msgid "Select"
 msgstr ""
 
 #: includes/admin/pages/class-admin-settings.php:164
+msgid "Multiselect"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:165
+msgid "Radio Button"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:166
+msgid "Checkbox"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:171
+msgid "Field Options"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:176
+msgid "Each option per row"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:180
+msgid "Default Option"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:185
+msgid "One option name from above options"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:189
+msgid "Required Field"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:200
+msgid "Set as Column in Users Table"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:214
+#: includes/admin/pages/class-admin-settings.php:252
+#: includes/admin/pages/class-admin-settings.php:271
+msgid "Email Subject Sent to User"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:219
+#: includes/admin/pages/class-admin-settings.php:220
+#: includes/api/api-users.php:306 includes/api/api-users.php:307
+#, php-format
+msgid "Your registration request to %s"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:224
+#: includes/admin/pages/class-admin-settings.php:262
+#: includes/admin/pages/class-admin-settings.php:281
+msgid "Email Message Sent to User"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:229
+#: includes/admin/pages/class-admin-settings.php:248
+#: includes/admin/pages/class-admin-settings.php:267
+#: includes/admin/pages/class-admin-settings.php:286
+#, php-format
+msgid "Available patterns: %s"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:233
+msgid "Email Subject Sent to Website Admin"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:238
+#: includes/admin/pages/class-admin-settings.php:239
+#: includes/api/api-users.php:341 includes/api/api-users.php:342
+#, php-format
+msgid "[%s] A new registration request"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:243
+msgid "Email Message Sent to Website Admin"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:257
+#: includes/admin/pages/class-admin-settings.php:258
+#: includes/api/api-users.php:390 includes/api/api-users.php:391
+#, php-format
+msgid "Your registration request to %s is approved"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:276
+#: includes/admin/pages/class-admin-settings.php:277
+#: includes/api/api-users.php:436 includes/api/api-users.php:437
+#, php-format
+msgid "Your registration request to %s is declined"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:293
+msgid "Delete Users"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:302
+msgid "Check this option to allow deleting of users"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:303
+#: includes/admin/pages/class-admin-settings.php:317
+msgid "true"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:307
+#: includes/admin/pages/class-admin-tools-page.php:40
+#: includes/admin/views/hmembership-tools-export-users.php:20
+msgid "Export Users"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:316
+msgid "Check this option to allow exporting of users"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:324
+msgid "User Role Display Name"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:329
+#: includes/admin/pages/class-admin-settings.php:330
+#: includes/classes/class-hmembership-user.php:67
+#: includes/classes/class-hmembership-user.php:68
+msgid "Member"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:334
+msgid "Admin Email Address"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:344
+msgid "Emails \"From\" Name"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:354
+msgid "Emails \"From\" Address"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:367
+msgid "Remove Data on Uninstall"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:375
 msgid "Caution: all data will be removed without any option to restore"
+msgstr ""
+
+#: includes/admin/pages/class-admin-settings.php:376
+msgid "false"
 msgstr ""
 
 #: includes/admin/pages/class-admin-tools-page.php:34
@@ -293,61 +487,80 @@ msgstr ""
 msgid "Tools"
 msgstr ""
 
-#: includes/admin/pages/class-admin-tools-page.php:40
-#: includes/admin/views/hmembership-tools-export-users.php:20
-msgid "Export Users"
+#: includes/admin/pages/class-admin-users-page.php:76
+msgid "HTMLine Membership Users"
 msgstr ""
 
-#: includes/admin/pages/class-admin-users-page.php:62
-msgid "HTMLine Membership Users"
+#: includes/admin/pages/class-admin-users-page.php:326
+#, php-format
+msgid "%s user approved successfully"
+msgid_plural "%s users approved successfully"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: includes/admin/pages/class-admin-users-page.php:328
+msgid "User approved successfully"
+msgstr ""
+
+#: includes/admin/pages/class-admin-users-page.php:350
+#, php-format
+msgid "%s user declined successfully"
+msgid_plural "%s users declined successfully"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: includes/admin/pages/class-admin-users-page.php:352
+msgid "User declined successfully"
+msgstr ""
+
+#: includes/admin/pages/class-admin-users-page.php:374
+#, php-format
+msgid "%s user deleted successfully"
+msgid_plural "%s users deleted successfully"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: includes/admin/pages/class-admin-users-page.php:376
+msgid "User deleted successfully"
 msgstr ""
 
 #: includes/admin/pages/class-admin.php:60
 msgid "Membership"
 msgstr ""
 
-#: includes/admin/users/class-admin-users-list-table.php:95
-msgid "Username"
+#: includes/admin/users/class-admin-users-list-table.php:136
+msgid "User Email"
 msgstr ""
 
-#: includes/admin/users/class-admin-users-list-table.php:96
-msgid "Email"
-msgstr ""
-
-#: includes/admin/users/class-admin-users-list-table.php:97
-msgctxt "column name"
+#: includes/admin/users/class-admin-users-list-table.php:137
 msgid "Registered On"
 msgstr ""
 
-#: includes/admin/users/class-admin-users-list-table.php:98
-msgid "Status"
+#: includes/admin/users/class-admin-users-list-table.php:138
+msgid "User Info"
 msgstr ""
 
-#: includes/admin/users/class-admin-users-list-table.php:154
+#: includes/admin/users/class-admin-users-list-table.php:210
 msgid "No users avaliable."
 msgstr ""
 
-#: includes/admin/users/class-admin-users-list-table.php:244
+#: includes/admin/users/class-admin-users-list-table.php:251
+msgid "All"
+msgstr ""
+
+#: includes/admin/users/class-admin-users-list-table.php:436
 #, php-format
 msgid "Select %s"
 msgstr ""
 
-#: includes/admin/users/class-admin-users-list-table.php:278
-#: includes/admin/users/class-admin-users-list-table.php:315
-msgid "Approve"
-msgstr ""
-
-#: includes/admin/users/class-admin-users-list-table.php:288
-#: includes/admin/users/class-admin-users-list-table.php:316
-msgid "Decline"
-msgstr ""
-
-#: includes/admin/users/class-admin-users-list-table.php:494
-msgid "Invalid Nonce"
-msgstr ""
-
-#: includes/admin/users/class-admin-users-list-table.php:495
-msgid "Error"
+#: includes/admin/users/class-admin-users-list-table.php:560
+msgid "Old User Info"
 msgstr ""
 
 #: includes/admin/views/hmembership-settings-form.php:43
@@ -367,10 +580,183 @@ msgstr ""
 msgid "Save Settings"
 msgstr ""
 
+#: includes/admin/views/hmembership-tools-export-users.php:17
+msgid "Export users"
+msgstr ""
+
 #: includes/admin/views/hmembership-tools.php:65
 msgid "There are no available tools"
 msgstr ""
 
-#: includes/admin/views/hmembership-users.php:38
+#: includes/admin/views/hmembership-users-list-table-action.php:24
+msgid "You are not allowed to make this request."
+msgstr ""
+
+#: includes/admin/views/hmembership-users-list-table-action.php:32
+#, php-format
+msgid "No users have been specified for %s."
+msgstr ""
+
+#: includes/admin/views/hmembership-users-list-table-action.php:46
+msgid "Error getting user information."
+msgid_plural "Error getting users information."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: includes/admin/views/hmembership-users-list-table-action.php:71
+#, php-format
+msgid "You have specified this user for %1$s:"
+msgid_plural "You have specified these users for %1$s:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: includes/admin/views/hmembership-users-list-table-action.php:84
+#, php-format
+msgid "%s user cannot be %s"
+msgstr ""
+
+#: includes/admin/views/hmembership-users-list-table-action.php:89
+msgid "ID"
+msgstr ""
+
+#: includes/admin/views/hmembership-users-list-table-action.php:90
+msgid "Will not be processed"
+msgstr ""
+
+#: includes/admin/views/hmembership-users-list-table-action.php:100
+#, php-format
+msgid "Confirm %s"
+msgstr ""
+
+#: includes/admin/views/hmembership-users.php:47
 msgid "Search Users"
+msgstr ""
+
+#: includes/api/api-form.php:70
+msgid "Empty request"
+msgstr ""
+
+#: includes/api/api-form.php:166
+#, php-format
+msgid "<b><i>%s</i></b> can't be empty"
+msgstr ""
+
+#: includes/api/api-form.php:179
+#, php-format
+msgid "<b><i>%s</i></b> is not a valid Email address"
+msgstr ""
+
+#: includes/api/api-form.php:213
+#, php-format
+msgid "User <b><i>%s</i></b> is already exists"
+msgstr ""
+
+#: includes/api/api-form.php:231
+#, php-format
+msgid "SQL Error: %s"
+msgstr ""
+
+#: includes/api/api-form.php:244
+msgid "Email submission failed"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:51
+msgid "Approve Users"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:52
+msgid "Approve"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:59
+msgid "Approval"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:60
+msgid "approval"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:61
+msgid "approved"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:65
+msgid "Decline Users"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:66
+msgid "Decline"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:73
+msgid "Rejection"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:74
+msgid "rejection"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:75
+msgid "declined"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:79
+msgid "Delete Users from HTMLine Membership"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:80
+msgid "Delete"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:90
+msgid "Removal"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:91
+msgid "removal"
+msgstr ""
+
+#: includes/classes/class-hmembership-action.php:92
+msgid "deleted"
+msgstr ""
+
+#: includes/classes/class-hmembership-form.php:167
+msgid "Register"
+msgstr ""
+
+#: includes/classes/class-hmembership-form.php:194
+#, php-format
+msgid "Logged in as <b>%s</b>, "
+msgstr ""
+
+#: includes/classes/class-hmembership-form.php:195
+msgid "Log out of this account"
+msgstr ""
+
+#: includes/classes/class-hmembership-form.php:195
+msgid "Log out &raquo;"
+msgstr ""
+
+#: includes/classes/class-hmembership-status.php:52
+msgid "Pending"
+msgstr ""
+
+#: includes/classes/class-hmembership-status.php:57
+msgid "Approved"
+msgstr ""
+
+#: includes/classes/class-hmembership-status.php:62
+msgid "Declined"
+msgstr ""
+
+#: includes/classes/class-hmembership-status.php:67
+msgid "Unassigned"
+msgstr ""
+
+#: includes/classes/class-hmembership-status.php:72
+msgid "Deleted"
 msgstr ""

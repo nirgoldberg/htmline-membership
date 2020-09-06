@@ -47,6 +47,22 @@ class HTMLineMembership_Admin_Tools extends HTMLineMembership_Admin_Page {
 
 	}
 
+	/**
+	 * init
+	 *
+	 * This function will run after all plugins and theme functions have been included
+	 *
+	 * @since		1.0.0
+	 * @param		N/A
+	 * @return		N/A
+	 */
+	public function init() {
+
+		// api
+		hmembership_include( 'includes/api/api-export.php' );
+
+	}
+
 }
 
 // initialize

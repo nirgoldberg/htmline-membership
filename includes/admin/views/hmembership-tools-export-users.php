@@ -22,5 +22,3 @@ $nonce = wp_create_nonce( 'hmembership_export_users_nonce' );
 </p>
 
 <div class="export-users-summary"></div>
-
-<div class="export-users-result"></div>

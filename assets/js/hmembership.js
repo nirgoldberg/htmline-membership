@@ -34,6 +34,9 @@ var $ = jQuery,
 			// users list table
 			usersListTable();
 
+			// export users list table
+			usersListTableExport();
+
 		};
 
 		/**
@@ -324,6 +327,150 @@ var $ = jQuery,
 				btn.toggleClass('open');
 				content.toggleClass('open');
 			});
+
+		};
+
+		/**
+		 * usersListTableExport
+		 *
+		 * Handles users list table export
+		 *
+		 * @since		1.0.0
+		 * @param		N/A
+		 * @return		N/A
+		 */
+		var usersListTableExport = function() {
+
+			// export
+			$('body').on('click', '.hmembership-export-users', function() {
+				onClickExport($(this));
+			});
+
+		};
+
+		/**
+		 * onClickExport
+		 *
+		 * Exports all HTMLIne Membership users to a CSV format
+		 *
+		 * @since		1.0.0
+		 * @param		el (jQuery)
+		 * @return		N/A
+		 */
+		var onClickExport = function(el) {
+
+			// vars
+			var export_users = _hmembership.settings.export_users;
+
+			// check if export users capability is on
+			if (el.hasClass('disabled') || el.hasClass('active') || !export_users)
+				return;
+
+			// expose loader
+			el.addClass('active');
+
+			// init export
+			initExport(el);
+
+		};
+
+		/**
+		 * initExport
+		 *
+		 * Initializes export users process
+		 *
+		 * @since		1.0.0
+		 * @param		el (jQuery)
+		 * @return		N/A
+		 */
+		var initExport = function(el) {
+
+			// vars
+			var nonce = el.data('nonce'),
+				summaryContainer = $('.export-users-summary');
+
+			summaryContainer.html('');
+
+			$.ajax({
+				type: 'post',
+				dataType: 'text',
+				url: _hmembership.ajaxurl,
+				cache: false,
+				data: {
+					action: 'hmembership_export_users',
+					nonce: nonce,
+				},
+				success: function(response, textStatus, xhr) {
+					downloadFile(response, xhr);
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					summaryContainer.html(_hmembership.strings.failed_export);
+				},
+				complete: function(jqXHR, textStatus) {
+					// hide loader
+					el.removeClass('active');
+				},
+			});
+
+		};
+
+		/**
+		 * downloadFile
+		 *
+		 * Downloads file per successful AJAX request
+		 *
+		 * @since		1.0.0
+		 * @param		response (string)
+		 * @param		xhr (jqXHR)
+		 * @return		N/A
+		 */
+		var downloadFile = function(response, xhr) {
+
+			// vars
+			var filename = "",
+				disposition = xhr.getResponseHeader('Content-Disposition');
+
+			// set filename
+			if (disposition && disposition.indexOf('attachment') !== -1) {
+				var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/,
+					matches = filenameRegex.exec(disposition);
+
+				if (matches != null && matches[1]) {
+					filename = matches[1].replace(/['"]/g, '');
+				}
+			}
+
+			// file content
+			var type = xhr.getResponseHeader('Content-Type'),
+				blob = new Blob([response], { type: type });
+
+			if (typeof window.navigator.msSaveBlob !== 'undefined') {
+				// IE workaround for "HTML7007: One or more blob URLs were revoked
+				// by closing the blob for which they were created.
+				// These URLs will no longer resolve as the data backing the URL has been freed."
+				window.navigator.msSaveBlob(blob, filename);
+			} else {
+				var URL = window.URL || window.webkitURL;
+				var downloadUrl = URL.createObjectURL(blob);
+
+				if (filename) {
+					// use HTML5 a[download] attribute to specify filename
+					var a = document.createElement("a");
+					// safari doesn't support this yet
+					if (typeof a.download === 'undefined') {
+						window.location.href = downloadUrl;
+					} else {
+						a.href = downloadUrl;
+						a.download = filename;
+						document.body.appendChild(a);
+						a.click();
+					}
+				} else {
+					window.location.href = downloadUrl;
+				}
+
+				setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+			}
 
 		};
 

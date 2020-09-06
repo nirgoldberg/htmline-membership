@@ -165,11 +165,11 @@
 
 	.submit {
 		.ajax-loading {
-			margin-left: 5px;
+			margin: 3px 0 0 5px;
 			width: 24px;
 			height: 24px;
 			font-size: 24px;
-			vertical-align: middle;
+			vertical-align: top;
 			-webkit-animation:	rotating 2s linear infinite;
 			-moz-animation:		rotating 2s linear infinite;
 			-ms-animation:		rotating 2s linear infinite;

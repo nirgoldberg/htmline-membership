@@ -401,7 +401,11 @@ var $ = jQuery,
 					nonce: nonce,
 				},
 				success: function(response, textStatus, xhr) {
-					downloadFile(response, xhr);
+					if (response.length) {
+						downloadFile(response, xhr);
+					} else {
+						summaryContainer.html(_hmembership.strings.failed_export);
+					}
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					summaryContainer.html(_hmembership.strings.failed_export);

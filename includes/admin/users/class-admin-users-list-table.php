@@ -386,7 +386,7 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 						if ( strpos( $key, $column_name ) === false )
 							continue;
 
-						if ( in_array( $value->type, array( 'radio', 'checkbox' ) ) ) {
+						if ( in_array( $value->type, array( 'multiselect', 'radio', 'checkbox' ) ) ) {
 
 							// radio/checkbox
 							if ( ! empty ( $value->value ) ) {
@@ -523,7 +523,28 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 			$current	= false !== array_search( $key, array_column( $fields, 'id' ) );
 			$li			= array();
 
-			if ( in_array( $value->type, array( 'radio', 'checkbox' ) ) ) {
+			if ( in_array( $value->type, array( 'multiselect' ) ) ) {
+
+				// multiselect
+				$li_info = '<li>' . $value->label;
+
+				if ( ! empty( $value->value ) ) {
+
+					$li_info .= ':<ul>';
+
+					foreach ( $value->value as $val ) {
+						$li_info .= '<li><b>' . stripslashes( $val ) . '</b></li>';
+					}
+
+					$li_info .= '</ul>';
+
+				}
+
+				$li_info .= '</li>';
+
+				$li[] = $li_info;
+
+			} elseif ( in_array( $value->type, array( 'radio', 'checkbox' ) ) ) {
 
 				// radio/checkbox
 				if ( ! empty( $value->value ) ) {

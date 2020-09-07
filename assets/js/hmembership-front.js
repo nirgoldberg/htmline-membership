@@ -163,7 +163,7 @@ var $ = jQuery,
 
 					case 'SELECT':
 
-						type = 'select';
+						type = typeof input.attr('multiple') !== 'undefined' ? 'multiselect' : 'select';
 						value = input.val();
 						break;
 

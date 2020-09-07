@@ -223,9 +223,6 @@ class HTMLineMembership_Export {
 		$columns	= $this->columns;
 		$users_data	= $this->users_data;
 
-		if ( ! $users_data )
-			return;
-
 		// open
 		$csv = fopen( 'php://output', 'w' );
 

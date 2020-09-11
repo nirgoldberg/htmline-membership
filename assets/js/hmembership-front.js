@@ -50,11 +50,45 @@ var $ = jQuery,
 			if (!form.length)
 				return;
 
+			// form multiselect tweak
+			rfMultiselect();
+
 			// form submission
 			form.find('.hmembership-form-button').click(function() {
 				if (!$(this).parent().hasClass('active')) {
 					rfSubmission($(this));
 				}
+			});
+
+		};
+
+		/**
+		 * rfMultiselect
+		 *
+		 * Handles registration form multiselect field
+		 *
+		 * @since		1.0.0
+		 * @param		N/A
+		 * @return		N/A
+		 */
+		var rfMultiselect = function() {
+
+			// vars
+			var form = $('.hmembership-form'),
+				multiselect = form.length ? form.find('select[multiple="multiple"]') : '',
+				options = multiselect.length ? multiselect.find('option') : '';
+
+			if (!options.length)
+				return;
+
+			options.mousedown( function(e) {
+
+				e.preventDefault();
+				$(this).toggleClass('selected').prop('selected', !$(this).prop('selected'));
+
+				// return
+				return false;
+
 			});
 
 		};

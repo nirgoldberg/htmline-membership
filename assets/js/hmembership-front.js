@@ -86,6 +86,13 @@ var $ = jQuery,
 				e.preventDefault();
 				$(this).toggleClass('selected').prop('selected', !$(this).prop('selected'));
 
+				var el = e.target,
+					scrollTop = el.parentNode.scrollTop;
+
+				setTimeout(function(){
+					el.parentNode.scrollTo(0, scrollTop);
+				}, 0);
+
 				// return
 				return false;
 

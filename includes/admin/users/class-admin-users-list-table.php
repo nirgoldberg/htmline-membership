@@ -7,7 +7,7 @@
  *
  * @author		Nir Goldberg
  * @package		includes/admin/users
- * @version		1.0.0
+ * @version		1.0.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -518,6 +518,10 @@ class HTMLineMembership_Users_List_Table extends HTMLineMembership_WP_List_Table
 
 		// loop
 		foreach ( $info as $key => $value ) {
+
+			// skip if password
+			if ( 'hmembership_user_password' == $key )
+				continue;
 
 			// check if is a current or old info
 			$current	= false !== array_search( $key, array_column( $fields, 'id' ) );

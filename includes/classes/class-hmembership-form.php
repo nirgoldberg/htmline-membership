@@ -4,7 +4,7 @@
  *
  * @author		Nir Goldberg
  * @package		includes/classes
- * @version		1.0.0
+ * @version		1.0.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -138,18 +138,37 @@ class HTMLineMembership_Form {
 		// attributes
 		$atts = shortcode_atts( $this->defaults, $atts );
 
+		// identification fields
+		$identification_fields = array();
+
 		// user email field
 		$label = get_option( 'hmembership_user_email_field_label', __( 'Email Address', 'hmembership' ) );
 		$label = $label ? $label : __( 'Email Address', 'hmembership' );
 
-		array_unshift( $fields, array(
+		$identification_fields[] = array(
 			'id'		=> 'hmembership_user_email',
 			'label'		=> $label,
 			'type'		=> 'email',
 			'options'	=> '',
 			'default'	=> '',
 			'required'	=> 'true',
-		) );
+		);
+
+		// user password field
+		$label = get_option( 'hmembership_user_password_field_label', __( 'Password', 'hmembership' ) );
+		$label = $label ? $label : __( 'Password', 'hmembership' );
+
+		$identification_fields[] = array(
+			'id'		=> 'hmembership_user_password',
+			'label'		=> $label,
+			'type'		=> 'password',
+			'options'	=> '',
+			'default'	=> '',
+			'required'	=> 'true',
+		);
+
+		// add identification fields
+		$fields = array_merge( $identification_fields, $fields );
 
 		// form
 		$output .=

@@ -3,7 +3,7 @@
 * Plugin Name: HTMLine Membership
 * Plugin URI: http://www.htmline.com/
 * Description: Handles membership WordPress sites including user registration custom form, registration process control, content restriction, etc.
-* Version: 1.0.1
+* Version: 1.0.2
 * Author: Nir Goldberg
 * Author URI: http://www.htmline.com/
 * License: GPLv3
@@ -42,7 +42,7 @@ class HTMLineMembership {
 	 */
 	public function __construct() {
 
-		$this->version				= '1.0.1';
+		$this->version				= '1.0.2';
 		$this->required_plugins		= array();
 
 		/* Do nothing here */

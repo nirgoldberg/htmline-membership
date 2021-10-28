@@ -4,7 +4,7 @@
  *
  * @author		Nir Goldberg
  * @package		includes/classes
- * @version		1.0.0
+ * @version		1.0.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -212,6 +212,9 @@ class HTMLineMembership_User {
 				$userdata[ 'user_login' ] = $userdata[ 'user_email' ];
 			}
 
+			// user password
+			$userdata[ 'user_pass' ] = $this->get_user_password( $user[ 'user_email' ] );
+
 			// create user
 			$wp_user_id = wp_insert_user( $userdata );
 
@@ -219,6 +222,9 @@ class HTMLineMembership_User {
 
 				// update $result
 				$result[ $user[ 'ID' ] ] = $wp_user_id;
+
+				// delete HTMLine Membership user password from user info
+				$this->delete_user_password( $user[ 'user_email' ] );
 
 				// send user notificcation
 				/**
@@ -758,6 +764,87 @@ class HTMLineMembership_User {
 
 		// return
 		return $wpdb->get_row( $wpdb->prepare( $sql ), ARRAY_A );
+
+	}
+
+	/**
+	 * get_user_password
+	 *
+	 * This function will return HTMLine Membership user password by email
+	 *
+	 * @since		1.0.2
+	 * @param		$user_email (string)
+	 * @return		(mixed) User password or empty string if no password, or false on error
+	 */
+	public function get_user_password( $user_email ) {
+
+		if ( ! $user_email )
+			return false;
+
+		// vars
+		global $wpdb;
+		$users_table = $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+
+		$sql =	"SELECT * FROM $users_table
+				WHERE user_email = '$user_email'";
+
+		$user = $wpdb->get_row( $wpdb->prepare( $sql ), ARRAY_A );
+
+		if ( ! $user )
+			return false;
+
+		$user_info = json_decode( $user[ 'user_info' ] );
+
+		if ( ! $user_info )
+			return false;
+
+		// return
+		return isset( $user_info->hmembership_user_password->value ) ? $user_info->hmembership_user_password->value : '';
+
+	}
+
+	/**
+	 * delete_user_password
+	 *
+	 * This function will delete HTMLine Membership user password
+	 *
+	 * @since		1.0.2
+	 * @param		$user_email (string)
+	 * @return		(mixed)
+	 */
+	public function delete_user_password( $user_email ) {
+
+		if ( ! $user_email )
+			return false;
+
+		// vars
+		global $wpdb;
+		$users_table = $wpdb->prefix . HTMLineMembership_USERS_TABLE;
+
+		$sql =	"SELECT * FROM $users_table
+				WHERE user_email = '$user_email'";
+
+		$user = $wpdb->get_row( $wpdb->prepare( $sql ), ARRAY_A );
+
+		if ( ! $user )
+			return false;
+
+		$user_info = json_decode( $user[ 'user_info' ], true );
+
+		if ( ! $user_info )
+			return false;
+
+		$user_info[ 'hmembership_user_password' ][ 'value' ] = '';
+		$user_info = esc_sql( json_encode( $user_info ) );
+
+		$sql =	"UPDATE $users_table
+				SET user_info = '$user_info'
+				WHERE user_email = '$user_email'";
+
+		$updated = $wpdb->query( $wpdb->prepare( $sql ) );
+
+		// return
+		return $updated;
 
 	}
 

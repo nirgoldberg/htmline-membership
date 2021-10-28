@@ -4,7 +4,7 @@
  *
  * @author		Nir Goldberg
  * @package		includes/admin/pages
- * @version		1.0.0
+ * @version		1.0.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -140,6 +140,16 @@ class HTMLineMembership_Admin_Settings extends HTMLineMembership_Admin_Settings_
 					'type'				=> 'text',
 					'placeholder'		=> __( 'Email Address', 'hmembership' ),
 					'supplimental'		=> sprintf( __( 'Default: %s', 'hmembership' ), __( 'Email Address', 'hmembership' ) ),
+				),
+				array(
+					'uid'				=> 'hmembership_user_password_field_label',
+					'label'				=> __( 'User Password Field Label', 'hmembership' ),
+					'label_for'			=> 'hmembership_user_password_field_label',
+					'tab'				=> 'users',
+					'section'			=> 'registration_form',
+					'type'				=> 'text',
+					'placeholder'		=> __( 'Password', 'hmembership' ),
+					'supplimental'		=> sprintf( __( 'Default: %s', 'hmembership' ), __( 'Password', 'hmembership' ) ),
 				),
 				array(
 					'uid'				=> 'hmembership_user_custom_field_label',
